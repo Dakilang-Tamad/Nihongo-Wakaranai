@@ -1,15 +1,11 @@
 from kivy.app import App
 from kivy.lang import Builder
 from kivy.uix.screenmanager import ScreenManager, Screen
-from kivy.clock import Clock
 import time
 
-class LoadingScreen(Screen):
-    def on_enter(self, *args):
-        Clock.schedule_once(self.proceed, 3)
 
-    def proceed(self, event):
-        self.manager.current = "home"
+class LoadingScreen(Screen):
+    pass
 
 
 class HomeScreen(Screen):
@@ -28,7 +24,7 @@ class BookmarkedItems(Screen):
     pass
 
 
-class SettingsScreen(Screen):
+class Settings(Screen):
     pass
 
 
@@ -56,12 +52,12 @@ class WindowManager(ScreenManager):
     pass
 
 
-kv = Builder.load_file("my.kv", encoding='utf8')
+UI = Builder.load_file("my.kv")
 
 
 class MainApp(App):
     def build(self):
-        return kv
+        return UI
 
 
 if __name__ == "__main__":

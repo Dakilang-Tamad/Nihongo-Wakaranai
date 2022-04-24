@@ -1,0 +1,132 @@
+WindowManager:
+    LoadingScreen:
+    HomeScreen:
+    DifficultySelection:
+    BookmarkCategories:
+    BookmarkedItems:
+    Settings:
+    Courses:
+    GrammarItem:
+    VocabItem:
+    KanjiItem:
+    EndQuizz:
+
+<LoadingScreen>
+    name: "load"
+
+    GridLayout:
+        cols: 1
+
+        Label:
+            text: "Loading Screen"
+
+<HomeScreen>
+    name: "home"
+
+    GridLayout:
+        cols: 2
+
+        Button:
+            text: "Quiz"
+            on_release:
+                app.root.current = "diff"
+                root.manager.transition.direction = "left"
+
+        Button:
+            text: "Settings"
+            on_release:
+                app.root.current = "settings"
+                root.manager.transition.direction = "left"
+
+        Button:
+            text: "Courses"
+            on_release:
+                app.root.current = "courses"
+                root.manager.transition.direction = "left"
+
+        Button:
+            text: "Bookmarks"
+            on_release:
+                app.root.current = "bookc"
+                root.manager.transition.direction = "left"
+
+<DifficultySelection>
+    name: "diff"
+
+    GridLayout:
+        cols: 1
+
+        Label:
+            text: "Loading Screen"
+
+<BookmarkCategories>
+    name: "bookc"
+
+    GridLayout:
+        cols: 1
+
+        Label:
+            text: "Loading Screen"
+
+<BookmarkedItems>
+    name: "booki"
+
+    GridLayout:
+        cols: 1
+
+        Label:
+            text: "Loading Screen"
+
+<Settings>
+    name: "settings"
+
+    GridLayout:
+        cols: 1
+
+        Label:
+            text: "Loading Screen"
+
+<Courses>
+    name: "courses"
+
+    GridLayout:
+        cols: 1
+
+        Label:
+            text: "Loading Screen"
+
+<GrammarItem>
+    name: "grammari"
+
+    GridLayout:
+        cols: 1
+
+        Label:
+            text: "Loading Screen"
+
+<VocabItem>
+    name: "vocabi"
+
+    GridLayout:
+        cols: 1
+
+        Label:
+            text: "Loading Screen"
+
+<KanjiItem>
+    name: "kanjii"
+
+    GridLayout:
+        cols: 1
+
+        Label:
+            text: "Loading Screen"
+
+<EndQuizz>
+    name: "end"
+
+    GridLayout:
+        cols: 1
+
+        Label:
+            text: "Loading Screen"
