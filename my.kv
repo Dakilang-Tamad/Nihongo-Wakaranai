@@ -18,8 +18,8 @@ WindowManager:
         cols: 1
 
         Label:
-            font_name: "arial"
-            text: "日本語 Wakaranai"
+            font_name: "komorebi"
+            text: root.text
 
 <HomeScreen>:
     name:"home"
@@ -55,10 +55,43 @@ WindowManager:
     name: "diff"
 
     GridLayout:
-        cols: 1
+        cols: 2
 
-        Label:
-            text: "Loading Screen"
+        Button:
+            text: "N5"
+            on_release:
+                app.root.current = "grammari"
+                root.manager.transition.direction = "left"
+
+        Button:
+            text: "N4"
+            on_release:
+                app.root.current = "grammari"
+                root.manager.transition.direction = "left"
+
+        Button:
+            text: "N3"
+            on_release:
+                app.root.current = "grammari"
+                root.manager.transition.direction = "left"
+
+        Button:
+            text: "N2"
+            on_release:
+                app.root.current = "grammari"
+                root.manager.transition.direction = "left"
+
+        Button:
+            text: "N1"
+            on_release:
+                app.root.current = "grammari"
+                root.manager.transition.direction = "left"
+
+        Button:
+            text: "Back"
+            on_release:
+                app.root.current = "home"
+                root.manager.transition.direction = "right"
 
 <BookmarkCategories>:
     name: "bookc"
@@ -103,7 +136,34 @@ WindowManager:
         cols: 1
 
         Label:
-            text: "Loading Screen"
+            text: "Question"
+
+        GridLayout:
+            cols: 2
+
+            Button:
+                text: "A"
+                on_release:
+                    app.root.current = "vocabi"
+                    root.manager.transition.direction = "left"
+
+            Button:
+                text: "B"
+                on_release:
+                    app.root.current = "vocabi"
+                    root.manager.transition.direction = "left"
+
+            Button:
+                text: "C"
+                on_release:
+                    app.root.current = "vocabi"
+                    root.manager.transition.direction = "left"
+
+            Button:
+                text: "D"
+                on_release:
+                    app.root.current = "vocabi"
+                    root.manager.transition.direction = "left"
 
 <VocabItem>:
     name: "vocabi"
@@ -112,7 +172,37 @@ WindowManager:
         cols: 1
 
         Label:
-            text: "Loading Screen"
+            text: "Eng Word"
+
+        Label:
+            text: "Kanji"
+
+        GridLayout:
+            cols: 2
+
+            Button:
+                text: "A"
+                on_release:
+                    app.root.current = "kanjii"
+                    root.manager.transition.direction = "left"
+
+            Button:
+                text: "B"
+                on_release:
+                    app.root.current = "kanjii"
+                    root.manager.transition.direction = "left"
+
+            Button:
+                text: "C"
+                on_release:
+                    app.root.current = "kanjii"
+                    root.manager.transition.direction = "left"
+
+            Button:
+                text: "D"
+                on_release:
+                    app.root.current = "kanjii"
+                    root.manager.transition.direction = "left"
 
 <KanjiItem>:
     name: "kanjii"
@@ -121,7 +211,37 @@ WindowManager:
         cols: 1
 
         Label:
-            text: "Loading Screen"
+            text: "Sample sentence"
+
+        Label:
+            text: "Kanji"
+
+        GridLayout:
+            cols: 2
+
+            Button:
+                text: "A"
+                on_release:
+                    app.root.current = "end"
+                    root.manager.transition.direction = "left"
+
+            Button:
+                text: "B"
+                on_release:
+                    app.root.current = "end"
+                    root.manager.transition.direction = "left"
+
+            Button:
+                text: "C"
+                on_release:
+                    app.root.current = "end"
+                    root.manager.transition.direction = "left"
+
+            Button:
+                text: "D"
+                on_release:
+                    app.root.current = "end"
+                    root.manager.transition.direction = "left"
 
 <EndQuizz>:
     name: "end"

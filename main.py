@@ -1,10 +1,12 @@
 from kivy.app import App
 from kivy.lang import Builder
 from kivy.uix.screenmanager import ScreenManager, Screen
+from kivy.core.text import LabelBase
 from kivy.clock import Clock
 import time
 
 class LoadingScreen(Screen):
+    text = "日本語 Wakaranai"
     def on_enter(self, *args):
         Clock.schedule_once(self.proceed, 3)
 
@@ -56,7 +58,10 @@ class WindowManager(ScreenManager):
     pass
 
 
-kv = Builder.load_file("my.kv", encoding='utf8')
+kv = Builder.load_file("my.kv")
+
+LabelBase.register(name='komorebi',
+                   fn_regular='resources/komorebi-gothic-P.ttf')
 
 
 class MainApp(App):
