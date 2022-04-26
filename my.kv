@@ -21,6 +21,7 @@ WindowManager:
             font_name: "komorebi"
             text: root.text
 
+
 <HomeScreen>:
     name:"home"
 
@@ -50,6 +51,7 @@ WindowManager:
             on_release:
                 app.root.current = "bookc"
                 root.manager.transition.direction = "left"
+
 
 <DifficultySelection>:
     name: "diff"
@@ -93,14 +95,38 @@ WindowManager:
                 app.root.current = "home"
                 root.manager.transition.direction = "right"
 
+
 <BookmarkCategories>:
     name: "bookc"
 
     GridLayout:
         cols: 1
 
-        Label:
-            text: "Loading Screen"
+        Button:
+            text: "Grammar"
+            on_release:
+                app.root.current = "booki"
+                root.manager.transition.direction = "left"
+
+        Button:
+            text: "Vocab"
+            on_release:
+                app.root.current = "booki"
+                root.manager.transition.direction = "left"
+
+        Button:
+            text: "Kanji"
+            on_release:
+                app.root.current = "booki"
+                root.manager.transition.direction = "left"
+
+        Button:
+            text: "Back"
+            on_release:
+                app.root.current = "home"
+                root.manager.transition.direction = "right"
+
+
 
 <BookmarkedItems>:
     name: "booki"
@@ -108,8 +134,28 @@ WindowManager:
     GridLayout:
         cols: 1
 
-        Label:
-            text: "Loading Screen"
+        Button:
+            text: "Grammar"
+            on_release:
+                root.Gpop()
+
+        Button:
+            text: "Vocab"
+            on_release:
+                root.Vpop()
+
+        Button:
+            text: "Kanji"
+            on_release:
+                root.Kpop()
+
+        Button:
+            text: "Back"
+            on_release:
+                app.root.current = "bookc"
+                root.manager.transition.direction = "right"
+
+
 
 <SettingsScreen>:
     name: "settings"
@@ -117,8 +163,13 @@ WindowManager:
     GridLayout:
         cols: 1
 
-        Label:
-            text: "Loading Screen"
+        Button:
+            text: "Currently Empty"
+            on_release:
+                app.root.current = "home"
+                root.manager.transition.direction = "right"
+
+
 
 <Courses>:
     name: "courses"
@@ -126,8 +177,12 @@ WindowManager:
     GridLayout:
         cols: 1
 
-        Label:
-            text: "Loading Screen"
+        Button:
+            text: "Back"
+            on_release:
+                app.root.current = "home"
+                root.manager.transition.direction = "right"
+
 
 <GrammarItem>:
     name: "grammari"
@@ -164,6 +219,7 @@ WindowManager:
                 on_release:
                     app.root.current = "vocabi"
                     root.manager.transition.direction = "left"
+
 
 <VocabItem>:
     name: "vocabi"
@@ -204,6 +260,8 @@ WindowManager:
                     app.root.current = "kanjii"
                     root.manager.transition.direction = "left"
 
+
+
 <KanjiItem>:
     name: "kanjii"
 
@@ -243,6 +301,7 @@ WindowManager:
                     app.root.current = "end"
                     root.manager.transition.direction = "left"
 
+
 <EndQuizz>:
     name: "end"
 
@@ -250,4 +309,127 @@ WindowManager:
         cols: 1
 
         Label:
-            text: "Loading Screen"
+            text: "Score"
+
+        GridLayout:
+            cols: 1
+
+            Button:
+                text: "Grammar"
+                on_release:
+                    root.Gpop()
+
+            Button:
+                text: "Vocab"
+                on_release:
+                    root.Vpop()
+
+            Button:
+                text: "Kanji"
+                on_release:
+                    root.Kpop()
+
+        Button:
+            text: "Back"
+            on_release:
+                app.root.current = "diff"
+                root.manager.transition.direction = "right"
+
+
+
+<GrammarPop>:
+    title: 'Grammar'
+    size_hint: (None, None)
+    size: (400, 400)
+    GridLayout:
+        cols: 1
+
+        Label:
+            text: "Item"
+
+        Label:
+            text: "JP Sentence"
+
+        Label:
+            text: "EN Sentence"
+
+        GridLayout:
+            cols: 2
+
+            Button:
+                text: "Add Bookmark"
+
+            Button:
+                text: "Close"
+                on_release:
+                    root.dismiss()
+
+
+
+<VocabPop>:
+    title: 'Vocab'
+    size_hint: (None, None)
+    size: (400, 400)
+    GridLayout:
+        cols: 1
+
+        GridLayout:
+            cols: 2
+
+            Label:
+                text: "JP Word"
+
+            Label:
+                text: "EN Word"
+
+        Label:
+            text: "JP Sentence"
+
+        Label:
+            text: "EN Sentence"
+
+        GridLayout:
+            cols: 2
+
+            Button:
+                text: "Add Bookmark"
+
+            Button:
+                text: "Close"
+                on_release:
+                    root.dismiss()
+
+
+<KanjiPop>:
+    title: 'Kanji'
+    size_hint: (None, None)
+    size: (400, 400)
+    GridLayout:
+        cols: 1
+
+        GridLayout:
+            cols: 2
+
+            Label:
+                text: "JP Word / Reading"
+
+            Label:
+                text: "Word type / Meaning"
+
+        Label:
+            text: "JP Sentence"
+
+        Label:
+            text: "EN Sentence"
+
+        GridLayout:
+            cols: 2
+
+            Button:
+                text: "Add Bookmark"
+
+            Button:
+                text: "Close"
+                on_release:
+                    root.dismiss()
+

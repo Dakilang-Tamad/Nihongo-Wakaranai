@@ -2,8 +2,21 @@ from kivy.app import App
 from kivy.lang import Builder
 from kivy.uix.screenmanager import ScreenManager, Screen
 from kivy.core.text import LabelBase
+from kivy.uix.popup import Popup
 from kivy.clock import Clock
 import time
+
+class GrammarPop(Popup):
+    pass
+
+
+class VocabPop(Popup):
+    pass
+
+
+class KanjiPop(Popup):
+    pass
+
 
 class LoadingScreen(Screen):
     text = "日本語 Wakaranai"
@@ -27,7 +40,17 @@ class BookmarkCategories(Screen):
 
 
 class BookmarkedItems(Screen):
-    pass
+    def Gpop(self):
+        pop = GrammarPop()
+        pop.open()
+
+    def Vpop(self):
+        pop = VocabPop()
+        pop.open()
+
+    def Kpop(self):
+        pop = KanjiPop()
+        pop.open()
 
 
 class SettingsScreen(Screen):
@@ -51,7 +74,17 @@ class KanjiItem(Screen):
 
 
 class EndQuizz(Screen):
-    pass
+    def Gpop(self):
+        pop = GrammarPop()
+        pop.open()
+
+    def Vpop(self):
+        pop = VocabPop()
+        pop.open()
+
+    def Kpop(self):
+        pop = KanjiPop()
+        pop.open()
 
 
 class WindowManager(ScreenManager):
