@@ -21,5 +21,5 @@ def new_quiz():
 
 current = 0
 score = 0
-contents = new_quiz()
+contents = []
 level = "N5"

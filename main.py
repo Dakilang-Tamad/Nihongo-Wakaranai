@@ -11,6 +11,9 @@ import data_handling as dh
 import os
 import time
 
+def new_contents():
+    dh.contents = dh.new_quiz()
+
 
 class GrammarPop(Popup):
     pass
@@ -40,6 +43,7 @@ class HomeScreen(Screen):
 class DifficultySelection(Screen):
     def start5(self):
         dh.level = "N5"
+        new_contents()
         self.manager.current = "grammari"
 
 
@@ -120,6 +124,8 @@ class GrammarItem(Screen):
 
     def next_screen(self):
         if dh.current == 10:
+            dh.current = 0
+            dh.score = 0
             self.manager.current = "end"
         else:
             self.manager.current = "vocabi"
@@ -245,19 +251,7 @@ class EndQuizz(Screen):
 
 
 class WindowManager(ScreenManager):
-    def launch(self, base):
-        qc = QuizCont()
-        if qc.current < 4:
-            qc.current += 1
-            self.current = "grammari"
-        if (qc.current > 3) and (qc.current < 7):
-            qc.current += 1
-            self.current = "vocabi"
-        if (qc.current > 6) and (qc.current < 10):
-            qc.current += 1
-            self.current = "kanjii"
-        else:
-            self.current = "end"
+    pass
 
 
 kv = Builder.load_file("my.kv")
