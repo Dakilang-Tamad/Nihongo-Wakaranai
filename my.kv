@@ -23,7 +23,7 @@ WindowManager:
 
 
 <HomeScreen>:
-    name:"home"
+    name: "home"
 
     GridLayout:
         cols: 2
@@ -62,7 +62,7 @@ WindowManager:
         Button:
             text: "N5"
             on_release:
-                app.root.current = "grammari"
+                root.start5()
                 root.manager.transition.direction = "left"
 
         Button:
@@ -185,39 +185,44 @@ WindowManager:
 
 
 <GrammarItem>:
-    name: "grammari"
+    name:"grammari"
 
     GridLayout:
         cols: 1
 
         Label:
-            text: "Question"
+            font_name: "komorebi"
+            text: root.question
 
         GridLayout:
             cols: 2
 
             Button:
-                text: "A"
+                font_name: "komorebi"
+                text: root.A
                 on_release:
-                    app.root.current = "vocabi"
+                    root.ent_a()
                     root.manager.transition.direction = "left"
 
             Button:
-                text: "B"
+                font_name: "komorebi"
+                text: root.B
                 on_release:
-                    app.root.current = "vocabi"
+                    root.ent_b()
                     root.manager.transition.direction = "left"
 
             Button:
-                text: "C"
+                font_name: "komorebi"
+                text: root.C
                 on_release:
-                    app.root.current = "vocabi"
+                    root.ent_c()
                     root.manager.transition.direction = "left"
 
             Button:
-                text: "D"
+                font_name: "komorebi"
+                text: root.D
                 on_release:
-                    app.root.current = "vocabi"
+                    root.ent_d()
                     root.manager.transition.direction = "left"
 
 
@@ -228,36 +233,42 @@ WindowManager:
         cols: 1
 
         Label:
-            text: "Eng Word"
+            font_name: "komorebi"
+            text: root.en
 
         Label:
-            text: "Kanji"
+            font_name: "komorebi"
+            text: root.kanji
 
         GridLayout:
             cols: 2
 
             Button:
-                text: "A"
+                font_name: "komorebi"
+                text: root.A
                 on_release:
-                    app.root.current = "kanjii"
+                    root.ent_a()
                     root.manager.transition.direction = "left"
 
             Button:
-                text: "B"
+                font_name: "komorebi"
+                text: root.B
                 on_release:
-                    app.root.current = "kanjii"
+                    root.ent_b()
                     root.manager.transition.direction = "left"
 
             Button:
-                text: "C"
+                font_name: "komorebi"
+                text: root.C
                 on_release:
-                    app.root.current = "kanjii"
+                    root.ent_c()
                     root.manager.transition.direction = "left"
 
             Button:
-                text: "D"
+                font_name: "komorebi"
+                text: root.D
                 on_release:
-                    app.root.current = "kanjii"
+                    root.ent_d()
                     root.manager.transition.direction = "left"
 
 
@@ -269,36 +280,42 @@ WindowManager:
         cols: 1
 
         Label:
-            text: "Sample sentence"
+            font_name: "komorebi"
+            text: root.sentence
 
         Label:
-            text: "Kanji"
+            font_name: "komorebi"
+            text: root.kanji
 
         GridLayout:
             cols: 2
 
             Button:
-                text: "A"
+                font_name: "komorebi"
+                text: root.A
                 on_release:
-                    app.root.current = "end"
+                    root.ent_a()
                     root.manager.transition.direction = "left"
 
             Button:
-                text: "B"
+                font_name: "komorebi"
+                text: root.B
                 on_release:
-                    app.root.current = "end"
+                    root.ent_b()
                     root.manager.transition.direction = "left"
 
             Button:
-                text: "C"
+                font_name: "komorebi"
+                text: root.C
                 on_release:
-                    app.root.current = "end"
+                    root.ent_c()
                     root.manager.transition.direction = "left"
 
             Button:
-                text: "D"
+                font_name: "komorebi"
+                text: root.D
                 on_release:
-                    app.root.current = "end"
+                    root.ent_d()
                     root.manager.transition.direction = "left"
 
 
