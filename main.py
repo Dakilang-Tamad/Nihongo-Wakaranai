@@ -8,6 +8,7 @@ from kivy.core.text import LabelBase
 from kivy.uix.popup import Popup
 from kivy.clock import Clock
 import data_handling as dh
+import os
 import time
 
 
@@ -26,7 +27,7 @@ class KanjiPop(Popup):
 class LoadingScreen(Screen):
     text = "日本語 Wakaranai"
     def on_enter(self, *args):
-        Clock.schedule_once(self.proceed, 1)
+        Clock.schedule_once(self.proceed, 3)
 
     def proceed(self, event):
         self.manager.current = "home"
@@ -260,9 +261,11 @@ class WindowManager(ScreenManager):
 
 
 kv = Builder.load_file("my.kv")
+tools_path = os.path.dirname("resources/")
+icons_path = os.path.join(tools_path, 'komorebi-gothic-P.ttf')
 
 LabelBase.register(name='komorebi',
-                   fn_regular='resources/komorebi-gothic-P.ttf')
+                   fn_regular=icons_path)
 
 
 class MainApp(App):
