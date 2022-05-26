@@ -71,15 +71,6 @@ class KanjiPop(Popup):
         conn.close()
 
 
-class LoadingScreen(Screen):
-    text = "日本語 Wakaranai"
-    def on_enter(self, *args):
-        Clock.schedule_once(self.proceed, 3)
-
-    def proceed(self, event):
-        self.manager.current = "home"
-
-
 class HomeScreen(Screen):
     pass
 
