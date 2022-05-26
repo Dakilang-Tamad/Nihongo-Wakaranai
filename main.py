@@ -355,6 +355,9 @@ class EndQuizz(Screen):
                     self.ids.review_buttons.add_widget(button)
         conn.close()
 
+    def on_leave(self, *args):
+        self.ids.review_buttons.clear_widgets()
+
     def popup(self, type, ID):
         dh.current_id = ID
         if type == "grammar":
