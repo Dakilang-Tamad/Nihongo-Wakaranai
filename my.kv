@@ -86,7 +86,7 @@ WindowManager:
         Button:
             text: "N1"
             on_release:
-                app.root.current = "grammari"
+                root.start1()
                 root.manager.transition.direction = "left"
 
         Button:
@@ -326,25 +326,19 @@ WindowManager:
         cols: 1
 
         Label:
-            text: "Score"
+            text: root.score
 
-        GridLayout:
-            cols: 1
+        ScrollView:
+            do_scroll_x: False
+            do_scroll_y: True
+            size: self.size
 
-            Button:
-                text: "Grammar"
-                on_release:
-                    root.Gpop()
-
-            Button:
-                text: "Vocab"
-                on_release:
-                    root.Vpop()
-
-            Button:
-                text: "Kanji"
-                on_release:
-                    root.Kpop()
+            GridLayout:
+                id: review_buttons
+                cols: 1
+                size_hint_y: None
+                height: self.minimum_height
+                row_default_height: root.height/8
 
         Button:
             text: "Back"
@@ -362,13 +356,16 @@ WindowManager:
         cols: 1
 
         Label:
-            text: "Item"
+            font_name: "komorebi"
+            text: root.item
 
         Label:
-            text: "JP Sentence"
+            font_name: "komorebi"
+            text: root.jp
 
         Label:
-            text: "EN Sentence"
+            font_name: "komorebi"
+            text: root.en
 
         GridLayout:
             cols: 2
@@ -394,16 +391,20 @@ WindowManager:
             cols: 2
 
             Label:
-                text: "JP Word"
+                font_name: "komorebi"
+                text: root.jp_word
 
             Label:
-                text: "EN Word"
+                font_name: "komorebi"
+                text: root.en_word
 
         Label:
-            text: "JP Sentence"
+            font_name: "komorebi"
+            text: root.jp_sent
 
         Label:
-            text: "EN Sentence"
+            font_name: "komorebi"
+            text: root.en_sent
 
         GridLayout:
             cols: 2
@@ -428,16 +429,20 @@ WindowManager:
             cols: 2
 
             Label:
-                text: "JP Word / Reading"
+                font_name: "komorebi"
+                text: root.jp_word
 
             Label:
-                text: "Word type / Meaning"
+                font_name: "komorebi"
+                text: root.translation
 
         Label:
-            text: "JP Sentence"
+            font_name: "komorebi"
+            text: root.jp_sent
 
         Label:
-            text: "EN Sentence"
+            font_name: "komorebi"
+            text: root.en_sent
 
         GridLayout:
             cols: 2

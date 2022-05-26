@@ -19,7 +19,22 @@ def new_quiz():
 
     return quiz
 
+def add_bm(level, type, ID):
+    conn = sqlite3.connect("Quizzes.db")
+    table = level + "_BOOKMARKS"
+    total = len(conn.execute("SELECT * FROM " + table + ";").fetchall())
+    current_id = str(total + 1)
+    command = "INSERT INTO " + table + "(ID) VALUES (" + current_id + ")"
+    conn.execute(command)
+    command = "UPDATE " + table + " set TYPE = '" + type + "' where ID = " + current_id
+    conn.execute(command)
+    command = "UPDATE " + table + " set POINTER = '" + str(ID) + "' where ID = " + current_id
+    conn.execute(command)
+    conn.commit()
+
 current = 0
+current_id = 0
 score = 0
+tally = []
 contents = []
 level = "N5"
