@@ -32,9 +32,10 @@ def add_bm(level, type, ID):
     conn.execute(command)
     conn.commit()
 
-current = 0
-current_id = 0
-score = 0
-tally = []
-contents = []
-level = "N5"
+
+current = 0 #counter for the array
+current_id = 0 #holder for the current ID value of a question/entry being processed
+score = 0 #holder of the quiz score
+tally = [] #a tally of which items were answered correctly
+contents = [] #contains the contents (ID's) of the quiz
+level = "N5" #current difficulty level selected

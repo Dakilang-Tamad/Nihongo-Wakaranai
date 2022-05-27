@@ -1,7 +1,7 @@
 WindowManager:
     HomeScreen:
     DifficultySelection:
-    BookmarkCategories:
+    BookmarkDifficulty:
     BookmarkedItems:
     SettingsScreen:
     Courses:
@@ -38,7 +38,7 @@ WindowManager:
         Button:
             text: "Bookmarks"
             on_release:
-                app.root.current = "bookc"
+                app.root.current = "bookd"
                 root.manager.transition.direction = "left"
 
 
@@ -57,19 +57,19 @@ WindowManager:
         Button:
             text: "N4"
             on_release:
-                app.root.current = "grammari"
+                root.start1()
                 root.manager.transition.direction = "left"
 
         Button:
             text: "N3"
             on_release:
-                app.root.current = "grammari"
+                root.start1()
                 root.manager.transition.direction = "left"
 
         Button:
             text: "N2"
             on_release:
-                app.root.current = "grammari"
+                root.start1()
                 root.manager.transition.direction = "left"
 
         Button:
@@ -85,28 +85,40 @@ WindowManager:
                 root.manager.transition.direction = "right"
 
 
-<BookmarkCategories>:
-    name: "bookc"
+<BookmarkDifficulty>:
+    name: "bookd"
 
     GridLayout:
         cols: 1
 
         Button:
-            text: "Grammar"
+            text: "N5"
             on_release:
                 app.root.current = "booki"
                 root.manager.transition.direction = "left"
 
         Button:
-            text: "Vocab"
+            text: "N4"
             on_release:
-                app.root.current = "booki"
+                root.notice()
                 root.manager.transition.direction = "left"
 
         Button:
-            text: "Kanji"
+            text: "N3"
             on_release:
-                app.root.current = "booki"
+                root.notice()
+                root.manager.transition.direction = "left"
+
+        Button:
+            text: "N2"
+            on_release:
+                root.notice()
+                root.manager.transition.direction = "left"
+
+        Button:
+            text: "N1"
+            on_release:
+                root.notice()
                 root.manager.transition.direction = "left"
 
         Button:
@@ -116,32 +128,73 @@ WindowManager:
                 root.manager.transition.direction = "right"
 
 
-
 <BookmarkedItems>:
     name: "booki"
 
     GridLayout:
         cols: 1
+        row_force_default: False
+
+        Label:
+            size_hint_y: None
+            height: root.height / 10
+            text: root.level
+
+        TabbedPanel:
+            do_default_tab: False
+            tab_width: self.parent.width / 3
+
+            TabbedPanelItem:
+                text: "grammar"
+
+                ScrollView:
+                    do_scroll_x: False
+                    do_scroll_y: True
+                    size: self.size
+
+                    GridLayout:
+                        id: grammar_tab
+                        cols: 1
+                        size_hint_y: None
+                        height: self.minimum_height
+                        row_default_height: root.height/8
+
+            TabbedPanelItem:
+                text: "vocab"
+
+                ScrollView:
+                    do_scroll_x: False
+                    do_scroll_y: True
+                    size: self.size
+
+                    GridLayout:
+                        id: vocab_tab
+                        cols: 1
+                        size_hint_y: None
+                        height: self.minimum_height
+                        row_default_height: root.height/8
+
+            TabbedPanelItem:
+                text: "kanji"
+
+                ScrollView:
+                    do_scroll_x: False
+                    do_scroll_y: True
+                    size: self.size
+
+                    GridLayout:
+                        id: kanji_tab
+                        cols: 1
+                        size_hint_y: None
+                        height: self.minimum_height
+                        row_default_height: root.height/8
 
         Button:
-            text: "Grammar"
+            size_hint_y: None
+            height: root.height / 10
+            text: "back"
             on_release:
-                root.Gpop()
-
-        Button:
-            text: "Vocab"
-            on_release:
-                root.Vpop()
-
-        Button:
-            text: "Kanji"
-            on_release:
-                root.Kpop()
-
-        Button:
-            text: "Back"
-            on_release:
-                app.root.current = "bookc"
+                app.root.current = "bookd"
                 root.manager.transition.direction = "right"
 
 
@@ -153,7 +206,7 @@ WindowManager:
         cols: 1
 
         Button:
-            text: "Currently Empty"
+            text: "Currently Empty. Tap to go back."
             on_release:
                 app.root.current = "home"
                 root.manager.transition.direction = "right"
@@ -167,7 +220,7 @@ WindowManager:
         cols: 1
 
         Button:
-            text: "Back"
+            text: "Currently Empty. Tap to go back."
             on_release:
                 app.root.current = "home"
                 root.manager.transition.direction = "right"
@@ -344,9 +397,16 @@ WindowManager:
     GridLayout:
         cols: 1
 
-        Label:
-            font_name: "komorebi"
-            text: root.item
+        GridLayout:
+            cols: 1
+
+            Label:
+                font_name: "komorebi"
+                text: root.item
+
+            Label:
+                font_name: "komorebi"
+                text: root.meaning
 
         Label:
             font_name: "komorebi"
@@ -360,7 +420,9 @@ WindowManager:
             cols: 2
 
             Button:
-                text: "Add Bookmark"
+                text: root.status
+                on_release:
+                    root.bookmark()
 
             Button:
                 text: "Close"
@@ -379,9 +441,16 @@ WindowManager:
         GridLayout:
             cols: 2
 
-            Label:
-                font_name: "komorebi"
-                text: root.jp_word
+            GridLayout:
+                cols: 1
+
+                Label:
+                    font_name: "komorebi"
+                    text: root.jp_word
+
+                Label:
+                    font_name: "komorebi"
+                    text: root.reading
 
             Label:
                 font_name: "komorebi"
@@ -399,7 +468,9 @@ WindowManager:
             cols: 2
 
             Button:
-                text: "Add Bookmark"
+                text: root.status
+                on_release:
+                    root.bookmark()
 
             Button:
                 text: "Close"
@@ -437,10 +508,21 @@ WindowManager:
             cols: 2
 
             Button:
-                text: "Add Bookmark"
+                text: root.status
+                on_release:
+                    root.bookmark()
 
             Button:
                 text: "Close"
                 on_release:
                     root.dismiss()
 
+
+<NoticePop>:
+    title: "notice"
+    size_hint: (None, None)
+    size: (400, 400)
+
+    Label:
+        font_name: "komorebi"
+        text: "not yet coded \ntap outside the popup to continue"

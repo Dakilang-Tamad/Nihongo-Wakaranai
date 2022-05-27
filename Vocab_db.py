@@ -9,7 +9,7 @@ file = "n5_vocab.xlsx"
 
 conn.execute("CREATE TABLE " + table + " (ID INT PRIMARY KEY, "
              "WORD TEXT, ITEM TEXT, C_A TEXT, C_B TEXT, C_C TEXT, C_D TEXT, "
-             "ANSWER TEXT, KANJI TEXT, JP TEXT, EN TEXT);")
+             "ANSWER TEXT, KANJI TEXT, READING TEXT, JP TEXT, EN TEXT, BOOKMARK INT);")
 
 xlsx_file = Path('resources', file)
 wb_obj = openpyxl.load_workbook(xlsx_file)
@@ -26,8 +26,9 @@ for i in range(1, 26):
     c_d = "F" + str(i)
     ans = "G" + str(i)
     kanji = "H" + str(i)
-    jp = "I" + str(i)
-    en = "J" + str(i)
+    reading = "I" + str(i)
+    jp = "J" + str(i)
+    en = "K" + str(i)
 
     command = "INSERT INTO " + table + "(ID) VALUES (" + str(i) + ")"
     conn.execute(command)
@@ -64,12 +65,20 @@ for i in range(1, 26):
     command = "UPDATE " + table + " set KANJI = '" + sheet[kanji].value + "' where ID = " + str(i)
     conn.execute(command)
     conn.commit()
+    print(sheet[reading].value)
+    command = "UPDATE " + table + " set READING = '" + sheet[reading].value + "' where ID = " + str(i)
+    conn.execute(command)
+    conn.commit()
     print(sheet[jp].value)
     command = "UPDATE " + table + " set JP = '" + sheet[jp].value + "' where ID = " + str(i)
     conn.execute(command)
     conn.commit()
     print(sheet[en].value)
     command = "UPDATE " + table + " set EN = '" + sheet[en].value + "' where ID = " + str(i)
+    conn.execute(command)
+    conn.commit()
+    print(1)
+    command = "UPDATE " + table + " set BOOKMARK = 1 where ID = " + str(i)
     conn.execute(command)
     conn.commit()
 
