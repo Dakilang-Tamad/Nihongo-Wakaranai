@@ -143,7 +143,7 @@ class KanjiPop(Popup):
 
 
 class HomeScreen(Screen):
-    pass
+    bg = dh.bg
 
 
 class DifficultySelection(Screen):
@@ -307,8 +307,13 @@ class GrammarItem(Screen):
     C = StringProperty()
     D = StringProperty()
     ans = StringProperty()
+    label = StringProperty()
+    button_up = "resources/Buttons/rec_2_up.png"
+    button_down = 'resources/Buttons/rec_2_down.png'
+    border = 'resources/Buttons/empty_box.png'
 
     def on_pre_enter(self, *args):
+        self.label = "Item #" + str(dh.current+1)
         conn = sqlite3.connect("Quizzes.db")
         cursor = conn.cursor()
         retrieve_query = "select * from " + dh.level + "_GRAMMAR where ID = " + str(dh.contents[dh.current])
@@ -376,8 +381,13 @@ class VocabItem(Screen):
     C = StringProperty()
     D = StringProperty()
     ans = StringProperty()
+    label = StringProperty()
+    button_up = "resources/Buttons/rec_2_up.png"
+    button_down = 'resources/Buttons/rec_2_down.png'
+    border = 'resources/Buttons/empty_box.png'
 
     def on_pre_enter(self, *args):
+        self.label = "Item #" + str(dh.current + 1)
         conn = sqlite3.connect("Quizzes.db")
         cursor = conn.cursor()
         retrieve_query = "select * from " + dh.level + "_VOCAB where ID = " + str(dh.contents[dh.current])
@@ -442,8 +452,13 @@ class KanjiItem(Screen):
     C = StringProperty()
     D = StringProperty()
     ans = StringProperty()
+    label = StringProperty()
+    button_up = "resources/Buttons/rec_2_up.png"
+    button_down = 'resources/Buttons/rec_2_down.png'
+    border = 'resources/Buttons/empty_box.png'
 
     def on_pre_enter(self, *args):
+        self.label = "Item #" + str(dh.current + 1)
         conn = sqlite3.connect("Quizzes.db")
         cursor = conn.cursor()
         retrieve_query = "select * from " + dh.level + "_KANJI where ID = " + str(dh.contents[dh.current])
@@ -557,10 +572,13 @@ class WindowManager(ScreenManager):
 
 kv = Builder.load_file("my.kv")
 tools_path = os.path.dirname("resources/")
-icons_path = os.path.join(tools_path, 'komorebi-gothic-P.ttf')
+icons_path1 = os.path.join(tools_path, 'komorebi-gothic-P.ttf')
+icons_path2 = os.path.join(tools_path, 'ComicSansMSBold.ttf')
 
 LabelBase.register(name='komorebi',
-                   fn_regular=icons_path)
+                   fn_regular=icons_path1)
+LabelBase.register(name='ComicSans',
+                   fn_regular=icons_path2)
 
 
 class MainApp(App):

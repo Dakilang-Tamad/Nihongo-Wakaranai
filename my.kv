@@ -1,4 +1,12 @@
+#:import hex kivy.utils.get_color_from_hex
+
 WindowManager:
+    canvas.before:
+        Color:
+            rgba: hex('#fffbe6')
+        Rectangle:
+            pos: self.pos
+            size: self.size
     HomeScreen:
     DifficultySelection:
     BookmarkDifficulty:
@@ -257,6 +265,7 @@ WindowManager:
                 root.manager.transition.direction = "right"
 
 
+
 <Contents>:
     name: "contents"
 
@@ -333,39 +342,102 @@ WindowManager:
         cols: 1
 
         Label:
-            font_name: "komorebi"
-            text: root.question
+            bold: "True"
+            size_hint_y: None
+            height: root.height/13
+            text: root.label
+            font_name: "ComicSans"
+            canvas.before:
+                Color:
+                    rgba: hex('#356859')
+                Rectangle:
+                    pos: self.pos
+                    size: self.size
+
+        AnchorLayout:
+            size_hint_y: None
+            height: (root.height/6)*2
+            Image:
+                anchor: "center"
+                size_hint_x: .6
+                allow_stretch: True
+                source: root.border
+
+            Label:
+                anchor_x: "center"
+                size_hint: .4, 1
+                text_size: (self.width/10)*9, None
+                font_name: "komorebi"
+                text: root.question
+                color: 0, 0, 0, 1
 
         GridLayout:
-            cols: 2
+            cols: 1
 
-            Button:
-                font_name: "komorebi"
-                text: root.A
-                on_release:
-                    root.ent_a()
-                    root.manager.transition.direction = "left"
+            AnchorLayout:
+                Button:
+                    anchor: "center"
+                    size_hint: .8, .6
+                    font_name: "komorebi"
+                    text: root.A
+                    color: 0, 0, 0, 1
+                    background_normal: root.button_up
+                    background_down: root.button_down
+                    allow_stretch: "False"
+                    border: 0,0,0,0
+                    on_release:
+                        root.ent_a()
+                        root.manager.transition.direction = "left"
 
-            Button:
-                font_name: "komorebi"
-                text: root.B
-                on_release:
-                    root.ent_b()
-                    root.manager.transition.direction = "left"
+            AnchorLayout:
+                Button:
+                    anchor: "center"
+                    size_hint: .8, .6
+                    font_name: "komorebi"
+                    text: root.B
+                    color: 0, 0, 0, 1
+                    background_normal: root.button_up
+                    background_down: root.button_down
+                    allow_stretch: "False"
+                    border: 0,0,0,0
+                    on_release:
+                        root.ent_b()
+                        root.manager.transition.direction = "left"
 
-            Button:
-                font_name: "komorebi"
-                text: root.C
-                on_release:
-                    root.ent_c()
-                    root.manager.transition.direction = "left"
+            AnchorLayout:
+                Button:
+                    anchor: "center"
+                    size_hint: .8, .6
+                    font_name: "komorebi"
+                    text: root.C
+                    color: 0, 0, 0, 1
+                    background_normal: root.button_up
+                    background_down: root.button_down
+                    allow_stretch: "False"
+                    border: 0,0,0,0
+                    on_release:
+                        root.ent_c()
+                        root.manager.transition.direction = "left"
 
-            Button:
-                font_name: "komorebi"
-                text: root.D
-                on_release:
-                    root.ent_d()
-                    root.manager.transition.direction = "left"
+            AnchorLayout:
+                Button:
+                    anchor: "center"
+                    size_hint: .8, .6
+                    font_name: "komorebi"
+                    text: root.D
+                    color: 0, 0, 0, 1
+                    background_normal: root.button_up
+                    background_down: root.button_down
+                    allow_stretch: "False"
+                    border: 0,0,0,0
+                    on_release:
+                        root.ent_d()
+                        root.manager.transition.direction = "left"
+
+        GridLayout:
+            cols: 1
+            size_hint_y: None
+            height: root.height/15
 
 
 <VocabItem>:
@@ -375,43 +447,111 @@ WindowManager:
         cols: 1
 
         Label:
-            font_name: "komorebi"
-            text: root.en
+            bold: "True"
+            size_hint_y: None
+            height: root.height/13
+            text: root.label
+            font_name: "ComicSans"
+            canvas.before:
+                Color:
+                    rgba: hex('#356859')
+                Rectangle:
+                    pos: self.pos
+                    size: self.size
 
-        Label:
-            font_name: "komorebi"
-            text: root.kanji
+        AnchorLayout:
+            size_hint_y: None
+            height: (root.height/6)*2
+            Image:
+                anchor: "center"
+                size_hint_x: .6
+                allow_stretch: True
+                source: root.border
+
+            GridLayout:
+                anchor: "center"
+                cols: 1
+                size_hint: None, None
+                height: root.height/10
+                width: root.width/2
+
+                Label:
+                    font_name: "ComicSans"
+                    text: root.en
+                    color: 0, 0, 0, 1
+
+                Label:
+                    font_name: "komorebi"
+                    text: root.kanji
+                    color: 0, 0, 0, 1
 
         GridLayout:
-            cols: 2
+            cols: 1
 
-            Button:
-                font_name: "komorebi"
-                text: root.A
-                on_release:
-                    root.ent_a()
-                    root.manager.transition.direction = "left"
+            AnchorLayout:
+                Button:
+                    anchor: "center"
+                    size_hint: .8, .6
+                    font_name: "komorebi"
+                    text: root.A
+                    color: 0, 0, 0, 1
+                    background_normal: root.button_up
+                    background_down: root.button_down
+                    allow_stretch: "False"
+                    border: 0,0,0,0
+                    on_release:
+                        root.ent_a()
+                        root.manager.transition.direction = "left"
 
-            Button:
-                font_name: "komorebi"
-                text: root.B
-                on_release:
-                    root.ent_b()
-                    root.manager.transition.direction = "left"
+            AnchorLayout:
+                Button:
+                    anchor: "center"
+                    size_hint: .8, .6
+                    font_name: "komorebi"
+                    text: root.B
+                    color: 0, 0, 0, 1
+                    background_normal: root.button_up
+                    background_down: root.button_down
+                    allow_stretch: "False"
+                    border: 0,0,0,0
+                    on_release:
+                        root.ent_b()
+                        root.manager.transition.direction = "left"
 
-            Button:
-                font_name: "komorebi"
-                text: root.C
-                on_release:
-                    root.ent_c()
-                    root.manager.transition.direction = "left"
+            AnchorLayout:
+                Button:
+                    anchor: "center"
+                    size_hint: .8, .6
+                    font_name: "komorebi"
+                    text: root.C
+                    color: 0, 0, 0, 1
+                    background_normal: root.button_up
+                    background_down: root.button_down
+                    allow_stretch: "False"
+                    border: 0,0,0,0
+                    on_release:
+                        root.ent_c()
+                        root.manager.transition.direction = "left"
 
-            Button:
-                font_name: "komorebi"
-                text: root.D
-                on_release:
-                    root.ent_d()
-                    root.manager.transition.direction = "left"
+            AnchorLayout:
+                Button:
+                    anchor: "center"
+                    size_hint: .8, .6
+                    font_name: "komorebi"
+                    text: root.D
+                    color: 0, 0, 0, 1
+                    background_normal: root.button_up
+                    background_down: root.button_down
+                    allow_stretch: "False"
+                    border: 0,0,0,0
+                    on_release:
+                        root.ent_d()
+                        root.manager.transition.direction = "left"
+
+        GridLayout:
+            cols: 1
+            size_hint_y: None
+            height: root.height/15
 
 
 
@@ -422,43 +562,119 @@ WindowManager:
         cols: 1
 
         Label:
-            font_name: "komorebi"
-            text: root.sentence
+            bold: "True"
+            size_hint_y: None
+            height: root.height/13
+            text: root.label
+            font_name: "ComicSans"
+            canvas.before:
+                Color:
+                    rgba: hex('#356859')
+                Rectangle:
+                    pos: self.pos
+                    size: self.size
 
-        Label:
-            font_name: "komorebi"
-            text: root.kanji
+        AnchorLayout:
+            size_hint_y: None
+            height: (root.height/6)
+            Image:
+                anchor: "center"
+                size_hint_x: .8
+                size_hint_y: .9
+                allow_stretch: True
+                source: root.border
+
+            Label:
+                size_hint: .6, 1
+                text_size: (self.width/10)*9, None
+                font_name: "komorebi"
+                text: root.sentence
+                color: 0, 0, 0, 1
+
+        AnchorLayout:
+            size_hint_y: None
+            height: (root.height/6)
+            Image:
+                anchor: "center"
+                size_hint_x: .4
+                size_hint_y: .4
+                allow_stretch: True
+                source: root.border
+
+
+
+            Label:
+                font_name: "komorebi"
+                text: root.kanji
+                color: 0, 0, 0, 1
 
         GridLayout:
-            cols: 2
+            cols: 1
 
-            Button:
-                font_name: "komorebi"
-                text: root.A
-                on_release:
-                    root.ent_a()
-                    root.manager.transition.direction = "left"
+            AnchorLayout:
+                Button:
+                    anchor: "center"
+                    size_hint: .8, .6
+                    font_name: "komorebi"
+                    text: root.A
+                    color: 0, 0, 0, 1
+                    background_normal: root.button_up
+                    background_down: root.button_down
+                    allow_stretch: "False"
+                    border: 0,0,0,0
+                    on_release:
+                        root.ent_a()
+                        root.manager.transition.direction = "left"
 
-            Button:
-                font_name: "komorebi"
-                text: root.B
-                on_release:
-                    root.ent_b()
-                    root.manager.transition.direction = "left"
+            AnchorLayout:
+                Button:
+                    anchor: "center"
+                    size_hint: .8, .6
+                    font_name: "komorebi"
+                    text: root.B
+                    color: 0, 0, 0, 1
+                    background_normal: root.button_up
+                    background_down: root.button_down
+                    allow_stretch: "False"
+                    border: 0,0,0,0
+                    on_release:
+                        root.ent_b()
+                        root.manager.transition.direction = "left"
 
-            Button:
-                font_name: "komorebi"
-                text: root.C
-                on_release:
-                    root.ent_c()
-                    root.manager.transition.direction = "left"
+            AnchorLayout:
+                Button:
+                    anchor: "center"
+                    size_hint: .8, .6
+                    font_name: "komorebi"
+                    text: root.C
+                    color: 0, 0, 0, 1
+                    background_normal: root.button_up
+                    background_down: root.button_down
+                    allow_stretch: "False"
+                    border: 0,0,0,0
+                    on_release:
+                        root.ent_c()
+                        root.manager.transition.direction = "left"
 
-            Button:
-                font_name: "komorebi"
-                text: root.D
-                on_release:
-                    root.ent_d()
-                    root.manager.transition.direction = "left"
+            AnchorLayout:
+                Button:
+                    anchor: "center"
+                    size_hint: .8, .6
+                    font_name: "komorebi"
+                    text: root.D
+                    color: 0, 0, 0, 1
+                    background_normal: root.button_up
+                    background_down: root.button_down
+                    allow_stretch: "False"
+                    border: 0,0,0,0
+                    on_release:
+                        root.ent_d()
+                        root.manager.transition.direction = "left"
+
+        GridLayout:
+            cols: 1
+            size_hint_y: None
+            height: root.height/15
 
 
 <EndQuizz>:

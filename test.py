@@ -1,9 +1,23 @@
-import sqlite3
-from pathlib import Path
+from kivy.app import App
+from kivy.uix.image import Image
+from kivy.uix.behaviors import ButtonBehavior
 
-conn = sqlite3.connect("Quizzes.db")
 
-table = "N5_BOOKMARKS"
+class MyButton(ButtonBehavior, Image):
+    def __init__(self, **kwargs):
+        super(MyButton, self).__init__(**kwargs)
+        self.source = 'atlas://data/images/defaulttheme/checkbox_off'
 
-conn.execute("CREATE TABLE " + table + " (ID INT PRIMARY KEY, TYPE TEXT, "
-                                       "POINTER INT); ")
+    def on_press(self):
+        self.source = 'atlas://data/images/defaulttheme/checkbox_on'
+
+    def on_release(self):
+        self.source = 'atlas://data/images/defaulttheme/checkbox_off'
+
+
+class SampleApp(App):
+    def build(self):
+        return MyButton()
+
+
+SampleApp().run()

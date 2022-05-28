@@ -33,6 +33,7 @@ def add_bm(level, type, ID):
     conn.commit()
 
 
+bg = '#fffbe6'
 current = 0 #counter for the array
 current_id = 0 #holder for the current ID value of a question/entry being processed
 score = 0 #holder of the quiz score
