@@ -164,7 +164,7 @@ class BookmarkDifficulty(Screen):
 
 
 class BookmarkedItems(Screen):
-    level = dh.level
+    level = dh.level + " BOOKMARKS"
 
     def on_pre_enter(self, *args):
         diffs = ["GRAMMAR", "VOCAB", "KANJI"]
@@ -228,13 +228,75 @@ class BookmarkedItems(Screen):
             pop.open()
 
 
-
 class SettingsScreen(Screen):
     pass
 
 
-class Courses(Screen):
-    pass
+class ContentsDiff(Screen):
+    def next_screen(self):
+        self.manager.current = "contents"
+
+class Contents(Screen):
+    level = dh.level + " CONTENTS"
+
+    def on_pre_enter(self, *args):
+        diffs = ["GRAMMAR", "VOCAB", "KANJI"]
+        for i in diffs:
+            self.display(i)
+
+    def display(self, categ):
+        table = ""
+        query = ""
+        if categ in "GRAMMAR":
+            table = dh.level + "_" + categ
+            query = "WORD"
+        if categ in "VOCAB":
+            table = dh.level + "_" + categ
+            query = "KANJI"
+        if categ in "KANJI":
+            table = dh.level + "_" + categ
+            query = "KANJI"
+        conn = sqlite3.connect("Quizzes.db")
+        cursor = conn.cursor()
+        retrieve_query = "select ID, " + query +" from " + table
+        cursor.execute(retrieve_query)
+        contents = cursor.fetchall()
+        if not contents:
+            lbl = Label(text="No bookmarks added yet.", font_name="komorebi")
+            if categ == "GRAMMAR":
+                self.ids.grammar_tab.add_widget(lbl)
+            if categ == "VOCAB":
+                self.ids.vocab_tab.add_widget(lbl)
+            if categ == "KANJI":
+                self.ids.kanji_tab.add_widget(lbl)
+        else:
+            for i in contents:
+                button_text = i[1]
+                button = Button(text=button_text, font_name="komorebi")
+                button.bind(on_press=lambda x, id=i[0], type=categ: self.popup(type, id))
+                if categ == "GRAMMAR":
+                    self.ids.grammar_tab.add_widget(button)
+                if categ == "VOCAB":
+                    self.ids.vocab_tab.add_widget(button)
+                if categ == "KANJI":
+                    self.ids.kanji_tab.add_widget(button)
+
+    def on_leave(self, *args):
+        self.ids.grammar_tab.clear_widgets()
+        self.ids.vocab_tab.clear_widgets()
+        self.ids.kanji_tab.clear_widgets()
+
+    def popup(self, type, ID):
+        dh.current_id = ID
+        if type == "GRAMMAR":
+            pop = GrammarPop()
+            pop.open()
+        if type == "VOCAB":
+            pop = VocabPop()
+            pop.open()
+        if type == "KANJI":
+            pop = KanjiPop()
+            pop.open()
 
 
 class GrammarItem(Screen):

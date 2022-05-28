@@ -4,7 +4,8 @@ WindowManager:
     BookmarkDifficulty:
     BookmarkedItems:
     SettingsScreen:
-    Courses:
+    ContentsDiff:
+    Contents:
     GrammarItem:
     VocabItem:
     KanjiItem:
@@ -32,7 +33,7 @@ WindowManager:
         Button:
             text: "Courses"
             on_release:
-                app.root.current = "courses"
+                app.root.current = "contents_diff"
                 root.manager.transition.direction = "left"
 
         Button:
@@ -213,18 +214,117 @@ WindowManager:
 
 
 
-<Courses>:
-    name: "courses"
+<ContentsDiff>:
+    name: "contents_diff"
 
     GridLayout:
         cols: 1
 
         Button:
-            text: "Currently Empty. Tap to go back."
+            text: "N5"
+            on_release:
+                root.next_screen()
+                root.manager.transition.direction = "left"
+
+        Button:
+            text: "N4"
+            on_release:
+                root.notice()
+                root.manager.transition.direction = "left"
+
+        Button:
+            text: "N3"
+            on_release:
+                root.notice()
+                root.manager.transition.direction = "left"
+
+        Button:
+            text: "N2"
+            on_release:
+                root.notice()
+                root.manager.transition.direction = "left"
+
+        Button:
+            text: "N1"
+            on_release:
+                root.notice()
+                root.manager.transition.direction = "left"
+
+        Button:
+            text: "Back"
             on_release:
                 app.root.current = "home"
                 root.manager.transition.direction = "right"
 
+
+<Contents>:
+    name: "contents"
+
+    GridLayout:
+        cols: 1
+        row_force_default: False
+
+        Label:
+            size_hint_y: None
+            height: root.height / 10
+            text: root.level
+
+        TabbedPanel:
+            do_default_tab: False
+            tab_width: self.parent.width / 3
+
+            TabbedPanelItem:
+                text: "grammar"
+
+                ScrollView:
+                    do_scroll_x: False
+                    do_scroll_y: True
+                    size: self.size
+
+                    GridLayout:
+                        id: grammar_tab
+                        cols: 1
+                        size_hint_y: None
+                        height: self.minimum_height
+                        row_default_height: root.height/8
+
+            TabbedPanelItem:
+                text: "vocab"
+
+                ScrollView:
+                    do_scroll_x: False
+                    do_scroll_y: True
+                    size: self.size
+
+                    GridLayout:
+                        id: vocab_tab
+                        cols: 1
+                        size_hint_y: None
+                        height: self.minimum_height
+                        row_default_height: root.height/8
+
+            TabbedPanelItem:
+                text: "kanji"
+
+                ScrollView:
+                    do_scroll_x: False
+                    do_scroll_y: True
+                    size: self.size
+
+                    GridLayout:
+                        id: kanji_tab
+                        cols: 1
+                        size_hint_y: None
+                        height: self.minimum_height
+                        row_default_height: root.height/8
+
+        Button:
+            size_hint_y: None
+            height: root.height / 10
+            text: "back"
+            on_release:
+                app.root.current = "contents_diff"
+                root.manager.transition.direction = "right"
 
 <GrammarItem>:
     name:"grammari"
@@ -519,10 +619,10 @@ WindowManager:
 
 
 <NoticePop>:
-    title: "notice"
+    title: "ERROR"
     size_hint: (None, None)
     size: (400, 400)
 
     Label:
         font_name: "komorebi"
-        text: "not yet coded \ntap outside the popup to continue"
+        text: "this part has not been coded yet \ntap outside the popup to continue"
