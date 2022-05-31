@@ -1196,8 +1196,11 @@ WindowManager:
 
 <GrammarPop>:
     title: 'Grammar'
+    title_color: 0,0,0,1
     size_hint: (None, None)
-    size: (400, 400)
+    background: "./resources/Buttons/popup_bg.png"
+    border: 0,0,0,0
+
     GridLayout:
         cols: 1
 
@@ -1207,38 +1210,60 @@ WindowManager:
             Label:
                 font_name: "komorebi"
                 text: root.item
+                color: 0,0,0,1
 
             Label:
                 font_name: "komorebi"
                 text: root.meaning
+                color: 0,0,0,1
 
         Label:
+            size_hint: 1, 1
+            text_size: self.width, None
             font_name: "komorebi"
             text: root.jp
+            color: 0,0,0,1
 
         Label:
+            size_hint: 1, 1
+            text_size: self.width, None
             font_name: "komorebi"
             text: root.en
+            color: 0,0,0,1
 
         GridLayout:
             cols: 2
 
-            Button:
-                text: root.status
-                on_release:
-                    root.bookmark()
+            AnchorLayout:
 
-            Button:
-                text: "Close"
-                on_release:
-                    root.dismiss()
+                Button:
+                    background_normal: root.bm_up
+                    background_down: root.bm_down
+                    border: 0,0,0,0
+                    size_hint: None, None
+                    size: root.width/8, root.width/8
+                    on_release:
+                        root.bookmark()
+
+            AnchorLayout:
+
+                Button:
+                    background_normal: './resources/Buttons/back_button_up.png'
+                    background_down: './resources/Buttons/back_button_down.png'
+                    border: 0,0,0,0
+                    size_hint: None, None
+                    size: root.width/8, root.width/8
+                    on_release:
+                        root.dismiss()
 
 
 
 <VocabPop>:
     title: 'Vocab'
+    title_color: 0,0,0,1
     size_hint: (None, None)
-    size: (400, 400)
+    background: "./resources/Buttons/popup_bg.png"
+    border: 0,0,0,0
     GridLayout:
         cols: 1
 
@@ -1251,75 +1276,129 @@ WindowManager:
                 Label:
                     font_name: "komorebi"
                     text: root.jp_word
+                    color: 0,0,0,1
 
                 Label:
                     font_name: "komorebi"
                     text: root.reading
+                    color: 0,0,0,1
 
             Label:
                 font_name: "komorebi"
                 text: root.en_word
+                color: 0,0,0,1
 
         Label:
+            size_hint: 1, 1
+            text_size: self.width, None
             font_name: "komorebi"
             text: root.jp_sent
+            color: 0,0,0,1
 
         Label:
+            size_hint: 1, 1
+            text_size: self.width, None
             font_name: "komorebi"
             text: root.en_sent
+            color: 0,0,0,1
 
         GridLayout:
             cols: 2
 
-            Button:
-                text: root.status
-                on_release:
-                    root.bookmark()
+            AnchorLayout:
 
-            Button:
-                text: "Close"
-                on_release:
-                    root.dismiss()
+                Button:
+                    background_normal: root.bm_up
+                    background_down: root.bm_down
+                    border: 0,0,0,0
+                    size_hint: None, None
+                    size: root.width/8, root.width/8
+                    on_release:
+                        root.bookmark()
+
+            AnchorLayout:
+
+                Button:
+                    background_normal: './resources/Buttons/back_button_up.png'
+                    background_down: './resources/Buttons/back_button_down.png'
+                    border: 0,0,0,0
+                    size_hint: None, None
+                    size: root.width/8, root.width/8
+                    on_release:
+                        root.dismiss()
 
 
 <KanjiPop>:
     title: 'Kanji'
+    title_color: 0,0,0,1
     size_hint: (None, None)
-    size: (400, 400)
+    background: "./resources/Buttons/popup_bg.png"
+    border: 0,0,0,0
     GridLayout:
         cols: 1
 
         GridLayout:
             cols: 2
 
-            Label:
-                font_name: "komorebi"
-                text: root.jp_word
+            GridLayout:
+                rows: 2
+
+                Label:
+                    font_name: "komorebi"
+                    text: root.jp_word
+                    color: 0,0,0,1
+
+                Label:
+                    font_name: "komorebi"
+                    text: root.reading
+                    color: 0,0,0,1
 
             Label:
+                size_hint: 1, 1
+                text_size: self.width, None
                 font_name: "komorebi"
                 text: root.translation
+                color: 0,0,0,1
 
         Label:
+            size_hint: 1, 1
+            text_size: self.width, None
             font_name: "komorebi"
             text: root.jp_sent
+            color: 0,0,0,1
 
         Label:
+            size_hint: 1, 1
+            text_size: self.width, None
             font_name: "komorebi"
             text: root.en_sent
+            color: 0,0,0,1
 
         GridLayout:
             cols: 2
 
-            Button:
-                text: root.status
-                on_release:
-                    root.bookmark()
+            AnchorLayout:
 
-            Button:
-                text: "Close"
-                on_release:
-                    root.dismiss()
+                Button:
+                    background_normal: root.bm_up
+                    background_down: root.bm_down
+                    border: 0,0,0,0
+                    size_hint: None, None
+                    size: root.width/8, root.width/8
+                    on_release:
+                        root.bookmark()
+
+            AnchorLayout:
+
+                Button:
+                    background_normal: './resources/Buttons/back_button_up.png'
+                    background_down: './resources/Buttons/back_button_down.png'
+                    border: 0,0,0,0
+                    size_hint: None, None
+                    size: root.width/8, root.width/8
+                    on_release:
+                        root.dismiss()
+
 
 
 <NoticePop>:
@@ -1332,9 +1411,11 @@ WindowManager:
         text: "this part has not been coded yet \ntap outside the popup to continue"
 
 <ExitPop>:
-    title: "ERROR"
+    title: "NOTICE"
+    title_color: 0,0,0,1
     size_hint: (None, None)
-    size: (400, 400)
+    background: "./resources/Buttons/popup_bg.png"
+    border: 0,0,0,0
 
     GridLayout:
         cols: 1
@@ -1342,17 +1423,29 @@ WindowManager:
         Label:
             font_name: "komorebi"
             text: "do you want to exit the app?"
+            color: 0,0,0,1
 
         GridLayout:
             cols: 2
+            spacing: root.width/20
 
             Button:
                 text: "Yes"
+                font_name: "ComicSans"
+                color: 0,0,0,1
+                background_normal: './resources/Buttons/rec_4_up.png'
+                background_down: './resources/Buttons/rec_4_down.png'
+                border: 0,0,0,0
                 on_release:
                     root.app_close()
 
             Button:
                 text: "No"
+                font_name: "ComicSans"
+                color: 0,0,0,1
+                background_normal: './resources/Buttons/rec_4_up.png'
+                background_down: './resources/Buttons/rec_4_down.png'
+                border: 0,0,0,0
                 on_release:
                     root.dismiss()
 

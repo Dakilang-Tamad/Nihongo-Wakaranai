@@ -8,7 +8,7 @@ from kivy.core.text import LabelBase
 from kivy.uix.button import Button
 from kivy.uix.label import Label
 from kivy.uix.popup import Popup
-from kivy.clock import Clock
+from kivy.core.window import Window
 import data_handling as dh
 import os
 import time
@@ -26,9 +26,9 @@ def update_status(level):
     cursor = conn.execute("SELECT BOOKMARK FROM " + level + " WHERE ID=" + str(dh.current_id) + ";")
     for i in cursor:
         if i[0] == 1:
-            return "Add Bookmark"
+            return False
         else:
-            return "Bookmarked"
+            return True
     conn.close()
 
 
@@ -53,6 +53,11 @@ class NoticePop(Popup):
 
 
 class ExitPop(Popup):
+    def on_pre_open(self):
+        w, h = Window.size
+        self.width = (w/20)*19
+        self.height = (h/10)*6
+
     def app_close(self):
         App.get_running_app().stop()
 
@@ -63,8 +68,13 @@ class GrammarPop(Popup):
     jp = StringProperty()
     en = StringProperty()
     status = StringProperty()
+    bm_up = StringProperty()
+    bm_down = StringProperty()
 
     def on_pre_open(self):
+        w, h = Window.size
+        self.width = (w/20)*19
+        self.height = (h/10)*6
         self.update()
         conn = sqlite3.connect("Quizzes.db")
         level = dh.level + "_GRAMMAR"
@@ -72,13 +82,19 @@ class GrammarPop(Popup):
         for i in cursor:
             self.item = i[0]
             self.meaning = i[1]
-            self.jp = i[2]
-            self.en = i[3]
+            self.jp = "Sample Japanese sentence:\n    " + i[2]
+            self.en = "Sample English sentence:\n    " + i[3]
         conn.close()
+
 
     def update(self):
         level = dh.level + "_GRAMMAR"
-        self.status = update_status(level)
+        if update_status(level):
+            self.bm_up = "./resources/Buttons/bookmarked_up.png"
+            self.bm_down = "./resources/Buttons/bookmarked_down.png"
+        else:
+            self.bm_up = "./resources/Buttons/add_bookmark_up.png"
+            self.bm_down = "./resources/Buttons/add_bookmark_down.png"
 
     def bookmark(self):
         level = dh.level + "_GRAMMAR"
@@ -92,9 +108,13 @@ class VocabPop(Popup):
     en_word = StringProperty()
     jp_sent = StringProperty()
     en_sent = StringProperty()
-    status = StringProperty()
+    bm_up = StringProperty()
+    bm_down = StringProperty()
 
     def on_pre_open(self):
+        w, h = Window.size
+        self.width = (w / 20) * 19
+        self.height = (h / 10) * 6
         self.update()
         conn = sqlite3.connect("Quizzes.db")
         level = dh.level + "_VOCAB"
@@ -103,13 +123,18 @@ class VocabPop(Popup):
             self.jp_word = i[1]
             self.en_word = i[0]
             self.reading = i[2]
-            self.jp_sent = i[3]
-            self.en_sent = i[4]
+            self.jp_sent = "Sample Japanese sentence:\n    " + i[3]
+            self.en_sent = "Sample English sentence:\n    " + i[4]
         conn.close()
 
     def update(self):
         level = dh.level + "_VOCAB"
-        self.status = update_status(level)
+        if update_status(level):
+            self.bm_up = "./resources/Buttons/bookmarked_up.png"
+            self.bm_down = "./resources/Buttons/bookmarked_down.png"
+        else:
+            self.bm_up = "./resources/Buttons/add_bookmark_up.png"
+            self.bm_down = "./resources/Buttons/add_bookmark_down.png"
 
     def bookmark(self):
         level = dh.level + "_VOCAB"
@@ -122,24 +147,35 @@ class KanjiPop(Popup):
     translation = StringProperty()
     jp_sent = StringProperty()
     en_sent = StringProperty()
-    status = StringProperty()
+    reading = StringProperty()
+    bm_up = StringProperty()
+    bm_down = StringProperty()
 
     def on_pre_open(self):
+        w, h = Window.size
+        self.width = (w / 20) * 19
+        self.height = (h / 10) * 6
         self.update()
         conn = sqlite3.connect("Quizzes.db")
         level = dh.level + "_KANJI"
-        cursor = conn.execute("SELECT KANJI, KIND, MEANING, JP, EN FROM "
+        cursor = conn.execute("SELECT KANJI, KIND, MEANING, JP, EN, READING FROM "
                               + level + " WHERE ID=" + str(dh.current_id) + ";")
         for i in cursor:
             self.jp_word = i[0]
-            self.translation = i[1] + "\n" + i[2]
-            self.jp_sent = i[3]
-            self.en_sent = i[4]
+            self.translation = i[1] + ": " + i[2]
+            self.jp_sent = "Sample Japanese sentence:\n    " + i[3]
+            self.en_sent = "Sample English Sentence:\n    "+i[4]
+            self.reading = i[5]
         conn.close()
 
     def update(self):
         level = dh.level + "_KANJI"
-        self.status = update_status(level)
+        if update_status(level):
+            self.bm_up = "./resources/Buttons/bookmarked_up.png"
+            self.bm_down = "./resources/Buttons/bookmarked_down.png"
+        else:
+            self.bm_up = "./resources/Buttons/add_bookmark_up.png"
+            self.bm_down = "./resources/Buttons/add_bookmark_down.png"
 
     def bookmark(self):
         level = dh.level + "_KANJI"
