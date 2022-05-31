@@ -24,31 +24,100 @@ WindowManager:
     name: "home"
 
     GridLayout:
-        cols: 2
+        cols: 1
 
-        Button:
-            text: "Quiz"
-            on_release:
-                app.root.current = "diff"
-                root.manager.transition.direction = "left"
+        Label:
+            bold: "True"
+            size_hint_y: None
+            height: root.height/12
+            text: "Nihongo Wakaranai"
+            font_name: "ComicSans"
+            canvas.before:
+                Color:
+                    rgba: hex('#356859')
+                Rectangle:
+                    pos: self.pos
+                    size: self.size
 
-        Button:
-            text: "Settings"
-            on_release:
-                app.root.current = "settings"
-                root.manager.transition.direction = "left"
+        GridLayout:
+            cols: 1
 
-        Button:
-            text: "Courses"
-            on_release:
-                app.root.current = "contents_diff"
-                root.manager.transition.direction = "left"
+            AnchorLayout:
+                size_hint_y: None
+                height: root.height/4
 
-        Button:
-            text: "Bookmarks"
-            on_release:
-                app.root.current = "bookd"
-                root.manager.transition.direction = "left"
+                Label:
+                    bold: "True"
+                    text: "Pick your poison!!"
+                    font_name: "ComicSans"
+                    color: 0,0,0,1
+                    font_size: 24
+
+            AnchorLayout:
+
+                GridLayout:
+                    cols: 2
+                    anchor: "center"
+                    size: (root.width/30)*29, (root.width/30)*29
+
+                    AnchorLayout:
+
+                        Button:
+                            size_hint: None, None
+                            size: (root.width/10)*4, (root.width/10)*4
+                            allow_stretch: "False"
+                            background_normal: './resources/Buttons/contents_up.png'
+                            background_down: './resources/Buttons/contents_down.png'
+                            border: 0,0,0,0
+                            on_release:
+                                root.manager.current = "contents_diff"
+                                root.manager.transition.direction = "left"
+
+                    AnchorLayout:
+
+                        Button:
+                            size_hint: None, None
+                            size: (root.width/10)*4, (root.width/10)*4
+                            allow_stretch: "False"
+                            background_normal: './resources/Buttons/bookmarks_up.png'
+                            background_down: './resources/Buttons/bookmarks_down.png'
+                            border: 0,0,0,0
+                            on_release:
+                                root.manager.current = "bookd"
+                                root.manager.transition.direction = "left"
+
+                    AnchorLayout:
+
+                        Button:
+                            size_hint: None, None
+                            size: (root.width/10)*4, (root.width/10)*4
+                            allow_stretch: "False"
+                            background_normal: './resources/Buttons/quiz_up.png'
+                            background_down: './resources/Buttons/quiz_down.png'
+                            border: 0,0,0,0
+                            on_release:
+                                root.manager.current = "diff"
+                                root.manager.transition.direction = "left"
+
+                    AnchorLayout:
+
+                        Button:
+                            size_hint: None, None
+                            size: (root.width/10)*4, (root.width/10)*4
+                            allow_stretch: "False"
+                            background_normal: './resources/Buttons/settings_up.png'
+                            background_down: './resources/Buttons/settings_down.png'
+                            border: 0,0,0,0
+                            on_release:
+                                root.manager.current = "settings"
+                                root.manager.transition.direction = "left"
+
+
+            GridLayout:
+                cols: 1
+                size_hint_y: None
+                height: root.height/5
+
 
 
 <DifficultySelection>:
@@ -228,41 +297,123 @@ WindowManager:
     GridLayout:
         cols: 1
 
-        Button:
-            text: "N5"
-            on_release:
-                root.next_screen()
-                root.manager.transition.direction = "left"
+        Label:
+            bold: "True"
+            size_hint_y: None
+            height: root.height/12
+            text: "Contents"
+            font_name: "ComicSans"
+            canvas.before:
+                Color:
+                    rgba: hex('#356859')
+                Rectangle:
+                    pos: self.pos
+                    size: self.size
 
-        Button:
-            text: "N4"
-            on_release:
-                root.notice()
-                root.manager.transition.direction = "left"
+        GridLayout:
+            cols: 1
 
-        Button:
-            text: "N3"
-            on_release:
-                root.notice()
-                root.manager.transition.direction = "left"
+            AnchorLayout:
+                size_hint_y: None
+                height: root.height/7
 
-        Button:
-            text: "N2"
-            on_release:
-                root.notice()
-                root.manager.transition.direction = "left"
+                Label:
+                    bold: "True"
+                    text: "Select Level"
+                    font_name: "ComicSans"
+                    color: 0,0,0,1
+                    font_size: 18
 
-        Button:
-            text: "N1"
-            on_release:
-                root.notice()
-                root.manager.transition.direction = "left"
+            AnchorLayout:
 
-        Button:
-            text: "Back"
-            on_release:
-                app.root.current = "home"
-                root.manager.transition.direction = "right"
+                GridLayout:
+                    cols: 2
+                    anchor: "center"
+                    size: (root.width/30)*29, (root.width/30)*29
+
+                    AnchorLayout:
+
+                        Button:
+                            size_hint: None, None
+                            size: (root.width/10)*4, (root.width/10)*4
+                            allow_stretch: "False"
+                            background_normal: './resources/Buttons/n5_up.png'
+                            background_down: './resources/Buttons/n5_down.png'
+                            border: 0,0,0,0
+                            on_release:
+                                root.next_screen()
+                                root.manager.transition.direction = "left"
+
+                    AnchorLayout:
+
+                        Button:
+                            size_hint: None, None
+                            size: (root.width/10)*4, (root.width/10)*4
+                            allow_stretch: "False"
+                            background_normal: './resources/Buttons/n4_up.png'
+                            background_down: './resources/Buttons/n4_down.png'
+                            border: 0,0,0,0
+                            on_release:
+                                root.next_screen()
+                                root.manager.transition.direction = "left"
+
+                    AnchorLayout:
+
+                        Button:
+                            size_hint: None, None
+                            size: (root.width/10)*4, (root.width/10)*4
+                            allow_stretch: "False"
+                            background_normal: './resources/Buttons/n3_up.png'
+                            background_down: './resources/Buttons/n3_down.png'
+                            border: 0,0,0,0
+                            on_release:
+                                root.next_screen()
+                                root.manager.transition.direction = "left"
+
+                    AnchorLayout:
+
+                        Button:
+                            size_hint: None, None
+                            size: (root.width/10)*4, (root.width/10)*4
+                            allow_stretch: "False"
+                            background_normal: './resources/Buttons/n2_up.png'
+                            background_down: './resources/Buttons/n2_down.png'
+                            border: 0,0,0,0
+                            on_release:
+                                root.next_screen()
+                                root.manager.transition.direction = "left"
+
+
+            AnchorLayout:
+                size_hint_y: None
+                height: root.height/4
+
+                Button:
+                    anchor_y: "top"
+                    size_hint: None, None
+                    size: (root.width/10)*4, (root.width/10)*4
+                    allow_stretch: "False"
+                    background_normal: './resources/Buttons/n1_up.png'
+                    background_down: './resources/Buttons/n1_down.png'
+                    border: 0,0,0,0
+                    on_release:
+                        root.next_screen()
+                        root.manager.transition.direction = "left"
+
+            AnchorLayout:
+                size_hint_y: None
+                height: root.height/10
+
+                Button:
+                    size_hint: None, None
+                    size: root.width/10, root.width/10
+                    allow_stretch: "False"
+                    background_normal: './resources/Buttons/back_button_up.png'
+                    background_down: './resources/Buttons/back_button_down.png'
+                    border: 0,0,0,0
+                    on_release:
+                        root.manager.current = "home"
+                        root.manager.transition.direction = "right"
 
 
 
@@ -684,25 +835,79 @@ WindowManager:
         cols: 1
 
         Label:
-            text: root.score
+            bold: "True"
+            size_hint_y: None
+            height: root.height/13
+            text: "Review"
+            font_name: "ComicSans"
+            canvas.before:
+                Color:
+                    rgba: hex('#356859')
+                Rectangle:
+                    pos: self.pos
+                    size: self.size
 
-        ScrollView:
-            do_scroll_x: False
-            do_scroll_y: True
-            size: self.size
+        AnchorLayout:
+            size_hint_y: None
+            height: (root.height/6)
+            Image:
+                anchor: "center"
+                size_hint_x: .8
+                size_hint_y: .7
+                allow_stretch: True
+                source: root.border
+
+            Label:
+                anchor: "center"
+                font_name: "komorebi"
+                text: root.score
+                color: 0, 0, 0, 1
+
+        GridLayout:
+            cols: 3
 
             GridLayout:
-                id: review_buttons
                 cols: 1
-                size_hint_y: None
-                height: self.minimum_height
-                row_default_height: root.height/8
+                size_hint_x: None
+                width: root.width/30
 
-        Button:
-            text: "Back"
-            on_release:
-                app.root.current = "diff"
-                root.manager.transition.direction = "right"
+            ScrollView:
+                do_scroll_x: False
+                do_scroll_y: True
+                size: self.size
+
+                GridLayout:
+                    spacing: root.height/50
+                    id: review_buttons
+                    cols: 1
+                    size_hint_y: None
+                    height: self.minimum_height
+                    row_default_height: root.height/10
+
+            GridLayout:
+                cols: 1
+                size_hint_x: None
+                width: root.width/30
+
+
+        GridLayout:
+            cols: 1
+            size_hint_y: None
+            height: root.height/8
+
+            AnchorLayout:
+
+                Button:
+                    anchor: "center"
+                    size_hint: None, None
+                    size: root.width/6, root.width/8
+                    background_normal: root.back_up
+                    background_down: root.back_down
+                    allow_stretch: "False"
+                    border: 0,0,0,0
+                    on_release:
+                        app.root.current = "diff"
+                        root.manager.transition.direction = "right"
 
 
 

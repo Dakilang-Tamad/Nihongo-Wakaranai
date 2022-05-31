@@ -143,7 +143,7 @@ class KanjiPop(Popup):
 
 
 class HomeScreen(Screen):
-    bg = dh.bg
+    pass
 
 
 class DifficultySelection(Screen):
@@ -235,6 +235,7 @@ class SettingsScreen(Screen):
 class ContentsDiff(Screen):
     def next_screen(self):
         self.manager.current = "contents"
+
 
 class Contents(Screen):
     level = dh.level + " CONTENTS"
@@ -513,6 +514,11 @@ class KanjiItem(Screen):
 
 class EndQuizz(Screen):
     score = StringProperty()
+    button_up = './resources/Buttons/rec_2_up.png'
+    button_down = './resources/Buttons/rec_2_down.png'
+    border = './resources/Buttons/empty_box.png'
+    back_up = './resources/Buttons/back_button_up.png'
+    back_down = './resources/Buttons/back_button_down.png'
 
     def on_pre_enter(self, **kwargs):
         self.score = "Your score is " + str(dh.score) + "/10"
@@ -526,8 +532,10 @@ class EndQuizz(Screen):
                 contents = cursor.fetchall()
                 for j in contents:
                     button_text = j[0] + " - " + dh.tally[i]
-                    button = Button(text=button_text, font_name="komorebi")
-                    button.bind(on_press=lambda x, id=dh.contents[i], type="grammar": self.popup(type, id))
+                    button = Button(text=button_text, font_name="komorebi", color=(0,0,0,1),
+                                    background_normal=self.button_up, background_down=self.button_down,
+                                    border=(0,0,0,0))
+                    button.bind(on_release=lambda x, id=dh.contents[i], type="grammar": self.popup(type, id))
                     self.ids.review_buttons.add_widget(button)
             if i in (1, 4, 7):
                 retrieve_query = "select KANJI from " + dh.level + "_VOCAB where ID = " + str(dh.contents[i])
@@ -535,8 +543,10 @@ class EndQuizz(Screen):
                 contents = cursor.fetchall()
                 for j in contents:
                     button_text = j[0] + " - " + dh.tally[i]
-                    button = Button(text=button_text, font_name="komorebi")
-                    button.bind(on_press=lambda x, id=dh.contents[i], type="vocab": self.popup(type, id))
+                    button = Button(text=button_text, font_name="komorebi", color=(0,0,0,1),
+                                    background_normal=self.button_up, background_down=self.button_down,
+                                    border=(0,0,0,0))
+                    button.bind(on_release=lambda x, id=dh.contents[i], type="vocab": self.popup(type, id))
                     self.ids.review_buttons.add_widget(button)
             if i in (2, 5, 8):
                 retrieve_query = "select KANJI from " + dh.level + "_KANJI where ID = " + str(dh.contents[i])
@@ -544,8 +554,10 @@ class EndQuizz(Screen):
                 contents = cursor.fetchall()
                 for j in contents:
                     button_text = j[0] + " - " + dh.tally[i]
-                    button = Button(text=button_text, font_name="komorebi")
-                    button.bind(on_press=lambda x, id=dh.contents[i], type="kanji": self.popup(type, id))
+                    button = Button(text=button_text, font_name="komorebi", color=(0,0,0,1),
+                                    background_normal=self.button_up, background_down=self.button_down,
+                                    border=(0,0,0,0))
+                    button.bind(on_release=lambda x, id=dh.contents[i], type="kanji": self.popup(type, id))
                     self.ids.review_buttons.add_widget(button)
         conn.close()
 

@@ -3,27 +3,11 @@
   <component name="ChangeListManager">
     <list default="true" id="531d4014-4a1e-42cb-8a17-d5238dd3f6fa" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/data_handling.py" beforeDir="false" afterPath="$PROJECT_DIR$/data_handling.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Quizzes.db" beforeDir="false" afterPath="$PROJECT_DIR$/Quizzes.db" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/my.kv" beforeDir="false" afterPath="$PROJECT_DIR$/my.kv" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/Buttons/Buttond/Group 2.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/Buttons/Buttond/Group 3.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/Buttons/Buttond/Group 4.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/Buttons/Buttond/Group 5.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/Buttons/Buttond/Group 6.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/Buttons/Buttond/Group 7.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/Buttons/Buttond/N5.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/Buttons/Buttond/Quiz.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/Buttons/Buttond/Rectangle 14.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/Buttons/Buttond/Rectangle 21.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/Buttons/Buttond/Rectangle 25.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/Buttons/Buttond/Rectangle 28.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/Buttons/Buttond/Rectangle 31.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/Buttons/Buttond/back (1).png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/Buttons/Buttond/bookmark (1).png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/Buttons/Buttond/bookmark (2).png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/Buttons/Learn Button.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/test.py" beforeDir="false" afterPath="$PROJECT_DIR$/test.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/Buttons/n4_ down.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/Buttons/n4_ up.png" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
