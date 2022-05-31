@@ -52,6 +52,11 @@ class NoticePop(Popup):
     pass
 
 
+class ExitPop(Popup):
+    def app_close(self):
+        App.get_running_app().stop()
+
+
 class GrammarPop(Popup):
     item = StringProperty()
     meaning = StringProperty()
@@ -147,6 +152,8 @@ class HomeScreen(Screen):
 
 
 class DifficultySelection(Screen):
+    level = dh.level
+
     def start5(self):
         dh.level = "N5"
         new_contents()
@@ -162,9 +169,33 @@ class BookmarkDifficulty(Screen):
         pop = NoticePop()
         pop.open()
 
+    def book5(self):
+        dh.level = "N5"
+        self.manager.current = "booki"
+
+    def book4(self):
+        dh.level = "N4"
+        self.manager.current = "booki"
+
+    def book3(self):
+        dh.level = "N3"
+        self.manager.current = "booki"
+
+    def book2(self):
+        dh.level = "N2"
+        self.manager.current = "booki"
+
+    def book1(self):
+        dh.level = "N1"
+        self.manager.current = "booki"
+
 
 class BookmarkedItems(Screen):
     level = dh.level + " BOOKMARKS"
+    button_up = './resources/Buttons/rec_1_up.png'
+    button_down = './resources/Buttons/rec_1_down.png'
+    back_up = './resources/Buttons/back_button_up.png'
+    back_down = './resources/Buttons/back_button_down.png'
 
     def on_pre_enter(self, *args):
         diffs = ["GRAMMAR", "VOCAB", "KANJI"]
@@ -201,7 +232,9 @@ class BookmarkedItems(Screen):
         else:
             for i in contents:
                 button_text = i[1]
-                button = Button(text=button_text, font_name="komorebi")
+                button = Button(text=button_text, font_name="komorebi", color=(0, 0, 0, 1),
+                                background_normal=self.button_up, background_down=self.button_down,
+                                border=(0, 0, 0, 0))
                 button.bind(on_press=lambda x, id=i[0], type=categ: self.popup(type, id))
                 if categ == "GRAMMAR":
                     self.ids.grammar_tab.add_widget(button)
@@ -233,12 +266,35 @@ class SettingsScreen(Screen):
 
 
 class ContentsDiff(Screen):
-    def next_screen(self):
+    level = dh.level + " CONTENTS"
+
+    def cont5(self):
+        dh.level = "N5"
+        self.manager.current = "contents"
+
+    def cont4(self):
+        dh.level = "N4"
+        self.manager.current = "contents"
+
+    def cont3(self):
+        dh.level = "N3"
+        self.manager.current = "contents"
+
+    def cont2(self):
+        dh.level = "N2"
+        self.manager.current = "contents"
+
+    def cont1(self):
+        dh.level = "N1"
         self.manager.current = "contents"
 
 
 class Contents(Screen):
     level = dh.level + " CONTENTS"
+    button_up = './resources/Buttons/rec_1_up.png'
+    button_down = './resources/Buttons/rec_1_down.png'
+    back_up = './resources/Buttons/back_button_up.png'
+    back_down = './resources/Buttons/back_button_down.png'
 
     def on_pre_enter(self, *args):
         diffs = ["GRAMMAR", "VOCAB", "KANJI"]
@@ -273,7 +329,9 @@ class Contents(Screen):
         else:
             for i in contents:
                 button_text = i[1]
-                button = Button(text=button_text, font_name="komorebi")
+                button = Button(text=button_text, font_name="komorebi", color=(0, 0, 0, 1),
+                                background_normal=self.button_up, background_down=self.button_down,
+                                border=(0, 0, 0, 0))
                 button.bind(on_press=lambda x, id=i[0], type=categ: self.popup(type, id))
                 if categ == "GRAMMAR":
                     self.ids.grammar_tab.add_widget(button)
@@ -594,6 +652,16 @@ LabelBase.register(name='ComicSans',
 
 
 class MainApp(App):
+    def on_start(self):
+        from kivy.base import EventLoop
+        EventLoop.window.bind(on_keyboard=self.hook_keyboard)
+
+    def hook_keyboard(self, window, key, *largs):
+        if key == 27:
+            pop = ExitPop()
+            pop.open()
+            return True
+
     def build(self):
         return kv
 
