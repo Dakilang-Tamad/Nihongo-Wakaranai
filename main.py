@@ -102,7 +102,7 @@ class GrammarPop(Popup):
         self.update()
 
 
-class VocabPop(Popup):
+class VocabPop1(Popup):
     jp_word = StringProperty()
     reading = StringProperty()
     en_word = StringProperty()
@@ -125,6 +125,48 @@ class VocabPop(Popup):
             self.reading = i[2]
             self.jp_sent = "Sample Japanese sentence:\n    " + i[3]
             self.en_sent = "Sample English sentence:\n    " + i[4]
+        conn.close()
+
+    def update(self):
+        level = dh.level + "_VOCAB"
+        if update_status(level):
+            self.bm_up = "./resources/Buttons/bookmarked_up.png"
+            self.bm_down = "./resources/Buttons/bookmarked_down.png"
+        else:
+            self.bm_up = "./resources/Buttons/add_bookmark_up.png"
+            self.bm_down = "./resources/Buttons/add_bookmark_down.png"
+
+    def bookmark(self):
+        level = dh.level + "_VOCAB"
+        update_bookmark(level)
+        self.update()
+
+
+class VocabPop2(Popup):
+    jp_word = StringProperty()
+    kind = StringProperty()
+    meaning = StringProperty()
+    furigana = StringProperty()
+    jp_sent = StringProperty()
+    en_sent = StringProperty()
+    bm_up = StringProperty()
+    bm_down = StringProperty()
+
+    def on_pre_open(self):
+        w, h = Window.size
+        self.width = (w / 20) * 19
+        self.height = (h / 10) * 6
+        self.update()
+        conn = sqlite3.connect("Quizzes.db")
+        level = dh.level + "_VOCAB"
+        cursor = conn.execute("SELECT KANJI, FURIGANA, KIND, MEANING, JP, EN FROM " + level + " WHERE ID=" + str(dh.current_id) + ";")
+        for i in cursor:
+            self.jp_word = i[0]
+            self.furigana = i[1]
+            self.kind = i[2]
+            self.meaning = i[3]
+            self.jp_sent = "Sample Japanese sentence:\n    " + i[4]
+            self.en_sent = "Sample English sentence:\n    " + i[5]
         conn.close()
 
     def update(self):
@@ -195,9 +237,25 @@ class DifficultySelection(Screen):
         new_contents()
         self.manager.current = "grammari"
 
+    def start4(self):
+        dh.level = "N4"
+        new_contents()
+        self.manager.current = "grammari"
+
+    def start3(self):
+        dh.level = "N3"
+        new_contents()
+        self.manager.current = "grammari"
+
+    def start2(self):
+        dh.level = "N2"
+        new_contents()
+        self.manager.current = "grammari"
+
     def start1(self):
-        pop = NoticePop()
-        pop.open()
+        dh.level = "N1"
+        new_contents()
+        self.manager.current = "grammari"
 
 
 class BookmarkDifficulty(Screen):
@@ -290,8 +348,12 @@ class BookmarkedItems(Screen):
             pop = GrammarPop()
             pop.open()
         if type == "VOCAB":
-            pop = VocabPop()
-            pop.open()
+            if dh.level == "N5":
+                pop = VocabPop1()
+                pop.open()
+            else:
+                pop = VocabPop2()
+                pop.open()
         if type == "KANJI":
             pop = KanjiPop()
             pop.open()
@@ -387,8 +449,12 @@ class Contents(Screen):
             pop = GrammarPop()
             pop.open()
         if type == "VOCAB":
-            pop = VocabPop()
-            pop.open()
+            if dh.level == "N5":
+                pop = VocabPop1()
+                pop.open()
+            else:
+                pop = VocabPop2()
+                pop.open()
         if type == "KANJI":
             pop = KanjiPop()
             pop.open()
@@ -469,7 +535,7 @@ class GrammarItem(Screen):
 
 class VocabItem(Screen):
 
-    en = StringProperty()
+    item = StringProperty()
     kanji = StringProperty()
     A = StringProperty()
     B = StringProperty()
@@ -485,20 +551,28 @@ class VocabItem(Screen):
         self.label = "Item #" + str(dh.current + 1)
         conn = sqlite3.connect("Quizzes.db")
         cursor = conn.cursor()
-        retrieve_query = "select * from " + dh.level + "_VOCAB where ID = " + str(dh.contents[dh.current])
-        cursor.execute(retrieve_query)
+        if dh.level == "N5":
+            retrieve_query =("select WORD, KANJI, C_A, C_B, C_C, C_D, ANSWER from " + dh.level +
+                            "_VOCAB where ID = " +
+                            str(dh.contents[dh.current]))
+            cursor.execute(retrieve_query)
+        else:
+            retrieve_query =("select SENTENCE, KANJI, C_A, C_B, C_C, C_D, ANSWER from " + dh.level +
+                            "_VOCAB where ID = " +
+                            str(dh.contents[dh.current]))
+            cursor.execute(retrieve_query)
         contents = cursor.fetchall()
         for i in contents:
-            self.en = i[1]
-            if i[2] != "":
-                self.kanji = i[2]
+            self.item = i[0]
+            if i[1] != "":
+                self.kanji = i[1]
             else:
                 self.kanji = "<no kanji>"
-            self.A = i[3]
-            self.B = i[4]
-            self.C = i[5]
-            self.D = i[6]
-            self.ans = i[7]
+            self.A = i[2]
+            self.B = i[3]
+            self.C = i[4]
+            self.D = i[5]
+            self.ans = i[6]
         cursor.close()
 
     def ent_a(self):
@@ -610,7 +684,7 @@ class EndQuizz(Screen):
     score = StringProperty()
     button_up = './resources/Buttons/rec_2_up.png'
     button_down = './resources/Buttons/rec_2_down.png'
-    border = './resources/Buttons/empty_box.png'
+    border = './resources/Buttons/rec_4_up.png'
     back_up = './resources/Buttons/back_button_up.png'
     back_down = './resources/Buttons/back_button_down.png'
 
@@ -664,8 +738,12 @@ class EndQuizz(Screen):
             pop = GrammarPop()
             pop.open()
         if type == "vocab":
-            pop = VocabPop()
-            pop.open()
+            if dh.level == "N5":
+                pop = VocabPop1()
+                pop.open()
+            else:
+                pop = VocabPop2()
+                pop.open()
         if type == "kanji":
             pop = KanjiPop()
             pop.open()

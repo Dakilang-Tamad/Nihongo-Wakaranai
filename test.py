@@ -1,23 +1,19 @@
-from kivy.app import App
-from kivy.uix.image import Image
-from kivy.uix.behaviors import ButtonBehavior
+from gtts import gTTS
+from pygame import mixer, time
 
+mytext = "日本語上手ですよ俺"
 
-class MyButton(ButtonBehavior, Image):
-    def __init__(self, **kwargs):
-        super(MyButton, self).__init__(**kwargs)
-        self.source = 'atlas://data/images/defaulttheme/checkbox_off'
+language = 'ja'
 
-    def on_press(self):
-        self.source = 'atlas://data/images/defaulttheme/checkbox_on'
+myobj = gTTS(text=mytext, lang=language, slow=False)
 
-    def on_release(self):
-        self.source = 'atlas://data/images/defaulttheme/checkbox_off'
+myobj.save("welcome.mp3")
 
+mixer.init()
 
-class SampleApp(App):
-    def build(self):
-        return MyButton()
+mixer.music.load("welcome.mp3")
 
+mixer.music.play()
 
-SampleApp().run()
+while mixer.music.get_busy():
+    time.wait(100)

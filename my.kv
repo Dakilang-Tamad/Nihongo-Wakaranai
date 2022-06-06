@@ -183,7 +183,7 @@ WindowManager:
                             background_down: './resources/Buttons/n4_down.png'
                             border: 0,0,0,0
                             on_release:
-                                root.start5()
+                                root.start4()
                                 root.manager.transition.direction = "left"
 
                     AnchorLayout:
@@ -196,7 +196,7 @@ WindowManager:
                             background_down: './resources/Buttons/n3_down.png'
                             border: 0,0,0,0
                             on_release:
-                                root.start5()
+                                root.start3()
                                 root.manager.transition.direction = "left"
 
                     AnchorLayout:
@@ -209,9 +209,8 @@ WindowManager:
                             background_down: './resources/Buttons/n2_down.png'
                             border: 0,0,0,0
                             on_release:
-                                root.start5()
+                                root.start2()
                                 root.manager.transition.direction = "left"
-
 
             AnchorLayout:
                 size_hint_y: None
@@ -226,7 +225,7 @@ WindowManager:
                     background_down: './resources/Buttons/n1_down.png'
                     border: 0,0,0,0
                     on_release:
-                        root.start5()
+                        root.start1()
                         root.manager.transition.direction = "left"
 
             AnchorLayout:
@@ -895,29 +894,35 @@ WindowManager:
 
         AnchorLayout:
             size_hint_y: None
-            height: (root.height/6)*2
+            height: (root.height/6)
             Image:
                 anchor: "center"
-                size_hint_x: .6
+                size_hint_x: .8
+                size_hint_y: .9
                 allow_stretch: True
                 source: root.border
 
-            GridLayout:
+            Label:
+                size_hint: .6, 1
+                text_size: (self.width/10)*9, None
+                font_name: "komorebi"
+                text: root.item
+                color: 0, 0, 0, 1
+
+        AnchorLayout:
+            size_hint_y: None
+            height: (root.height/6)
+            Image:
                 anchor: "center"
-                cols: 1
-                size_hint: None, None
-                height: root.height/10
-                width: root.width/2
+                size_hint_x: .4
+                size_hint_y: .4
+                allow_stretch: True
+                source: root.border
 
-                Label:
-                    font_name: "ComicSans"
-                    text: root.en
-                    color: 0, 0, 0, 1
-
-                Label:
-                    font_name: "komorebi"
-                    text: root.kanji
-                    color: 0, 0, 0, 1
+            Label:
+                font_name: "komorebi"
+                text: root.kanji
+                color: 0, 0, 0, 1
 
         GridLayout:
             cols: 1
@@ -1034,8 +1039,6 @@ WindowManager:
                 size_hint_y: .4
                 allow_stretch: True
                 source: root.border
-
-
 
             Label:
                 font_name: "komorebi"
@@ -1183,7 +1186,7 @@ WindowManager:
                 Button:
                     anchor: "center"
                     size_hint: None, None
-                    size: root.width/6, root.width/8
+                    size: root.width/8, root.width/8
                     background_normal: root.back_up
                     background_down: root.back_down
                     allow_stretch: "False"
@@ -1258,8 +1261,8 @@ WindowManager:
 
 
 
-<VocabPop>:
-    title: 'Vocab'
+<VocabPop1>:
+    title: 'Vocabulary'
     title_color: 0,0,0,1
     size_hint: (None, None)
     background: "./resources/Buttons/popup_bg.png"
@@ -1327,6 +1330,91 @@ WindowManager:
                     on_release:
                         root.dismiss()
 
+
+
+<VocabPop2>:
+    title: 'Vocabulary'
+    title_color: 0,0,0,1
+    size_hint: (None, None)
+    background: "./resources/Buttons/popup_bg.png"
+    border: 0,0,0,0
+    GridLayout:
+        cols: 1
+
+        GridLayout:
+            cols: 2
+
+            GridLayout:
+                size_hint_x: None
+                width: root.width/3
+                rows: 2
+
+                Label:
+                    font_name: "komorebi"
+                    text: root.jp_word
+                    color: 0,0,0,1
+
+                Label:
+                    font_name: "komorebi"
+                    text: root.furigana
+                    color: 0,0,0,1
+
+            GridLayout:
+                rows: 2
+
+                Label:
+                    size_hint: 1,1
+                    text_size: self.width, None
+                    font_name: "komorebi"
+                    text: root.kind
+                    color: 0,0,0,1
+
+                Label:
+                    size_hint: 1,1
+                    text_size: self.width, None
+                    font_name: "komorebi"
+                    text: root.meaning
+                    color: 0,0,0,1
+
+
+        Label:
+            size_hint: 1, 1
+            text_size: self.width, None
+            font_name: "komorebi"
+            text: root.jp_sent
+            color: 0,0,0,1
+
+        Label:
+            size_hint: 1, 1
+            text_size: self.width, None
+            font_name: "komorebi"
+            text: root.en_sent
+            color: 0,0,0,1
+
+        GridLayout:
+            cols: 2
+
+            AnchorLayout:
+
+                Button:
+                    background_normal: root.bm_up
+                    background_down: root.bm_down
+                    border: 0,0,0,0
+                    size_hint: None, None
+                    size: root.width/8, root.width/8
+                    on_release:
+                        root.bookmark()
+
+            AnchorLayout:
+
+                Button:
+                    background_normal: './resources/Buttons/back_button_up.png'
+                    background_down: './resources/Buttons/back_button_down.png'
+                    border: 0,0,0,0
+                    size_hint: None, None
+                    size: root.width/8, root.width/8
+                    on_release:
+                        root.dismiss()
 
 <KanjiPop>:
     title: 'Kanji'
@@ -1427,6 +1515,8 @@ WindowManager:
 
         GridLayout:
             cols: 2
+            size_hint_y: None
+            height: root.height/5
             spacing: root.width/20
 
             Button:
