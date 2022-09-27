@@ -39,4 +39,5 @@ current_id = 0 #holder for the current ID value of a question/entry being proces
 score = 0 #holder of the quiz score
 tally = [] #a tally of which items were answered correctly
 contents = [] #contains the contents (ID's) of the quiz
-level = "N5" #current difficulty level selected
+level = "" #current difficulty level selected
+tts = "" #current text-to-speech container

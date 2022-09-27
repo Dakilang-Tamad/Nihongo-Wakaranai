@@ -10,24 +10,8 @@ from kivy.uix.label import Label
 from kivy.uix.popup import Popup
 from kivy.core.window import Window
 import data_handling as dh
-from gtts import gTTS
-import pygame
 import os
 import time
-
-def to_audio():
-    language = 'ja'
-    speech = dh.tts
-    myobj = gTTS(text=speech, lang=language, slow=False)
-    myobj.save("tts.mp3")
-    pygame.mixer.init()
-    pygame.mixer.music.load("tts.mp3")
-    pygame.mixer.music.play()
-
-    while pygame.mixer.music.get_busy():
-        pygame.time.wait(100)
-    pygame.mixer.music.unload()
-
 
 def new_contents():
     dh.contents = dh.new_quiz()
@@ -117,10 +101,6 @@ class GrammarPop(Popup):
         update_bookmark(level)
         self.update()
 
-    def tts(self):
-        dh.tts = self.item + ".." + self.jp
-        to_audio()
-
 
 class VocabPop1(Popup):
     jp_word = StringProperty()
@@ -160,10 +140,6 @@ class VocabPop1(Popup):
         level = dh.level + "_VOCAB"
         update_bookmark(level)
         self.update()
-
-    def tts(self):
-        dh.tts = self.jp_word
-        to_audio()
 
 
 class VocabPop2(Popup):
@@ -207,10 +183,6 @@ class VocabPop2(Popup):
         update_bookmark(level)
         self.update()
 
-    def tts(self):
-        dh.tts = self.jp_word
-        to_audio()
-
 
 class KanjiPop(Popup):
     jp_word = StringProperty()
@@ -251,10 +223,6 @@ class KanjiPop(Popup):
         level = dh.level + "_KANJI"
         update_bookmark(level)
         self.update()
-
-    def tts(self):
-        dh.tts = self.jp_word
-        to_audio()
 
 
 class HomeScreen(Screen):
@@ -396,6 +364,7 @@ class SettingsScreen(Screen):
 
 
 class ContentsDiff(Screen):
+    level = dh.level + " CONTENTS"
 
     def cont5(self):
         dh.level = "N5"
@@ -419,14 +388,13 @@ class ContentsDiff(Screen):
 
 
 class Contents(Screen):
-    level = StringProperty()
+    level = dh.level + " CONTENTS"
     button_up = './resources/Buttons/rec_1_up.png'
     button_down = './resources/Buttons/rec_1_down.png'
     back_up = './resources/Buttons/back_button_up.png'
     back_down = './resources/Buttons/back_button_down.png'
 
     def on_pre_enter(self, *args):
-        self.level = dh.level + " CONTENTS"
         diffs = ["GRAMMAR", "VOCAB", "KANJI"]
         for i in diffs:
             self.display(i)
