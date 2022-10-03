@@ -10,7 +10,7 @@ from kivy.uix.label import Label
 from kivy.uix.popup import Popup
 from kivy.core.window import Window
 import data_handling as dh
-from gtts import gTTS
+import gtts
 import pygame
 import os
 import time
@@ -18,7 +18,7 @@ import time
 def to_audio():
     language = 'ja'
     speech = dh.tts
-    myobj = gTTS(text=speech, lang=language, slow=False)
+    myobj = gtts.gTTS(text=speech, lang=language, slow=False)
     myobj.save("tts.mp3")
     pygame.mixer.init()
     pygame.mixer.music.load("tts.mp3")

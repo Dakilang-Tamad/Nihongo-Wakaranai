@@ -2,16 +2,9 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="531d4014-4a1e-42cb-8a17-d5238dd3f6fa" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/Build1/main.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Grammar_db.py" beforeDir="false" afterPath="$PROJECT_DIR$/Grammar_db.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Kanji_db.py" beforeDir="false" afterPath="$PROJECT_DIR$/Kanji_db.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Quizzes.db" beforeDir="false" afterPath="$PROJECT_DIR$/Quizzes.db" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Vocab2_db.py" beforeDir="false" afterPath="$PROJECT_DIR$/Vocab2_db.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/data_handling.py" beforeDir="false" afterPath="$PROJECT_DIR$/data_handling.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/my.kv" beforeDir="false" afterPath="$PROJECT_DIR$/my.kv" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/welcome.mp3" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/tts.mp3" beforeDir="false" afterPath="$PROJECT_DIR$/tts.mp3" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
