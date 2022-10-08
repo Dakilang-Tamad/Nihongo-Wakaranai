@@ -10,23 +10,20 @@ from kivy.uix.label import Label
 from kivy.uix.popup import Popup
 from kivy.core.window import Window
 import data_handling as dh
-from gtts import gTTS
+from jnius import autoclass
 import pygame
 import os
 import time
 
 def to_audio():
-    language = 'ja'
-    speech = dh.tts
-    myobj = gTTS(text=speech, lang=language, slow=False)
-    myobj.save("tts.mp3")
-    pygame.mixer.init()
-    pygame.mixer.music.load("tts.mp3")
-    pygame.mixer.music.play()
+    Locale = autoclass('java.util.Locale')
+    PythonActivity = autoclass('org.kivy.android.PythonActivity')
+    TextToSpeech = autoclass('android.speech.tts.TextToSpeech')
+    tts = TextToSpeech(PythonActivity.mActivity, None)
 
-    while pygame.mixer.music.get_busy():
-        pygame.time.wait(100)
-    pygame.mixer.music.unload()
+
+    tts.setLanguage(Locale.JAPAN)
+    tts.speak("日本語分からない",  TextToSpeech.QUEUE_FLUSH, None)
 
 
 def new_contents():
