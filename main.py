@@ -11,7 +11,6 @@ from kivy.uix.popup import Popup
 from kivy.core.window import Window
 import data_handling as dh
 from jnius import autoclass
-import pygame
 import os
 import time
 
@@ -21,13 +20,12 @@ def to_audio():
     TextToSpeech = autoclass('android.speech.tts.TextToSpeech')
     tts = TextToSpeech(PythonActivity.mActivity, None)
 
-
     tts.setLanguage(Locale.JAPAN)
-    tts.speak("日本語分からない",  TextToSpeech.QUEUE_FLUSH, None)
+    tts.speak(dh.tts, TextToSpeech.QUEUE_FLUSH, None)
 
 
 def new_contents():
-    dh.contents = dh.new_quiz()
+    dh.contents = dh.new_quiz(dh.level)
     dh.current = 0
     dh.tally = []
     dh.score = 0
@@ -42,6 +40,18 @@ def update_status(level):
             return False
         else:
             return True
+    conn.close()
+
+def add_prof(level):
+    conn = sqlite3.connect("Quizzes.db")
+    level = level
+    cursor = conn.execute("SELECT PROF FROM " + level + " WHERE ID = " + str(dh.contents[dh.current]) + ";")
+    prof = 0
+    for i in cursor:
+        prof = i[0] + 1
+    command = "UPDATE " + level + " set PROF = " + str(prof) + " where ID = " + str(dh.contents[dh.current])
+    conn.execute(command)
+    conn.commit()
     conn.close()
 
 
@@ -83,6 +93,7 @@ class GrammarPop(Popup):
     status = StringProperty()
     bm_up = StringProperty()
     bm_down = StringProperty()
+    prog = StringProperty()
 
     def on_pre_open(self):
         w, h = Window.size
@@ -91,12 +102,13 @@ class GrammarPop(Popup):
         self.update()
         conn = sqlite3.connect("Quizzes.db")
         level = dh.level + "_GRAMMAR"
-        cursor = conn.execute("SELECT WORD, MEANING, JP, EN FROM " + level +" WHERE ID=" + str(dh.current_id) + ";")
+        cursor = conn.execute("SELECT WORD, MEANING, JP, EN, PROF FROM " + level +" WHERE ID=" + str(dh.current_id) + ";")
         for i in cursor:
             self.item = i[0]
             self.meaning = i[1]
             self.jp = "Sample Japanese sentence:\n    " + i[2]
             self.en = "Sample English sentence:\n    " + i[3]
+            self.prog = "Progress: " + str(i[4]) + "/5"
         conn.close()
 
 
@@ -115,7 +127,7 @@ class GrammarPop(Popup):
         self.update()
 
     def tts(self):
-        dh.tts = self.item + ".." + self.jp
+        dh.tts = self.item
         to_audio()
 
 
@@ -127,6 +139,7 @@ class VocabPop1(Popup):
     en_sent = StringProperty()
     bm_up = StringProperty()
     bm_down = StringProperty()
+    prog = StringProperty()
 
     def on_pre_open(self):
         w, h = Window.size
@@ -135,13 +148,14 @@ class VocabPop1(Popup):
         self.update()
         conn = sqlite3.connect("Quizzes.db")
         level = dh.level + "_VOCAB"
-        cursor = conn.execute("SELECT WORD, KANJI, READING, JP, EN FROM " + level + " WHERE ID=" + str(dh.current_id) + ";")
+        cursor = conn.execute("SELECT WORD, KANJI, READING, JP, EN, PROF FROM " + level + " WHERE ID=" + str(dh.current_id) + ";")
         for i in cursor:
             self.jp_word = i[1]
             self.en_word = i[0]
             self.reading = i[2]
             self.jp_sent = "Sample Japanese sentence:\n    " + i[3]
             self.en_sent = "Sample English sentence:\n    " + i[4]
+            self.prog = "Progress: " + str(i[5]) + "/5"
         conn.close()
 
     def update(self):
@@ -172,6 +186,7 @@ class VocabPop2(Popup):
     en_sent = StringProperty()
     bm_up = StringProperty()
     bm_down = StringProperty()
+    prog = StringProperty()
 
     def on_pre_open(self):
         w, h = Window.size
@@ -180,7 +195,7 @@ class VocabPop2(Popup):
         self.update()
         conn = sqlite3.connect("Quizzes.db")
         level = dh.level + "_VOCAB"
-        cursor = conn.execute("SELECT KANJI, FURIGANA, KIND, MEANING, JP, EN FROM " + level + " WHERE ID=" + str(dh.current_id) + ";")
+        cursor = conn.execute("SELECT KANJI, FURIGANA, KIND, MEANING, JP, EN, PROF FROM " + level + " WHERE ID=" + str(dh.current_id) + ";")
         for i in cursor:
             self.jp_word = i[0]
             self.furigana = i[1]
@@ -188,6 +203,7 @@ class VocabPop2(Popup):
             self.meaning = i[3]
             self.jp_sent = "Sample Japanese sentence:\n    " + i[4]
             self.en_sent = "Sample English sentence:\n    " + i[5]
+            self.prog = "Progress: " + str(i[6]) + "/5"
         conn.close()
 
     def update(self):
@@ -217,6 +233,7 @@ class KanjiPop(Popup):
     reading = StringProperty()
     bm_up = StringProperty()
     bm_down = StringProperty()
+    prog = StringProperty()
 
     def on_pre_open(self):
         w, h = Window.size
@@ -225,7 +242,7 @@ class KanjiPop(Popup):
         self.update()
         conn = sqlite3.connect("Quizzes.db")
         level = dh.level + "_KANJI"
-        cursor = conn.execute("SELECT KANJI, KIND, MEANING, JP, EN, READING FROM "
+        cursor = conn.execute("SELECT KANJI, KIND, MEANING, JP, EN, READING, PROF FROM "
                               + level + " WHERE ID=" + str(dh.current_id) + ";")
         for i in cursor:
             self.jp_word = i[0]
@@ -233,6 +250,7 @@ class KanjiPop(Popup):
             self.jp_sent = "Sample Japanese sentence:\n    " + i[3]
             self.en_sent = "Sample English Sentence:\n    "+i[4]
             self.reading = i[5]
+            self.prog = "Progress: " + str(i[6]) + "/5"
         conn.close()
 
     def update(self):
@@ -522,6 +540,8 @@ class GrammarItem(Screen):
     def ent_a(self):
         dh.current += 1
         if self.ans == 'a':
+            level = dh.level + "_GRAMMAR"
+            add_prof(level)
             dh.score += 1
             dh.tally.append("Correct")
         else:
@@ -531,6 +551,8 @@ class GrammarItem(Screen):
     def ent_b(self):
         dh.current += 1
         if self.ans == 'b':
+            level = dh.level + "_GRAMMAR"
+            add_prof(level)
             dh.score += 1
             dh.tally.append("Correct")
         else:
@@ -540,6 +562,8 @@ class GrammarItem(Screen):
     def ent_c(self):
         dh.current += 1
         if self.ans == 'c':
+            level = dh.level + "_GRAMMAR"
+            add_prof(level)
             dh.score += 1
             dh.tally.append("Correct")
         else:
@@ -549,6 +573,8 @@ class GrammarItem(Screen):
     def ent_d(self):
         dh.current += 1
         if self.ans == 'd':
+            level = dh.level + "_GRAMMAR"
+            add_prof(level)
             dh.score += 1
             dh.tally.append("Correct")
         else:
@@ -607,6 +633,8 @@ class VocabItem(Screen):
     def ent_a(self):
         dh.current += 1
         if self.ans == 'a':
+            level = dh.level + "_VOCAB"
+            add_prof(level)
             dh.score += 1
             dh.tally.append("Correct")
         else:
@@ -616,6 +644,8 @@ class VocabItem(Screen):
     def ent_b(self):
         dh.current += 1
         if self.ans == 'b':
+            level = dh.level + "_VOCAB"
+            add_prof(level)
             dh.score += 1
             dh.tally.append("Correct")
         else:
@@ -625,6 +655,8 @@ class VocabItem(Screen):
     def ent_c(self):
         dh.current += 1
         if self.ans == 'c':
+            level = dh.level + "_VOCAB"
+            add_prof(level)
             dh.score += 1
             dh.tally.append("Correct")
         else:
@@ -634,6 +666,8 @@ class VocabItem(Screen):
     def ent_d(self):
         dh.current += 1
         if self.ans == 'd':
+            level = dh.level + "_VOCAB"
+            add_prof(level)
             dh.score += 1
             dh.tally.append("Correct")
         else:
@@ -675,6 +709,8 @@ class KanjiItem(Screen):
     def ent_a(self):
         dh.current += 1
         if self.ans == 'a':
+            level = dh.level + "_KANJI"
+            add_prof(level)
             dh.score += 1
             dh.tally.append("Correct")
         else:
@@ -684,6 +720,8 @@ class KanjiItem(Screen):
     def ent_b(self):
         dh.current += 1
         if self.ans == 'b':
+            level = dh.level + "_KANJI"
+            add_prof(level)
             dh.score += 1
             dh.tally.append("Correct")
         else:
@@ -693,6 +731,8 @@ class KanjiItem(Screen):
     def ent_c(self):
         dh.current += 1
         if self.ans == 'c':
+            level = dh.level + "_KANJI"
+            add_prof(level)
             dh.score += 1
             dh.tally.append("Correct")
         else:
@@ -702,6 +742,8 @@ class KanjiItem(Screen):
     def ent_d(self):
         dh.current += 1
         if self.ans == 'd':
+            level = dh.level + "_KANJI"
+            add_prof(level)
             dh.score += 1
             dh.tally.append("Correct")
         else:

@@ -9,7 +9,7 @@ file = "n5_vocab.xlsx"
 
 conn.execute("CREATE TABLE " + table + " (ID INT PRIMARY KEY, "
              "WORD TEXT, ITEM TEXT, C_A TEXT, C_B TEXT, C_C TEXT, C_D TEXT, "
-             "ANSWER TEXT, KANJI TEXT, READING TEXT, JP TEXT, EN TEXT, BOOKMARK INT);")
+             "ANSWER TEXT, KANJI TEXT, READING TEXT, JP TEXT, EN TEXT, BOOKMARK INT, PROF INT);")
 
 xlsx_file = Path('resources', file)
 wb_obj = openpyxl.load_workbook(xlsx_file)
@@ -79,6 +79,9 @@ for i in range(1, 26):
     conn.commit()
     print(1)
     command = "UPDATE " + table + " set BOOKMARK = 1 where ID = " + str(i)
+    conn.execute(command)
+    conn.commit()
+    command = "UPDATE " + table + " set PROF = 0 where ID = " + str(i)
     conn.execute(command)
     conn.commit()
 

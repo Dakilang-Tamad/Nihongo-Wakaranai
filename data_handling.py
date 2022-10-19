@@ -3,11 +3,21 @@ import random
 from pathlib import Path
 
 
-def new_quiz():
-    v = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25]
-    k = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25]
-    g = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,
-         26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50]
+def new_quiz(diff):
+    conn = sqlite3.connect("Quizzes.db")
+    cursor1 = conn.execute("SELECT ID FROM " + diff + "_VOCAB WHERE PROF < 5;")
+    cursor2 = conn.execute("SELECT ID FROM " + diff + "_KANJI WHERE PROF < 5;")
+    cursor3 = conn.execute("SELECT ID FROM " + diff + "_GRAMMAR WHERE PROF < 5;")
+    v = []
+    k = []
+    g = []
+    for i in cursor1:
+        v.append(i[0])
+    for i in cursor2:
+        k.append(i[0])
+    for i in cursor3:
+        g.append(i[0])
+
     quiz = []
     for i in range(10):
         if i in (0, 3, 6, 9):
@@ -16,7 +26,7 @@ def new_quiz():
             quiz.append(v.pop(random.randrange(len(v))))
         if i in (2, 5, 8):
             quiz.append(k.pop(random.randrange(len(k))))
-
+    conn.close()
     return quiz
 
 def add_bm(level, type, ID):
