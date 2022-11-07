@@ -18,9 +18,9 @@ Locale = autoclass('java.util.Locale')
 PythonActivity = autoclass('org.kivy.android.PythonActivity')
 TextToSpeech = autoclass('android.speech.tts.TextToSpeech')
 tts = TextToSpeech(PythonActivity.mActivity, None)
-tts.setLanguage(Locale.Japan)
 
 def to_audio():
+    tts.setLanguage(Locale.JAPAN)
     tts.speak(dh.tts, TextToSpeech.QUEUE_FLUSH, None)
 
 
