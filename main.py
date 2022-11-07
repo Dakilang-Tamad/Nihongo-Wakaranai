@@ -22,6 +22,10 @@ def to_audio():
 
     tts.setLanguage(Locale.JAPAN)
     tts.speak(dh.tts, TextToSpeech.QUEUE_FLUSH, None)
+    while True:
+        if not tts.isSpeaking():
+            tts.shutdown()
+            break
 
 
 def new_contents():
