@@ -14,18 +14,14 @@ from jnius import autoclass
 import os
 import time
 
-def to_audio():
-    Locale = autoclass('java.util.Locale')
-    PythonActivity = autoclass('org.kivy.android.PythonActivity')
-    TextToSpeech = autoclass('android.speech.tts.TextToSpeech')
-    tts = TextToSpeech(PythonActivity.mActivity, None)
+Locale = autoclass('java.util.Locale')
+PythonActivity = autoclass('org.kivy.android.PythonActivity')
+TextToSpeech = autoclass('android.speech.tts.TextToSpeech')
+tts = TextToSpeech(PythonActivity.mActivity, None)
+tts.setLanguage(Locale.JAPAN)
 
-    tts.setLanguage(Locale.JAPAN)
+def to_audio():
     tts.speak(dh.tts, TextToSpeech.QUEUE_FLUSH, None)
-    while True:
-        if not tts.isSpeaking():
-            tts.shutdown()
-            break
 
 
 def new_contents():
