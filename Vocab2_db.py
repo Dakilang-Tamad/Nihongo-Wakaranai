@@ -4,8 +4,8 @@ from pathlib import Path
 
 conn = sqlite3.connect("Quizzes.db")
 
-table = "N3_VOCAB"
-file = "n3_vocab.xlsx"
+table = "N1_VOCAB"
+file = "n1_vocab.xlsx"
 
 conn.execute("CREATE TABLE " + table + " (ID INT PRIMARY KEY, "
              "SENTENCE TEXT, C_A TEXT, C_B TEXT, C_C TEXT, C_D TEXT, "
