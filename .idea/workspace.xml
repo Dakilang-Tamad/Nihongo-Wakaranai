@@ -2,15 +2,9 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="531d4014-4a1e-42cb-8a17-d5238dd3f6fa" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/userdb_test.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Grammar_db.py" beforeDir="false" afterPath="$PROJECT_DIR$/Grammar_db.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Kanji_db.py" beforeDir="false" afterPath="$PROJECT_DIR$/Kanji_db.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Quizzes.db" beforeDir="false" afterPath="$PROJECT_DIR$/Quizzes.db" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Vocab2_db.py" beforeDir="false" afterPath="$PROJECT_DIR$/Vocab2_db.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/kanji display.py" beforeDir="false" afterPath="$PROJECT_DIR$/kanji display.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/n3_vocab.xlsx" beforeDir="false" afterPath="$PROJECT_DIR$/resources/n3_vocab.xlsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/userdb_test.py" beforeDir="false" afterPath="$PROJECT_DIR$/userdb_test.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -45,7 +39,7 @@
     &quot;settings.editor.selected.configurable&quot;: &quot;com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable&quot;
   }
 }</component>
-  <component name="RunManager" selected="Python.main">
+  <component name="RunManager" selected="Python.userdb_test">
     <configuration name="Grammar_db" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="Japanese-App" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -161,11 +155,11 @@
     </list>
     <recent_temporary>
       <list>
+        <item itemvalue="Python.userdb_test" />
         <item itemvalue="Python.main" />
         <item itemvalue="Python.Grammar_db" />
         <item itemvalue="Python.Vocab2_db" />
         <item itemvalue="Python.Kanji_db" />
-        <item itemvalue="Python.userdb_test" />
       </list>
     </recent_temporary>
   </component>
