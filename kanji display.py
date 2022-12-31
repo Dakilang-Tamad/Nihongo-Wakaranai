@@ -2,7 +2,7 @@ import sqlite3
 
 conn = sqlite3.connect("Quizzes.db")
 
-cursor = conn.execute("SELECT id, question, item, c_a, c_b, c_c, c_d, answer, kanji, kind, meaning, jp, en from N5_KANJI")
+cursor = conn.execute("SELECT id, question, item, c_a, c_b, c_c, c_d, answer, kanji, kind, meaning, jp, en from N3_KANJI")
 for row in cursor:
     print("ID = " + str(row[0]))
     print("QUESTION = " + row[1])

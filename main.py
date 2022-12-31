@@ -10,19 +10,19 @@ from kivy.uix.label import Label
 from kivy.uix.popup import Popup
 from kivy.core.window import Window
 import data_handling as dh
-from jnius import autoclass
+#from jnius import autoclass
 import os
 import time
 
-Locale = autoclass('java.util.Locale')
-PythonActivity = autoclass('org.kivy.android.PythonActivity')
-TextToSpeech = autoclass('android.speech.tts.TextToSpeech')
-tts = TextToSpeech(PythonActivity.mActivity, None)
+#Locale = autoclass('java.util.Locale')
+#PythonActivity = autoclass('org.kivy.android.PythonActivity')
+#TextToSpeech = autoclass('android.speech.tts.TextToSpeech')
+#tts = TextToSpeech(PythonActivity.mActivity, None)
 
 def to_audio():
-    tts.setLanguage(Locale.JAPAN)
-    tts.speak(dh.tts, TextToSpeech.QUEUE_FLUSH, None)
-
+    #tts.setLanguage(Locale.JAPAN)
+    #tts.speak(dh.tts, TextToSpeech.QUEUE_FLUSH, None)
+    pass
 
 def new_contents():
     dh.contents = dh.new_quiz(dh.level)
