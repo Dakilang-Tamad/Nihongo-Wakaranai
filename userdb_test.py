@@ -32,11 +32,11 @@ levels = ["N1", "N2", "N3", "N4", "N5"]
 categories = ["GRAMMAR", "VOCAB", "KANJI"]
 
 
-#cursor1.execute("DROP TABLE IF EXISTS " + tname + ";")
-#print("Finished dropping table (if existed)")
+cursor1.execute("DROP TABLE IF EXISTS " + tname + ";")
+print("Finished dropping table (if existed)")
 
-#cursor1.execute("CREATE TABLE " + tname + " (source_table TEXT, number INTEGER, proficiency INTEGER);")
-#print("Finished creating table")
+cursor1.execute("CREATE TABLE " + tname + " (source_table TEXT, number INTEGER, proficiency INTEGER);")
+print("Finished creating table")
 
 #for i in levels:
 #    for j in categories:
@@ -45,7 +45,7 @@ categories = ["GRAMMAR", "VOCAB", "KANJI"]
 #        cursor2 = conn2.execute(sqlite_command)
 #        for k in cursor2:
 #            insert_command = "INSERT INTO " + tname + " (source_table, number, proficiency) VALUES (%s, %s, %s);"
-#            cursor1.execute(insert_command, (source, k[0], 2))
+#            cursor1.execute(insert_command, (source, k[0], 0))
 #            print(k[0])
 
 cursor1.execute("SELECT * from " + tname + ";")

@@ -2,14 +2,11 @@
 
 WindowManager:
     canvas.before:
+        Color:
+            rgba: hex('#fffbe6')
         Rectangle:
             pos: self.pos
             size: self.size
-            source: "resources/v3/background/Light.png"
-
-    Dummy:
-    Signup:
-    Login:
     HomeScreen:
     DifficultySelection:
     BookmarkDifficulty:
@@ -21,93 +18,6 @@ WindowManager:
     VocabItem:
     KanjiItem:
     EndQuizz:
-
-<Dummy>:
-    name: "dummy"
-
-<Signup>:
-    name: "signup"
-
-    GridLayout:
-        cols: 1
-
-        Label:
-            bold: "True"
-            text: "Sign up to Continue"
-            font_name: "ComicSans"
-            color: "black"
-        
-        GridLayout:
-            cols: 1
-
-            TextInput:
-                id: s_name
-                hint_text: "Username"
-            
-            TextInput:
-                id: s_pass
-                password: "True"
-                hint_text: "Password"
-            
-            Button:
-                text: "Sign up"
-
-        GridLayout:
-            cols: 1
-
-            Label:
-                text: "Already have a account?"
-                font_name: "ComicSans"
-                color: "black"
-            
-            Button:
-                text: "Login"
-                on_release:
-                    root.login()
-                    root.manager.transition.direction = "left"
-
-
-<Login>
-    name: "login"
-
-    GridLayout:
-        cols: 1
-
-        Label:
-            bold: "True"
-            text: "Log in to your account"
-            font_name: "ComicSans"
-            color: "black"
-        
-        GridLayout:
-            cols: 1
-
-            TextInput:
-                id: s_name
-                hint_text: "Username"
-            
-            TextInput:
-                id: s_pass
-                password: "True"
-                hint_text: "Password"
-            
-            Button:
-                text: "Log in"
-
-        GridLayout:
-            cols: 1
-
-            Label:
-                text: "Don't have an account?"
-                font_name: "ComicSans"
-                color: "black"
-            
-            Button:
-                text: "Signup"
-                on_release:
-                    root.signup()
-                    root.manager.transition.direction = "right"
-
 
 
 <HomeScreen>:
@@ -743,10 +653,20 @@ WindowManager:
             height: root.height/12
             text: root.level
             font_name: "ComicSans"
-            color: "black"
-
+            canvas.before:
+                Color:
+                    rgba: hex('#356859')
+                Rectangle:
+                    pos: self.pos
+                    size: self.size
 
         TabbedPanel:
+            canvas.before:
+                Color:
+                    rgba: hex('#fffbe6')
+                Rectangle:
+                    pos: self.pos
+                    size: self.size
             do_default_tab: False
             tab_width: self.parent.width / 3
 
@@ -760,7 +680,7 @@ WindowManager:
                 ScrollView:
                     canvas.before:
                         Color:
-                            rgba: hex('#ffffff')
+                            rgba: hex('#fffbe6')
                         Rectangle:
                             pos: self.pos
                             size: self.size
@@ -786,7 +706,7 @@ WindowManager:
                 ScrollView:
                     canvas.before:
                         Color:
-                            rgba: hex('#ffffff')
+                            rgba: hex('#fffbe6')
                         Rectangle:
                             pos: self.pos
                             size: self.size
@@ -812,7 +732,7 @@ WindowManager:
                 ScrollView:
                     canvas.before:
                         Color:
-                            rgba: hex('#ffffff')
+                            rgba: hex('#fffbe6')
                         Rectangle:
                             pos: self.pos
                             size: self.size

@@ -42,6 +42,14 @@ def add_bm(level, type, ID):
     conn.execute(command)
     conn.commit()
 
+def check_user():
+    conn = sqlite3.connect("Quizzes.db")
+    cursor = conn.cursor()
+    t_list = cursor.execute("""SELECT name FROM sqlite_master WHERE type='table'
+                            AND name='user'; """).fetchall()
+    if t_list == []: return True
+    else: return True
+
 
 bg = '#fffbe6'
 current = 0 #counter for the array
