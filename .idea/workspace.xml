@@ -6,27 +6,9 @@
   <component name="ChangeListManager">
     <list default="true" id="531d4014-4a1e-42cb-8a17-d5238dd3f6fa" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Quizzes.db" beforeDir="false" afterPath="$PROJECT_DIR$/Quizzes.db" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/UI Redesign/White/Buttons/Base Button.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/UI Redesign/White/Buttons/Group 1.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/UI Redesign/White/Buttons/Group 2.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/UI Redesign/White/Buttons/Group 3.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/UI Redesign/White/Buttons/Group 4.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/UI Redesign/White/Buttons/Group 5.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/UI Redesign/White/Buttons/N1-5 White/N1.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/UI Redesign/White/Buttons/N1-5 White/N2.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/UI Redesign/White/Buttons/N1-5 White/N3.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/UI Redesign/White/Buttons/N1-5 White/N4.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/UI Redesign/White/Buttons/N1-5 White/N5.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/UI Redesign/White/Icons/Conversation.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/UI Redesign/White/Icons/JP.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/UI Redesign/White/Icons/Kanji.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/UI Redesign/White/Icons/Quiz.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/UI Redesign/White/Icons/Writing.png" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/data_handling.py" beforeDir="false" afterPath="$PROJECT_DIR$/data_handling.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/my.kv" beforeDir="false" afterPath="$PROJECT_DIR$/my.kv" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/test.py" beforeDir="false" afterPath="$PROJECT_DIR$/test.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/userdb_test.py" beforeDir="false" afterPath="$PROJECT_DIR$/userdb_test.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />

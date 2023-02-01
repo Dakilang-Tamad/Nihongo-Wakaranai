@@ -2,6 +2,7 @@ import sqlite3
 from pathlib import Path
 from kivy.properties import StringProperty
 from kivy.app import App
+from kivymd.app import MDApp
 from kivy.lang import Builder
 from kivy.uix.screenmanager import ScreenManager, Screen
 from kivy.core.text import LabelBase
@@ -10,6 +11,7 @@ from kivy.uix.label import Label
 from kivy.uix.popup import Popup
 from kivy.core.window import Window
 from kivy.clock import Clock
+from threading import Thread
 import data_handling as dh
 #from jnius import autoclass
 import os
@@ -285,7 +287,19 @@ class Dummy(Screen):
 
 class Signup(Screen):
     def signup(self):
-        pass
+        usrname = self.ids.s_name.text
+        pass1 = self.ids.s_pass.text
+        pass2 = self.ids.s_pass_2.text
+
+        if (pass1 == pass2):
+            if (dh.validate(usrname, pass1)):
+                print("valid credentials, signing up")
+                self.new_acc = Thread(target=dh.signup, args=(usrname, pass1,))
+                self.new_acc.start()
+                print("account is ready")
+                self.manager.current = "home"
+        else:
+            print("invalid credentials")
 
     def login(self):
         self.manager.current = "login"
@@ -852,7 +866,7 @@ class WindowManager(ScreenManager):
     pass
 
 
-kv = Builder.load_file("my.kv")
+
 tools_path = os.path.dirname("resources/")
 icons_path1 = os.path.join(tools_path, 'komorebi-gothic-P.ttf')
 icons_path2 = os.path.join(tools_path, 'ComicSansMSBold.ttf')
@@ -863,7 +877,7 @@ LabelBase.register(name='ComicSans',
                    fn_regular=icons_path2)
 
 
-class MainApp(App):
+class MainApp(MDApp):
     def on_start(self):
         from kivy.base import EventLoop
         EventLoop.window.bind(on_keyboard=self.hook_keyboard)
@@ -875,6 +889,7 @@ class MainApp(App):
             return True
 
     def build(self):
+        kv = Builder.load_file("my.kv")
         return kv
 
 

@@ -11,7 +11,6 @@ sslmode = "require"
 conn_string = "host={0} user={1} dbname={2} password={3} sslmode={4}".format(host, user, dbname, password, sslmode)
 conn1 = psycopg2.connect(conn_string)
 conn2 = sqlite3.connect("Quizzes.db")
-print("Connection established")
 
 cursor1 = conn1.cursor()
 

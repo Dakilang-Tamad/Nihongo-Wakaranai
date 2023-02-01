@@ -39,18 +39,43 @@ WindowManager:
         
         GridLayout:
             cols: 1
+            
+            AnchorLayout:
 
-            TextInput:
-                id: s_name
-                hint_text: "Username"
+                MDTextField:
+                    mode: "round"
+                    id: s_name
+                    hint_text: "username"
+                    size_hint: None, None
+                    width: (root.width/10)*8
             
-            TextInput:
-                id: s_pass
-                password: "True"
-                hint_text: "Password"
+            AnchorLayout:
             
-            Button:
-                text: "Sign up"
+                MDTextField:
+                    mode:"round"
+                    id: s_pass
+                    password: "True"
+                    hint_text: "password"
+                    size_hint: None, None
+                    width: (root.width/10)*8
+            
+            AnchorLayout:
+            
+                MDTextField:
+                    mode:"round"
+                    id: s_pass_2
+                    password: "True"
+                    hint_text: "confirm password"
+                    size_hint: None, None
+                    width: (root.width/10)*8
+
+            AnchorLayout:
+            
+                MDFillRoundFlatButton:
+                    text: "Sign up"
+                    pos_hint_x: {"center"}
+                    on_release:
+                        root.signup()
 
         GridLayout:
             cols: 1
@@ -60,11 +85,16 @@ WindowManager:
                 font_name: "ComicSans"
                 color: "black"
             
-            Button:
-                text: "Login"
-                on_release:
-                    root.login()
-                    root.manager.transition.direction = "left"
+            AnchorLayout:
+                anchor_y:'top'
+                anchor_x:'center'
+            
+                MDFillRoundFlatButton:
+                    text: "Login"
+                    pos_hint_x: {"center"}
+                    on_release:
+                        root.login()
+                        root.manager.transition.direction = "left"
 
 
 <Login>
@@ -82,17 +112,30 @@ WindowManager:
         GridLayout:
             cols: 1
 
-            TextInput:
-                id: s_name
-                hint_text: "Username"
+            AnchorLayout:
+
+                MDTextField:
+                    mode: "round"
+                    id: s_name
+                    hint_text: "username"
+                    size_hint: None, None
+                    width: (root.width/10)*8
             
-            TextInput:
-                id: s_pass
-                password: "True"
-                hint_text: "Password"
+            AnchorLayout:
             
-            Button:
-                text: "Log in"
+                MDTextField:
+                    mode:"round"
+                    id: s_pass
+                    password: "True"
+                    hint_text: "password"
+                    size_hint: None, None
+                    width: (root.width/10)*8
+            
+            AnchorLayout:
+            
+                MDFillRoundFlatButton:
+                    text: "Log in"
+                    pos_hint_x: {"center"}
 
         GridLayout:
             cols: 1
@@ -102,11 +145,16 @@ WindowManager:
                 font_name: "ComicSans"
                 color: "black"
             
-            Button:
-                text: "Signup"
-                on_release:
-                    root.signup()
-                    root.manager.transition.direction = "right"
+            AnchorLayout:
+                anchor_y:'top'
+                anchor_x:'center'
+            
+                MDFillRoundFlatButton:
+                    text: "Signup"
+                    pos_hint_x: {"center"}
+                    on_release:
+                        root.signup()
+                        root.manager.transition.direction = "right"
 
 
 
