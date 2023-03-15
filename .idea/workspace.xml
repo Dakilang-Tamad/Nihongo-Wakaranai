@@ -7,9 +7,8 @@
     <list default="true" id="531d4014-4a1e-42cb-8a17-d5238dd3f6fa" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/data_handling.py" beforeDir="false" afterPath="$PROJECT_DIR$/data_handling.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/my.kv" beforeDir="false" afterPath="$PROJECT_DIR$/my.kv" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/userdb_test.py" beforeDir="false" afterPath="$PROJECT_DIR$/userdb_test.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/v3/background/transparent.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/test.py" beforeDir="false" afterPath="$PROJECT_DIR$/test.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -119,7 +118,6 @@
         <env name="JAVA_HOME" value="C:\Program Files\Java\jdk-19" />
       </envs>
       <option name="SDK_HOME" value="C:\Users\ximvy\Documents\GitHub\Japanese-App\venv\venv\Scripts\python.exe" />
-      <option name="SDK_NAME" value="Python 3.9 (venv)" />
       <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
       <option name="IS_MODULE_SDK" value="false" />
       <option name="ADD_CONTENT_ROOTS" value="true" />

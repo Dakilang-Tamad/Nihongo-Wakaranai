@@ -307,7 +307,16 @@ class Signup(Screen):
 
 class Login(Screen):
     def login(self):
-        pass
+        username = self.ids.s_name.text
+        password = self.ids.s_pass.text
+
+        table = dh.log_in(username, password)
+
+        if table == "None":
+            print("credentials not found")
+        else:
+            self.manager.current = "home"
+
     
     def signup(self):
         self.manager.current = "signup"
@@ -403,7 +412,6 @@ class BookmarkedItems(Screen):
         cursor.execute(retrieve_query)
         contents = cursor.fetchall()
         if not contents:
-            print("empty")
             lbl = Label(text="No bookmarks added yet.", font_name="komorebi")
             if categ == "GRAMMAR":
                 self.ids.grammar_tab.add_widget(lbl)

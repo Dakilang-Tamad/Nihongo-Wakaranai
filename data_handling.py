@@ -1,13 +1,15 @@
 import sqlite3
 import random
 import psycopg2
-import sqlite3
 import hashlib
 import string
 import re
 from threading import Thread
 from plyer import notification
 from pathlib import Path
+from sqlalchemy import create_engine, Column, Integer, String, text
+from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy.orm import sessionmaker
 
 def new_table(tablename):
     tname = tablename
@@ -17,25 +19,27 @@ def new_table(tablename):
     password = "Knxvn_0407"
     sslmode = "require"
 
-    conn_string = "host={0} user={1} dbname={2} password={3} sslmode={4}".format(host, user, dbname, password, sslmode)
-    conn1 = psycopg2.connect(conn_string)
+    conn_string = f"postgresql://{user}:{password}@{host}/{dbname}?sslmode={sslmode}"
+    engine = create_engine(conn_string)
+    Session = sessionmaker(bind=engine)
+    session = Session()
     conn2 = sqlite3.connect("Quizzes.db")
 
-    cursor1 = conn1.cursor()
+    Base = declarative_base()
+
+    class Quiz(Base):
+        __tablename__ = tname
+        
+        id = Column(Integer, primary_key=True)
+        source_table = Column(String)
+        number = Column(Integer)
+        proficiency = Column(Integer)
+
+    Base.metadata.drop_all(engine)
+    Base.metadata.create_all(engine)
 
     levels = ["N1", "N2", "N3", "N4", "N5"]
     categories = ["GRAMMAR", "VOCAB", "KANJI"]
-
-
-    cursor1.execute("DROP TABLE IF EXISTS " + tname + ";")
-
-    cursor1.execute("CREATE TABLE " + tname + " (source_table TEXT, number INTEGER, proficiency INTEGER);")
-
-    c_notif = notification.notify(
-        title='My Title',
-        message='My message',
-        app_name='My App'
-    )
 
     for i in levels:
         for j in categories:
@@ -43,31 +47,73 @@ def new_table(tablename):
             sqlite_command = "SELECT ID FROM " + source
             cursor2 = conn2.execute(sqlite_command)
             for k in cursor2:
-                insert_command = "INSERT INTO " + tname + " (source_table, number, proficiency) VALUES (%s, %s, %s);"
-                cursor1.execute(insert_command, (source, k[0], 0))
-
-                text = source + " " + str(k[0])
-
-                notification.update(
-                    notification_id = c_notif,
-                    message = text
-                )
+                quiz = Quiz(source_table=source, number=k[0], proficiency=0)
+                session.add(quiz)
+                print(source + " item number " + str(k) + " added")
     
-    conn1.commit()
-    conn1.close()
 
-def signup(username, password):
+    session.commit()
+    session.close()
+
+def log_in(username, password):
     host = "nihongowakaranai.postgres.database.azure.com"
     dbname = "Nihongo_Wakaranai"
     user = "main_admin"
-    password = "Knxvn_0407"
+    pword = "Knxvn_0407"
     sslmode = "require"
 
-    conn_string = "host={0} user={1} dbname={2} password={3} sslmode={4}".format(host, user, dbname, password, sslmode)
-    conn1 = psycopg2.connect(conn_string)
-    conn2 = sqlite3.connect("Quizzes.db")
+    conn_string = "postgresql://{user}:{password}@{host}/{dbname}?sslmode={sslmode}".format(
+        host=host, user=user, dbname=dbname, password=pword, sslmode=sslmode
+    )
+    engine = create_engine(conn_string)
+    Session = sessionmaker(bind=engine)
+    session = Session()
 
-    cursor1 = conn1.cursor()
+    Base = declarative_base()
+
+    sample_pass = password
+    obj = hashlib.sha256(sample_pass.encode())
+    hashed = obj.hexdigest()
+
+    class User(Base):
+        __tablename__ = 'user_data'
+        key = Column(Integer, primary_key=True)
+        username = Column(String)
+        password = Column(String)
+        table_name = Column(String)
+
+    result = session.query(User.table_name)\
+        .filter_by(username=username, password=hashed).scalar()
+    
+    return (str(result))
+
+
+def signup(username, password):
+
+    host = "nihongowakaranai.postgres.database.azure.com"
+    dbname = "Nihongo_Wakaranai"
+    user = "main_admin"
+    pword = "Knxvn_0407"
+    sslmode = "require"
+
+    conn_string = "postgresql://{user}:{password}@{host}/{dbname}?sslmode={sslmode}".format(
+        host=host, user=user, dbname=dbname, password=pword, sslmode=sslmode
+    )
+    engine = create_engine(conn_string)
+
+    Base = declarative_base()
+
+    class User(Base):
+        __tablename__ = 'user_data'
+        key = Column(Integer, primary_key=True)
+        username = Column(String)
+        password = Column(String)
+        table_name = Column(String)
+
+    Base.metadata.create_all(engine)
+
+    Session = sessionmaker(bind=engine)
+    session = Session()
 
     uname = username
     sample_pass = password
@@ -75,14 +121,11 @@ def signup(username, password):
     hashed = obj.hexdigest()
     tname = "t" + hashed[0:20] + "p"
 
-    command = "INSERT INTO user_data(username, password, table_name) VALUES (%s, %s, %s);"
-    cursor1.execute(command, (uname, hashed, tname))
-    conn1.commit()
+    user = User(username=uname, password=hashed, table_name=tname)
+    session.add(user)
+    session.commit()
 
     print("account created, setting up account")
-    
-    conn1.commit()
-    conn1.close()
 
     new_table(tname)
 

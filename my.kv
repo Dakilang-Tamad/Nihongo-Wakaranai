@@ -1,3 +1,4 @@
+#:kivy 2.1.0
 #:import hex kivy.utils.get_color_from_hex
 
 WindowManager:
@@ -136,6 +137,8 @@ WindowManager:
                 MDFillRoundFlatButton:
                     text: "Log in"
                     pos_hint_x: {"center"}
+                    on_release:
+                        root.login()
 
         GridLayout:
             cols: 1
@@ -1386,8 +1389,8 @@ WindowManager:
             AnchorLayout:
 
                 Button:
-                    background_normal: './resources/Buttons/back_button_up.png'
-                    background_down: './resources/Buttons/back_button_down.png'
+                    background_normal: './resources/v3/buttons/Mic.png'
+                    background_down: './resources/v3/buttons/Mic.png'
                     border: 0,0,0,0
                     size_hint: None, None
                     size: root.width/8, root.width/8
@@ -1475,8 +1478,8 @@ WindowManager:
             AnchorLayout:
 
                 Button:
-                    background_normal: './resources/Buttons/back_button_up.png'
-                    background_down: './resources/Buttons/back_button_down.png'
+                    background_normal: './resources/v3/buttons/Mic.png'
+                    background_down: './resources/v3/buttons/Mic.png'
                     border: 0,0,0,0
                     size_hint: None, None
                     size: root.width/8, root.width/8
@@ -1578,8 +1581,8 @@ WindowManager:
             AnchorLayout:
 
                 Button:
-                    background_normal: './resources/Buttons/back_button_up.png'
-                    background_down: './resources/Buttons/back_button_down.png'
+                    background_normal: './resources/v3/buttons/Mic.png'
+                    background_down: './resources/v3/buttons/Mic.png'
                     border: 0,0,0,0
                     size_hint: None, None
                     size: root.width/8, root.width/8
@@ -1667,8 +1670,8 @@ WindowManager:
             AnchorLayout:
 
                 Button:
-                    background_normal: './resources/Buttons/back_button_up.png'
-                    background_down: './resources/Buttons/back_button_down.png'
+                    background_normal: './resources/v3/buttons/Mic.png'
+                    background_down: './resources/v3/buttons/Mic.png'
                     border: 0,0,0,0
                     size_hint: None, None
                     size: root.width/8, root.width/8
