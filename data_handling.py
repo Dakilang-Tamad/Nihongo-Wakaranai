@@ -7,7 +7,7 @@ import re
 from threading import Thread
 from plyer import notification
 from pathlib import Path
-from sqlalchemy import create_engine, Column, Integer, String, text
+from sqlalchemy import create_engine, MetaData, Table, Column, Integer, String, text
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
 
@@ -49,11 +49,44 @@ def new_table(tablename):
             for k in cursor2:
                 quiz = Quiz(source_table=source, number=k[0], proficiency=0)
                 session.add(quiz)
-                print(source + " item number " + str(k) + " added")
     
 
     session.commit()
     session.close()
+
+def create_user(username, table_name):
+    conn = sqlite3.connect("Quizzes.db")
+    conn.execute("create table USER (ID int primary key, username text, table_name text);")
+    conn.execute("insert into USER(ID) values (0);")
+    conn.execute("update USER set username = '" + username + "' where ID = 0")
+    conn.execute("update USER set table_name = '" + table_name + "' where ID = 0")
+    conn.commit()
+    conn.close()
+
+def retrieve_progress(table_name):
+    tname = table_name
+    host = "nihongowakaranai.postgres.database.azure.com"
+    dbname = "Nihongo_Wakaranai"
+    user = "main_admin"
+    password = "Knxvn_0407"
+    sslmode = "require"
+
+    conn_string = f"postgresql://{user}:{password}@{host}/{dbname}?sslmode={sslmode}"
+    engine = create_engine(conn_string)
+    Session = sessionmaker(bind=engine)
+    session = Session()
+    conn = sqlite3.connect("Quizzes.db")
+    metadata = MetaData()
+    metadata.reflect(bind=engine)
+
+    table = Table(tname, metadata, autoload=True, autoload_with=engine)
+
+    results = session.query(table).all()
+
+    for row in results:
+        conn.execute("UPDATE " + row[1] + " set PROF = '" + str(row[3]) + "' where ID = " + str(row[2]))
+    conn.commit()
+    conn.close()
 
 def log_in(username, password):
     host = "nihongowakaranai.postgres.database.azure.com"
@@ -86,7 +119,6 @@ def log_in(username, password):
         .filter_by(username=username, password=hashed).scalar()
     
     return (str(result))
-
 
 def signup(username, password):
 
@@ -125,6 +157,8 @@ def signup(username, password):
     session.add(user)
     session.commit()
 
+    create_user(uname, tname)
+
     print("account created, setting up account")
 
     new_table(tname)
@@ -154,7 +188,6 @@ def validate(username, password):
             return False
         else:
             return True
-
 
 def new_quiz(diff):
     conn = sqlite3.connect("Quizzes.db")

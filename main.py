@@ -315,6 +315,9 @@ class Login(Screen):
         if table == "None":
             print("credentials not found")
         else:
+            dh.create_user(username, table)
+            self.retrieve = Thread(target=dh.retrieve_progress, args=(table,))
+            self.retrieve.start()
             self.manager.current = "home"
 
     
