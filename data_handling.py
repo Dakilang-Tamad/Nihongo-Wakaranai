@@ -1,9 +1,9 @@
 import sqlite3
 import random
-import psycopg2
 import hashlib
 import string
 import re
+import json
 from threading import Thread
 from plyer import notification
 from pathlib import Path
@@ -13,17 +13,14 @@ from sqlalchemy.orm import sessionmaker
 
 def new_table(tablename):
     tname = tablename
-    host = "nihongowakaranai.postgres.database.azure.com"
-    dbname = "Nihongo_Wakaranai"
-    user = "main_admin"
-    password = "Knxvn_0407"
-    sslmode = "require"
+    with open('creds.json') as f:
+        credentials = json.load(f)
 
-    conn_string = f"postgresql://{user}:{password}@{host}/{dbname}?sslmode={sslmode}"
+    conn_string = f"postgresql://{credentials['user']}:{credentials['password']}@{credentials['host']}/{credentials['dbname']}?sslmode={credentials['sslmode']}"
     engine = create_engine(conn_string)
     Session = sessionmaker(bind=engine)
     session = Session()
-    conn2 = sqlite3.connect("Quizzes.db")
+    conn = sqlite3.connect("Quizzes.db")
 
     Base = declarative_base()
 
@@ -45,8 +42,8 @@ def new_table(tablename):
         for j in categories:
             source = i + "_" + j
             sqlite_command = "SELECT ID FROM " + source
-            cursor2 = conn2.execute(sqlite_command)
-            for k in cursor2:
+            cursor = conn.execute(sqlite_command)
+            for k in cursor:
                 quiz = Quiz(source_table=source, number=k[0], proficiency=0)
                 session.add(quiz)
     
@@ -65,13 +62,10 @@ def create_user(username, table_name):
 
 def retrieve_progress(table_name):
     tname = table_name
-    host = "nihongowakaranai.postgres.database.azure.com"
-    dbname = "Nihongo_Wakaranai"
-    user = "main_admin"
-    password = "Knxvn_0407"
-    sslmode = "require"
+    with open('creds.json') as f:
+        credentials = json.load(f)
 
-    conn_string = f"postgresql://{user}:{password}@{host}/{dbname}?sslmode={sslmode}"
+    conn_string = f"postgresql://{credentials['user']}:{credentials['password']}@{credentials['host']}/{credentials['dbname']}?sslmode={credentials['sslmode']}"
     engine = create_engine(conn_string)
     Session = sessionmaker(bind=engine)
     session = Session()
@@ -89,15 +83,10 @@ def retrieve_progress(table_name):
     conn.close()
 
 def log_in(username, password):
-    host = "nihongowakaranai.postgres.database.azure.com"
-    dbname = "Nihongo_Wakaranai"
-    user = "main_admin"
-    pword = "Knxvn_0407"
-    sslmode = "require"
+    with open('creds.json') as f:
+        credentials = json.load(f)
 
-    conn_string = "postgresql://{user}:{password}@{host}/{dbname}?sslmode={sslmode}".format(
-        host=host, user=user, dbname=dbname, password=pword, sslmode=sslmode
-    )
+    conn_string = f"postgresql://{credentials['user']}:{credentials['password']}@{credentials['host']}/{credentials['dbname']}?sslmode={credentials['sslmode']}"
     engine = create_engine(conn_string)
     Session = sessionmaker(bind=engine)
     session = Session()
@@ -122,15 +111,10 @@ def log_in(username, password):
 
 def signup(username, password):
 
-    host = "nihongowakaranai.postgres.database.azure.com"
-    dbname = "Nihongo_Wakaranai"
-    user = "main_admin"
-    pword = "Knxvn_0407"
-    sslmode = "require"
+    with open('creds.json') as f:
+        credentials = json.load(f)
 
-    conn_string = "postgresql://{user}:{password}@{host}/{dbname}?sslmode={sslmode}".format(
-        host=host, user=user, dbname=dbname, password=pword, sslmode=sslmode
-    )
+    conn_string = f"postgresql://{credentials['user']}:{credentials['password']}@{credentials['host']}/{credentials['dbname']}?sslmode={credentials['sslmode']}"
     engine = create_engine(conn_string)
 
     Base = declarative_base()
@@ -158,8 +142,6 @@ def signup(username, password):
     session.commit()
 
     create_user(uname, tname)
-
-    print("account created, setting up account")
 
     new_table(tname)
 
@@ -232,9 +214,42 @@ def check_user():
     conn = sqlite3.connect("Quizzes.db")
     cursor = conn.cursor()
     t_list = cursor.execute("""SELECT name FROM sqlite_master WHERE type='table'
-                            AND name='user'; """).fetchall()
+                            AND name='USER'; """).fetchall()
     if t_list == []: return False
     else: return True
+
+def add_open_level(level):
+    conn = sqlite3.connect("Quizzes.db")
+    table = "OPEN_LEVELS"
+    command = "INSERT INTO " + table + "(level) VALUES (" + level + ")"
+    conn.execute(command)
+    conn.commit()
+
+def check_level_access(diff):
+    conn = sqlite3.connect("Quizzes.db")
+
+    cursor1 = conn.execute("SELECT PROF FROM " + diff + "_VOCAB;")
+    cursor2 = conn.execute("SELECT PROF FROM " + diff + "_KANJI;")
+    cursor3 = conn.execute("SELECT PROF FROM " + diff + "_GRAMMAR;")
+    cursor4 = conn.execute("SELECT level FROM OPEN_LEVELS;")
+
+    total = 0
+    levels = []
+
+    for i in cursor1:
+        total += int(i[0])
+    for i in cursor2:
+        total += int(i[0])
+    for i in cursor3:
+        total += int(i[0])
+
+    for i in cursor4:
+        levels.append(i[0])
+    
+    if diff in levels or total >= 80:
+        return True
+    else:
+        return False
 
 
 bg = '#fffbe6'
@@ -244,4 +259,9 @@ score = 0 #holder of the quiz score
 tally = [] #a tally of which items were answered correctly
 contents = [] #contains the contents (ID's) of the quiz
 level = "" #current difficulty level selected
-tts = "" #current text-to-speech container
+
+#for the primary assessment
+first_screen = ""
+difficulties = ["N5", "N4", "N3", "N2", "N1"]
+passing_scores = [8, 8, 6, 5, 5]
+index = 0

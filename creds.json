@@ -1,0 +1,8 @@
+{
+    "host": "nihongowakaranai.postgres.database.azure.com",
+    "dbname": "Nihongo_Wakaranai",
+    "user": "main_admin",
+    "password": "Knxvn_0407",
+    "sslmode": "require"
+  }
+  

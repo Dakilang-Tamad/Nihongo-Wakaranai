@@ -32,7 +32,6 @@ def new_contents():
     dh.tally = []
     dh.score = 0
 
-
 def update_status(level):
     conn = sqlite3.connect("Quizzes.db")
     level = level
@@ -47,15 +46,14 @@ def update_status(level):
 def add_prof(level):
     conn = sqlite3.connect("Quizzes.db")
     level = level
-    cursor = conn.execute("SELECT PROF FROM " + level + " WHERE ID = " + str(dh.contents[dh.current]) + ";")
+    cursor = conn.execute("SELECT PROF FROM " + level + " WHERE ID = " + str(dh.contents[dh.current - 1]) + ";")
     prof = 0
     for i in cursor:
         prof = i[0] + 1
-    command = "UPDATE " + level + " set PROF = " + str(prof) + " where ID = " + str(dh.contents[dh.current])
+    command = "UPDATE " + level + " set PROF = " + str(prof) + " where ID = " + str(dh.contents[dh.current - 1])
     conn.execute(command)
     conn.commit()
     conn.close()
-
 
 def update_bookmark(level):
     conn = sqlite3.connect("Quizzes.db")
@@ -280,8 +278,10 @@ class Dummy(Screen):
 
     def switch_screen(self, dt):
         if dh.check_user():
+            dh.first_screen = "home"
             self.manager.current = "home"
         else:
+            dh.first_screen = "signup"
             self.manager.current = "signup"
 
 
@@ -293,11 +293,11 @@ class Signup(Screen):
 
         if (pass1 == pass2):
             if (dh.validate(usrname, pass1)):
-                print("valid credentials, signing up")
                 self.new_acc = Thread(target=dh.signup, args=(usrname, pass1,))
                 self.new_acc.start()
-                print("account is ready")
-                self.manager.current = "home"
+                dh.level = dh.difficulties[dh.index]
+                new_contents()
+                self.manager.current = "grammari"
         else:
             print("invalid credentials")
 
@@ -307,6 +307,7 @@ class Signup(Screen):
 
 class Login(Screen):
     def login(self):
+        dh.first_screen = "login"
         username = self.ids.s_name.text
         password = self.ids.s_pass.text
 
@@ -334,28 +335,44 @@ class DifficultySelection(Screen):
 
     def start5(self):
         dh.level = "N5"
-        new_contents()
-        self.manager.current = "grammari"
+        if dh.check_level_access(dh.level):
+            new_contents()
+            self.manager.current = "grammari"
+        else:
+            NoticePop().open()
+
 
     def start4(self):
         dh.level = "N4"
-        new_contents()
-        self.manager.current = "grammari"
+        if dh.check_level_access(dh.level):
+            new_contents()
+            self.manager.current = "grammari"
+        else:
+            NoticePop().open()
 
     def start3(self):
         dh.level = "N3"
-        new_contents()
-        self.manager.current = "grammari"
+        if dh.check_level_access(dh.level):
+            new_contents()
+            self.manager.current = "grammari"
+        else:
+            NoticePop().open()
 
     def start2(self):
         dh.level = "N2"
-        new_contents()
-        self.manager.current = "grammari"
+        if dh.check_level_access(dh.level):
+            new_contents()
+            self.manager.current = "grammari"
+        else:
+            NoticePop().open()
 
     def start1(self):
         dh.level = "N1"
-        new_contents()
-        self.manager.current = "grammari"
+        if dh.check_level_access(dh.level):
+            new_contents()
+            self.manager.current = "grammari"
+        else:
+            NoticePop().open()
 
 
 class BookmarkDifficulty(Screen):
@@ -415,7 +432,7 @@ class BookmarkedItems(Screen):
         cursor.execute(retrieve_query)
         contents = cursor.fetchall()
         if not contents:
-            lbl = Label(text="No bookmarks added yet.", font_name="komorebi")
+            lbl = Label(text="No bookmarks added yet.", font_name="jp_font", color="black")
             if categ == "GRAMMAR":
                 self.ids.grammar_tab.add_widget(lbl)
             if categ == "VOCAB":
@@ -425,7 +442,7 @@ class BookmarkedItems(Screen):
         else:
             for i in contents:
                 button_text = i[1]
-                button = Button(text=button_text, font_name="komorebi", color=(0, 0, 0, 1),
+                button = Button(text=button_text, font_name="jp_font", color=(0, 0, 0, 1),
                                 background_normal=self.button_up, background_down=self.button_down,
                                 border=(0, 0, 0, 0))
                 button.bind(on_press=lambda x, id=i[0], type=categ: self.popup(type, id))
@@ -516,7 +533,7 @@ class Contents(Screen):
         cursor.execute(retrieve_query)
         contents = cursor.fetchall()
         if not contents:
-            lbl = Label(text="No bookmarks added yet.", font_name="komorebi")
+            lbl = Label(text="No bookmarks added yet.", font_name="jp_font")
             if categ == "GRAMMAR":
                 self.ids.grammar_tab.add_widget(lbl)
             if categ == "VOCAB":
@@ -526,7 +543,7 @@ class Contents(Screen):
         else:
             for i in contents:
                 button_text = i[1]
-                button = Button(text=button_text, font_name="komorebi", color=(0, 0, 0, 1),
+                button = Button(text=button_text, font_name="jp_font", color=(0, 0, 0, 1),
                                 background_normal=self.button_up, background_down=self.button_down,
                                 border=(0, 0, 0, 0))
                 button.bind(on_press=lambda x, id=i[0], type=categ: self.popup(type, id))
@@ -634,8 +651,23 @@ class GrammarItem(Screen):
         self.next_screen()
 
     def next_screen(self):
+        
         if dh.current == 10:
-            self.manager.current = "end"
+            if dh.first_screen == "signup":
+                print(dh.score)
+                if dh.score < dh.passing_scores[dh.index]:
+                    self.manager.current = "home"
+                else:
+                    if dh.level == "N5":
+                        pass
+                    else:
+                        dh.add_open_level(dh.level)
+                        dh.index = dh.index + 1
+                        dh.level = dh.difficulties[dh.index]
+                        dh.current = 0
+                        new_contents()
+            else:
+                self.manager.current = "end"
         else:
             self.manager.current = "vocabi"
 
@@ -823,7 +855,7 @@ class EndQuizz(Screen):
                 contents = cursor.fetchall()
                 for j in contents:
                     button_text = j[0] + " - " + dh.tally[i]
-                    button = Button(text=button_text, font_name="komorebi", color=(0,0,0,1),
+                    button = Button(text=button_text, font_name="jp_font", color=(0,0,0,1),
                                     background_normal=self.button_up, background_down=self.button_down,
                                     border=(0,0,0,0))
                     button.bind(on_release=lambda x, id=dh.contents[i], type="grammar": self.popup(type, id))
@@ -834,7 +866,7 @@ class EndQuizz(Screen):
                 contents = cursor.fetchall()
                 for j in contents:
                     button_text = j[0] + " - " + dh.tally[i]
-                    button = Button(text=button_text, font_name="komorebi", color=(0,0,0,1),
+                    button = Button(text=button_text, font_name="jp_font", color=(0,0,0,1),
                                     background_normal=self.button_up, background_down=self.button_down,
                                     border=(0,0,0,0))
                     button.bind(on_release=lambda x, id=dh.contents[i], type="vocab": self.popup(type, id))
@@ -845,7 +877,7 @@ class EndQuizz(Screen):
                 contents = cursor.fetchall()
                 for j in contents:
                     button_text = j[0] + " - " + dh.tally[i]
-                    button = Button(text=button_text, font_name="komorebi", color=(0,0,0,1),
+                    button = Button(text=button_text, font_name="jp_font", color=(0,0,0,1),
                                     background_normal=self.button_up, background_down=self.button_down,
                                     border=(0,0,0,0))
                     button.bind(on_release=lambda x, id=dh.contents[i], type="kanji": self.popup(type, id))
@@ -882,9 +914,9 @@ tools_path = os.path.dirname("resources/")
 icons_path1 = os.path.join(tools_path, 'komorebi-gothic-P.ttf')
 icons_path2 = os.path.join(tools_path, 'ComicSansMSBold.ttf')
 
-LabelBase.register(name='komorebi',
+LabelBase.register(name='jp_font',
                    fn_regular=icons_path1)
-LabelBase.register(name='ComicSans',
+LabelBase.register(name='en_font',
                    fn_regular=icons_path2)
 
 
