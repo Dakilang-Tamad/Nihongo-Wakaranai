@@ -173,9 +173,10 @@ WindowManager:
             height: root.height/12
             text: "Nihongo Wakaranai"
             font_name: "en_font"
+            color: 0,0,0,1
             canvas.before:
                 Color:
-                    rgba: hex('#356859')
+                    rgba: hex('#80CFFF')
                 Rectangle:
                     pos: self.pos
                     size: self.size
@@ -272,9 +273,10 @@ WindowManager:
             height: root.height/12
             text: "Quiz"
             font_name: "en_font"
+            color: 0,0,0,1
             canvas.before:
                 Color:
-                    rgba: hex('#356859')
+                    rgba: hex('#80CFFF')
                 Rectangle:
                     pos: self.pos
                     size: self.size
@@ -397,9 +399,10 @@ WindowManager:
             height: root.height/12
             text: "Bookmarks"
             font_name: "en_font"
+            color: 0,0,0,1
             canvas.before:
                 Color:
-                    rgba: hex('#356859')
+                    rgba: hex('#80CFFF')
                 Rectangle:
                     pos: self.pos
                     size: self.size
@@ -526,7 +529,7 @@ WindowManager:
             font_name: "en_font"
             canvas.before:
                 Color:
-                    rgba: hex('#356859')
+                    rgba: hex('#80CFFF')
                 Rectangle:
                     pos: self.pos
                     size: self.size
@@ -666,9 +669,10 @@ WindowManager:
             height: root.height/12
             text: "Contents"
             font_name: "en_font"
+            color: 0,0,0,1
             canvas.before:
                 Color:
-                    rgba: hex('#356859')
+                    rgba: hex('#80CFFF')
                 Rectangle:
                     pos: self.pos
                     size: self.size
@@ -910,9 +914,10 @@ WindowManager:
             height: root.height/13
             text: root.label
             font_name: "en_font"
+            color: 0,0,0,1
             canvas.before:
                 Color:
-                    rgba: hex('#356859')
+                    rgba: hex('#80CFFF')
                 Rectangle:
                     pos: self.pos
                     size: self.size
@@ -1015,9 +1020,10 @@ WindowManager:
             height: root.height/13
             text: root.label
             font_name: "en_font"
+            color: 0,0,0,1
             canvas.before:
                 Color:
-                    rgba: hex('#356859')
+                    rgba: hex('#80CFFF')
                 Rectangle:
                     pos: self.pos
                     size: self.size
@@ -1136,9 +1142,10 @@ WindowManager:
             height: root.height/13
             text: root.label
             font_name: "en_font"
+            color: 0,0,0,1
             canvas.before:
                 Color:
-                    rgba: hex('#356859')
+                    rgba: hex('#80CFFF')
                 Rectangle:
                     pos: self.pos
                     size: self.size
@@ -1256,9 +1263,10 @@ WindowManager:
             height: root.height/13
             text: "Review"
             font_name: "en_font"
+            color: 0,0,0,1
             canvas.before:
                 Color:
-                    rgba: hex('#356859')
+                    rgba: hex('#80CFFF')
                 Rectangle:
                     pos: self.pos
                     size: self.size
@@ -1691,13 +1699,20 @@ WindowManager:
 
 
 <NoticePop>:
-    title: "ERROR"
-    size_hint: (None, None)
-    size: (400, 400)
+    title: "Error"
+    title_color: 0,0,0,1
+    size_hint: (.8, .5)
+    background: "./resources/Buttons/popup_bg.png"
+    border: 0,0,0,0
 
-    Label:
-        font_name: "en_font"
-        text: root.error_text
+    GridLayout:
+        cols: 1
+
+        Label:
+            font_name: "en_font"
+            text: root.error_text
+            halign: "center"
+            color: 0,0,0,1
 
 <ExitPop>:
     title: "NOTICE"
