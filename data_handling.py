@@ -259,6 +259,7 @@ score = 0 #holder of the quiz score
 tally = [] #a tally of which items were answered correctly
 contents = [] #contains the contents (ID's) of the quiz
 level = "" #current difficulty level selected
+error = 0 #Error message control
 
 #for the primary assessment
 first_screen = ""

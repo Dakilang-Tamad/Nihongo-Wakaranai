@@ -13,9 +13,11 @@ from kivy.core.window import Window
 from kivy.clock import Clock
 from threading import Thread
 import data_handling as dh
+import json
 #from jnius import autoclass
 import os
 
+##This part was commented for development; only works on android build
 #Locale = autoclass('java.util.Locale')
 #PythonActivity = autoclass('org.kivy.android.PythonActivity')
 #TextToSpeech = autoclass('android.speech.tts.TextToSpeech')
@@ -72,7 +74,23 @@ def update_bookmark(level):
 
 
 class NoticePop(Popup):
-    pass
+    error_text = StringProperty()
+    def on_pre_open(self):
+        with open('errors.json') as x:
+            error = json.load(x)
+        
+        if dh.error == 1:
+            self.error_text = error['empty_settings']
+        elif dh.error == 2:
+            self.error_text = error['level_locked']
+        elif dh.error == 3:
+            self.error_text = error['invalid_password_1']
+        elif dh.error == 4:
+            self.error_text = error['invalid_password_2']
+        elif dh.error == 5:
+            self.error_text = error['invalid_creds']
+        else:
+            self.error_text = "Unknown Error"
 
 
 class ExitPop(Popup):
@@ -298,8 +316,12 @@ class Signup(Screen):
                 dh.level = dh.difficulties[dh.index]
                 new_contents()
                 self.manager.current = "grammari"
+            else:
+                dh.error = 3
+                NoticePop().open()
         else:
-            print("invalid credentials")
+            dh.error = 4
+            NoticePop().open()
 
     def login(self):
         self.manager.current = "login"
@@ -314,7 +336,8 @@ class Login(Screen):
         table = dh.log_in(username, password)
 
         if table == "None":
-            print("credentials not found")
+            dh.error = 5
+            NoticePop().open()
         else:
             dh.create_user(username, table)
             self.retrieve = Thread(target=dh.retrieve_progress, args=(table,))
@@ -327,7 +350,9 @@ class Login(Screen):
 
 
 class HomeScreen(Screen):
-    pass
+    def raise_notice(self):
+        dh.error = 1
+        NoticePop().open()
 
 
 class DifficultySelection(Screen):
@@ -339,6 +364,7 @@ class DifficultySelection(Screen):
             new_contents()
             self.manager.current = "grammari"
         else:
+            dh.error = 2
             NoticePop().open()
 
 
@@ -348,6 +374,7 @@ class DifficultySelection(Screen):
             new_contents()
             self.manager.current = "grammari"
         else:
+            dh.error = 2
             NoticePop().open()
 
     def start3(self):
@@ -356,6 +383,7 @@ class DifficultySelection(Screen):
             new_contents()
             self.manager.current = "grammari"
         else:
+            dh.error = 2
             NoticePop().open()
 
     def start2(self):
@@ -364,6 +392,7 @@ class DifficultySelection(Screen):
             new_contents()
             self.manager.current = "grammari"
         else:
+            dh.error = 2
             NoticePop().open()
 
     def start1(self):
@@ -372,33 +401,51 @@ class DifficultySelection(Screen):
             new_contents()
             self.manager.current = "grammari"
         else:
+            dh.error = 2
             NoticePop().open()
 
 
 class BookmarkDifficulty(Screen):
-    def notice(self):
-        pop = NoticePop()
-        pop.open()
 
     def book5(self):
         dh.level = "N5"
-        self.manager.current = "booki"
+        if dh.check_level_access(dh.level):
+            self.manager.current = "booki"
+        else:
+            dh.error = 2
+            NoticePop().open()
 
     def book4(self):
         dh.level = "N4"
-        self.manager.current = "booki"
+        if dh.check_level_access(dh.level):
+            self.manager.current = "booki"
+        else:
+            dh.error = 2
+            NoticePop().open()
 
     def book3(self):
         dh.level = "N3"
-        self.manager.current = "booki"
+        if dh.check_level_access(dh.level):
+            self.manager.current = "booki"
+        else:
+            dh.error = 2
+            NoticePop().open()
 
     def book2(self):
         dh.level = "N2"
-        self.manager.current = "booki"
+        if dh.check_level_access(dh.level):
+            self.manager.current = "booki"
+        else:
+            dh.error = 2
+            NoticePop().open()
 
     def book1(self):
         dh.level = "N1"
-        self.manager.current = "booki"
+        if dh.check_level_access(dh.level):
+            self.manager.current = "booki"
+        else:
+            dh.error = 2
+            NoticePop().open()
 
 
 class BookmarkedItems(Screen):
@@ -483,23 +530,43 @@ class ContentsDiff(Screen):
 
     def cont5(self):
         dh.level = "N5"
-        self.manager.current = "contents"
+        if dh.check_level_access(dh.level):
+            self.manager.current = "contents"
+        else:
+            dh.error = 2
+            NoticePop().open()
 
     def cont4(self):
         dh.level = "N4"
-        self.manager.current = "contents"
+        if dh.check_level_access(dh.level):
+            self.manager.current = "contents"
+        else:
+            dh.error = 2
+            NoticePop().open()
 
     def cont3(self):
         dh.level = "N3"
-        self.manager.current = "contents"
+        if dh.check_level_access(dh.level):
+            self.manager.current = "contents"
+        else:
+            dh.error = 2
+            NoticePop().open()
 
     def cont2(self):
         dh.level = "N2"
-        self.manager.current = "contents"
+        if dh.check_level_access(dh.level):
+            self.manager.current = "contents"
+        else:
+            dh.error = 2
+            NoticePop().open()
 
     def cont1(self):
         dh.level = "N1"
-        self.manager.current = "contents"
+        if dh.check_level_access(dh.level):
+            self.manager.current = "contents"
+        else:
+            dh.error = 2
+            NoticePop().open()
 
 
 class Contents(Screen):

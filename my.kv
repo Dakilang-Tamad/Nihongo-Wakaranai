@@ -250,8 +250,7 @@ WindowManager:
                             background_down: './resources/Buttons/settings_down.png'
                             border: 0,0,0,0
                             on_release:
-                                root.manager.current = "settings"
-                                root.manager.transition.direction = "left"
+                                root.raise_notice()
 
 
             GridLayout:
@@ -1698,7 +1697,7 @@ WindowManager:
 
     Label:
         font_name: "en_font"
-        text: "This level is locked. \nPlease make enough progress on \nlower levels first."
+        text: root.error_text
 
 <ExitPop>:
     title: "NOTICE"

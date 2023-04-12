@@ -1,0 +1,7 @@
+{
+    "empty_settings" : "This screen is currently empty.",
+    "level_locked" : "This level is locked. \nPlease make enough progress on \nlower levels first.",
+    "invalid_password_1" : "Your password is invalid",
+    "invalid_password_2" : "Passwords do not match",
+    "invalid_creds" : "Incorrect username or password"
+}
