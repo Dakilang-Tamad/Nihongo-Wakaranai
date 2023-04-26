@@ -14,6 +14,7 @@ from kivy.clock import Clock
 from threading import Thread
 import data_handling as dh
 import json
+import urllib.request
 #from jnius import autoclass
 import os
 
@@ -22,6 +23,13 @@ import os
 #PythonActivity = autoclass('org.kivy.android.PythonActivity')
 #TextToSpeech = autoclass('android.speech.tts.TextToSpeech')
 #tts = TextToSpeech(PythonActivity.mActivity, None)
+
+def connected():
+    try:
+        urllib.request.urlopen('https://www.google.com/')
+        return True
+    except:
+        return False
 
 def to_audio():
     #tts.setLanguage(Locale.JAPAN)
@@ -350,6 +358,14 @@ class Login(Screen):
 
 
 class HomeScreen(Screen):
+    def on_pre_enter(self, *args):
+        if connected():
+            #update = Thread(target = dh.update_progress)
+            #update.start()
+            pass
+        else:
+            print("no connection")
+
     def raise_notice(self):
         dh.error = 1
         NoticePop().open()

@@ -11,6 +11,45 @@ from sqlalchemy import create_engine, MetaData, Table, Column, Integer, String, 
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
 
+def update_progress():
+    with open('creds.json') as f:
+        credentials = json.load(f)
+
+    conn_string = f"postgresql://{credentials['user']}:{credentials['password']}@{credentials['host']}/{credentials['dbname']}?sslmode={credentials['sslmode']}"
+    engine = create_engine(conn_string)
+    Session = sessionmaker(bind=engine)
+    session = Session()
+    conn = sqlite3.connect("Quizzes.db")
+    metadata = MetaData()
+    metadata.reflect(bind=engine)
+
+    cursor = conn.execute("SELECT table_name FROM USER")
+
+    for i in cursor:
+        tname = i[0]
+
+    table = Table(tname, metadata,
+            Column('id', Integer, primary_key=True),
+            Column('source_table', String),
+            Column('number', Integer),
+            Column('proficiency', Integer), 
+            extend_existing=True)
+
+    levels = ["N1", "N2", "N3", "N4", "N5"]
+    categories = ["GRAMMAR", "VOCAB", "KANJI"]
+
+    for i in levels:
+        for j in categories:
+            source = i + "_" + j
+            sqlite_command = "SELECT ID, PROF FROM " + source
+            cursor = conn.execute(sqlite_command)
+            for k in cursor:
+                query = table.update().where(table.c.source_table == source).where(table.c.number == k[0]).values(proficiency = k[1])
+                session.execute(query)
+    
+    session.commit()
+    session.close()
+
 def new_table(tablename):
     tname = tablename
     with open('creds.json') as f:
