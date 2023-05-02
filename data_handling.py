@@ -11,6 +11,31 @@ from sqlalchemy import create_engine, MetaData, Table, Column, Integer, String, 
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
 
+def get_user():
+    conn = sqlite3.connect("Quizzes.db")
+    data = []
+
+    cursor = conn.execute("SELECT username FROM USER")
+
+    for i in cursor:
+        data.append(i[0])
+    
+    levels = ["N1", "N2", "N3", "N4", "N5"]
+    categories = ["GRAMMAR", "VOCAB", "KANJI"]
+    
+    for i in levels:
+        progress = 0
+        for j in categories:
+            source = i + "_" + j
+            sqlite_command = "SELECT PROF FROM " + source
+            cursor = conn.execute(sqlite_command)
+            for k in cursor:
+                progress = progress + k[0]
+        data.append(str(progress))
+
+    
+    return data
+
 def update_progress():
     with open('creds.json') as f:
         credentials = json.load(f)
@@ -303,5 +328,5 @@ error = 0 #Error message control
 #for the primary assessment
 first_screen = ""
 difficulties = ["N5", "N4", "N3", "N2", "N1"]
-passing_scores = [8, 8, 6, 5, 5]
+passing_scores = [5, 4, 5, 4, 3]
 index = 0

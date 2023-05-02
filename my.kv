@@ -246,6 +246,16 @@ WindowManager:
                             border: 0,0,0,0
                             on_release:
                                 root.raise_notice()
+                    
+                    AnchorLayout:
+
+                        Button:
+                            size_hint: None, None
+                            size: (root.width/10)*4, (root.width/10)*4
+                            allow_stretch: "False"
+                            border: 0,0,0,0
+                            on_release:
+                                root.open_profile()
 
 
             GridLayout:
@@ -1691,6 +1701,119 @@ WindowManager:
                         root.dismiss()
 
 
+<ProfilePop>:
+    title: "Profile"
+    title_font: "en_font"
+    title_color: 0,0,0,1
+    size_hint: (.8, .5)
+    background: "./resources/Buttons/popup_bg.png"
+    border: 0,0,0,0
+
+    GridLayout:
+        cols: 1
+
+        GridLayout:
+            cols: 1
+            size_hint_y: .2
+
+            Label:
+                font_name: "en_font"
+                text: root.username
+                halign: "center"
+                color: 0,0,0,1
+        
+        GridLayout:
+            cols:2
+        
+            GridLayout:
+                cols: 1
+
+                Label:
+                    font_name: "en_font"
+                    text: "Level"
+                    halign: "left"
+                    color: 0,0,0,1
+
+                Label:
+                    font_name: "en_font"
+                    text: "N5"
+                    halign: "left"
+                    color: 0,0,0,1
+
+                Label:
+                    font_name: "en_font"
+                    text: "N4"
+                    halign: "left"
+                    color: 0,0,0,1
+                
+                Label:
+                    font_name: "en_font"
+                    text: "N3"
+                    halign: "left"
+                    color: 0,0,0,1
+                
+                Label:
+                    font_name: "en_font"
+                    text: "N2"
+                    halign: "left"
+                    color: 0,0,0,1
+                
+                Label:
+                    font_name: "en_font"
+                    text: "N1"
+                    halign: "left"
+                    color: 0,0,0,1
+            
+            GridLayout:
+                cols: 1
+
+                Label:
+                    font_name: "en_font"
+                    text: "Total Score"
+                    halign: "left"
+                    color: 0,0,0,1
+            
+                Label:
+                    font_name: "en_font"
+                    text: root.n5_prog
+                    halign: "left"
+                    color: 0,0,0,1
+
+                Label:
+                    font_name: "en_font"
+                    text: root.n4_prog
+                    halign: "left"
+                    color: 0,0,0,1
+                
+                Label:
+                    font_name: "en_font"
+                    text: root.n3_prog
+                    halign: "left"
+                    color: 0,0,0,1
+                
+                Label:
+                    font_name: "en_font"
+                    text: root.n2_prog
+                    halign: "left"
+                    color: 0,0,0,1
+                
+                Label:
+                    font_name: "en_font"
+                    text: root.n1_prog
+                    halign: "left"
+                    color: 0,0,0,1
+        
+        GridLayout:
+            cols:1
+            size_hint_y: .2
+
+            AnchorLayout:
+
+                MDFillRoundFlatButton:
+                    text: "Close"
+                    halign: "center"
+                    on_release:
+                        root.dismiss()
 
 <NoticePop>:
     title: "Error"

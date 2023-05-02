@@ -81,6 +81,23 @@ def update_bookmark(level):
     conn.close()
 
 
+class ProfilePop(Popup):
+    username = StringProperty()
+    n5_prog = StringProperty()
+    n4_prog = StringProperty()
+    n3_prog = StringProperty()
+    n2_prog = StringProperty()
+    n1_prog = StringProperty()
+    def on_pre_open(self):
+        data = dh.get_user()
+        self.username = "Username: " + data[0]
+        self.n1_prog = data[1]
+        self.n2_prog = data[2]
+        self.n3_prog = data[3]
+        self.n4_prog = data[4]
+        self.n5_prog = data[5]
+
+
 class NoticePop(Popup):
     error_text = StringProperty()
     def on_pre_open(self):
@@ -369,6 +386,9 @@ class HomeScreen(Screen):
     def raise_notice(self):
         dh.error = 1
         NoticePop().open()
+    
+    def open_profile(self):
+        ProfilePop().open()
 
 
 class DifficultySelection(Screen):
