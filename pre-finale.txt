@@ -166,11 +166,14 @@ WindowManager:
 
     GridLayout:
         cols: 1
-        
-        GridLayout:
+
+        Label:
+            bold: "True"
             size_hint_y: None
-            height: root.height / 12
-            cols: 2
+            height: root.height/12
+            text: "Nihongo Wakaranai"
+            font_name: "en_font"
+            color: 0,0,0,1
             canvas.before:
                 Color:
                     rgba: hex('#80CFFF')
@@ -185,65 +188,74 @@ WindowManager:
                 size_hint_y: None
                 height: root.height/5
 
-            AnchorLayout:
-                Button:
-                    size_hint: None, None
-                    size: (root.width/10)*4, (root.width/10)*4
-                    allow_stretch: "False"
-                    background_normal: './resources/Buttons/contents_up.png'
-                    background_down: './resources/Buttons/contents_down.png'
-                    border: 0,0,0,0
-                    on_release:
-                        root.manager.current = "contents_diff"
-                        root.manager.transition.direction = "left"
 
             AnchorLayout:
 
-                Button:
-                    size_hint: None, None
-                    size: (root.width/10)*4, (root.width/10)*4
-                    allow_stretch: "False"
-                    background_normal: './resources/Buttons/bookmarks_up.png'
-                    background_down: './resources/Buttons/bookmarks_down.png'
-                    border: 0,0,0,0
-                    on_release:
-                        root.manager.current = "bookd"
-                        root.manager.transition.direction = "left"
+                GridLayout:
+                    cols: 2
+                    anchor: "center"
+                    size: (root.width/30)*29, (root.width/30)*29
 
-            AnchorLayout:
+                    AnchorLayout:
 
-                Button:
-                    size_hint: None, None
-                    size: (root.width/10)*4, (root.width/10)*4
-                    allow_stretch: "False"
-                    background_normal: './resources/Buttons/quiz_up.png'
-                    background_down: './resources/Buttons/quiz_down.png'
-                    border: 0,0,0,0
-                    on_release:
-                        root.manager.current = "diff"
-                        root.manager.transition.direction = "left"
+                        Button:
+                            size_hint: None, None
+                            size: (root.width/10)*4, (root.width/10)*4
+                            allow_stretch: "False"
+                            background_normal: './resources/Buttons/contents_up.png'
+                            background_down: './resources/Buttons/contents_down.png'
+                            border: 0,0,0,0
+                            on_release:
+                                root.manager.current = "contents_diff"
+                                root.manager.transition.direction = "left"
 
-            AnchorLayout:
+                    AnchorLayout:
 
-                Button:
-                    size_hint: None, None
-                    size: (root.width/10)*4, (root.width/10)*4
-                    allow_stretch: "False"
-                    background_normal: './resources/Buttons/settings_up.png'
-                    background_down: './resources/Buttons/settings_down.png'
-                    border: 0,0,0,0
-                    on_release:
-                        root.raise_notice()
+                        Button:
+                            size_hint: None, None
+                            size: (root.width/10)*4, (root.width/10)*4
+                            allow_stretch: "False"
+                            background_normal: './resources/Buttons/bookmarks_up.png'
+                            background_down: './resources/Buttons/bookmarks_down.png'
+                            border: 0,0,0,0
+                            on_release:
+                                root.manager.current = "bookd"
+                                root.manager.transition.direction = "left"
+
+                    AnchorLayout:
+
+                        Button:
+                            size_hint: None, None
+                            size: (root.width/10)*4, (root.width/10)*4
+                            allow_stretch: "False"
+                            background_normal: './resources/Buttons/quiz_up.png'
+                            background_down: './resources/Buttons/quiz_down.png'
+                            border: 0,0,0,0
+                            on_release:
+                                root.manager.current = "diff"
+                                root.manager.transition.direction = "left"
+
+                    AnchorLayout:
+
+                        Button:
+                            size_hint: None, None
+                            size: (root.width/10)*4, (root.width/10)*4
+                            allow_stretch: "False"
+                            background_normal: './resources/Buttons/settings_up.png'
+                            background_down: './resources/Buttons/settings_down.png'
+                            border: 0,0,0,0
+                            on_release:
+                                root.raise_notice()
                     
-            AnchorLayout:
+                    AnchorLayout:
 
-                Button:
-                    size_hint: None, None
-                    size: (root.width/10)*4, (root.width/10)*4
-                    allow_stretch: "False"
-                    border: 0,0,0,0
-                    on_release:
-                        root.open_profile()
+                        Button:
+                            size_hint: None, None
+                            size: (root.width/10)*4, (root.width/10)*4
+                            allow_stretch: "False"
+                            border: 0,0,0,0
+                            on_release:
+                                root.open_profile()
 
 
             GridLayout:
