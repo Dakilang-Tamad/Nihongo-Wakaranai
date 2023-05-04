@@ -769,6 +769,7 @@ class GrammarItem(Screen):
                         dh.level = dh.difficulties[dh.index]
                         dh.current = 0
                         new_contents()
+                        self.manager.current = "vocabi"
             else:
                 self.manager.current = "end"
         else:
