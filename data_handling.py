@@ -87,9 +87,9 @@ def new_table(tablename):
     pgcursor = pgconn.cursor()
     conn = sqlite3.connect("Quizzes.db")
 
-    pgcursor.execute(" CREATE TABLE" + tname + "( id SERIAL PRIMARY KEY, source_table TEXT, number INTEGER, proficiency INTEGER );")
+    pgcursor.execute(" CREATE TABLE " + tname + " ( id SERIAL PRIMARY KEY, source_table TEXT, number INTEGER, proficiency INTEGER );")
 
-    command = "INSERT INTO" + tname + "(source_table, number, proficiency) VALUES (%s, %s, %s)"
+    command = "INSERT INTO " + tname + " (source_table, number, proficiency) VALUES (%s, %s, %s)"
 
     levels = ["N1", "N2", "N3", "N4", "N5"]
     categories = ["GRAMMAR", "VOCAB", "KANJI"]
