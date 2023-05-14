@@ -7,9 +7,7 @@ import json
 from threading import Thread
 from plyer import notification
 from pathlib import Path
-from sqlalchemy import create_engine, MetaData, Table, Column, Integer, String, text
-from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy.orm import sessionmaker
+import pg8000
 
 def get_user():
     conn = sqlite3.connect("Quizzes.db")
@@ -40,28 +38,26 @@ def update_progress():
     with open('creds.json') as f:
         credentials = json.load(f)
 
-    conn_string = f"postgresql://{credentials['user']}:{credentials['password']}@{credentials['host']}/{credentials['dbname']}?sslmode={credentials['sslmode']}"
-    engine = create_engine(conn_string)
-    Session = sessionmaker(bind=engine)
-    session = Session()
+    pgconn = pg8000.connect(
+    user=credentials['user'], 
+    password=credentials['password'], 
+    host=credentials['host'], 
+    port=5432, 
+    database=credentials['dbname'], 
+    ssl_context=True
+    )
+    pgcursor = pgconn.cursor()
+    
     conn = sqlite3.connect("Quizzes.db")
-    metadata = MetaData()
-    metadata.reflect(bind=engine)
-
     cursor = conn.execute("SELECT table_name FROM USER")
 
     for i in cursor:
         tname = i[0]
 
-    table = Table(tname, metadata,
-            Column('id', Integer, primary_key=True),
-            Column('source_table', String),
-            Column('number', Integer),
-            Column('proficiency', Integer), 
-            extend_existing=True)
-
     levels = ["N1", "N2", "N3", "N4", "N5"]
     categories = ["GRAMMAR", "VOCAB", "KANJI"]
+
+    command = "UPDATE" + tname + " SET proficiency = %s WHERE source_table = %s, number = %s"
 
     for i in levels:
         for j in categories:
@@ -69,35 +65,31 @@ def update_progress():
             sqlite_command = "SELECT ID, PROF FROM " + source
             cursor = conn.execute(sqlite_command)
             for k in cursor:
-                query = table.update().where(table.c.source_table == source).where(table.c.number == k[0]).values(proficiency = k[1])
-                session.execute(query)
+                data = (k[1], source, k[0])
+                pgcursor.execute(command, data)
     
-    session.commit()
-    session.close()
+    pgconn.commit()
+    pgconn.close()
 
 def new_table(tablename):
     tname = tablename
     with open('creds.json') as f:
         credentials = json.load(f)
 
-    conn_string = f"postgresql://{credentials['user']}:{credentials['password']}@{credentials['host']}/{credentials['dbname']}?sslmode={credentials['sslmode']}"
-    engine = create_engine(conn_string)
-    Session = sessionmaker(bind=engine)
-    session = Session()
+    pgconn = pg8000.connect(
+    user=credentials['user'], 
+    password=credentials['password'], 
+    host=credentials['host'], 
+    port=5432, 
+    database=credentials['dbname'], 
+    ssl_context=True
+    )
+    pgcursor = pgconn.cursor()
     conn = sqlite3.connect("Quizzes.db")
 
-    Base = declarative_base()
+    pgcursor.execute(" CREATE TABLE" + tname + "( id SERIAL PRIMARY KEY, source_table TEXT, number INTEGER, proficiency INTEGER );")
 
-    class Quiz(Base):
-        __tablename__ = tname
-        
-        id = Column(Integer, primary_key=True)
-        source_table = Column(String)
-        number = Column(Integer)
-        proficiency = Column(Integer)
-
-    Base.metadata.drop_all(engine)
-    Base.metadata.create_all(engine)
+    command = "INSERT INTO" + tname + "(source_table, number, proficiency) VALUES (%s, %s, %s)"
 
     levels = ["N1", "N2", "N3", "N4", "N5"]
     categories = ["GRAMMAR", "VOCAB", "KANJI"]
@@ -108,12 +100,11 @@ def new_table(tablename):
             sqlite_command = "SELECT ID FROM " + source
             cursor = conn.execute(sqlite_command)
             for k in cursor:
-                quiz = Quiz(source_table=source, number=k[0], proficiency=0)
-                session.add(quiz)
+                data = (source, k[0], 0)
+                pgcursor.execute(command, data)
     
-
-    session.commit()
-    session.close()
+    pgconn.commit()
+    pgconn.close()
 
 def create_user(username, table_name):
     conn = sqlite3.connect("Quizzes.db")
@@ -129,71 +120,65 @@ def retrieve_progress(table_name):
     with open('creds.json') as f:
         credentials = json.load(f)
 
-    conn_string = f"postgresql://{credentials['user']}:{credentials['password']}@{credentials['host']}/{credentials['dbname']}?sslmode={credentials['sslmode']}"
-    engine = create_engine(conn_string)
-    Session = sessionmaker(bind=engine)
-    session = Session()
+    pgconn = pg8000.connect(
+    user=credentials['user'], 
+    password=credentials['password'], 
+    host=credentials['host'], 
+    port=5432, 
+    database=credentials['dbname'], 
+    ssl_context=True
+    )
+    pgcursor = pgconn.cursor()
     conn = sqlite3.connect("Quizzes.db")
-    metadata = MetaData()
-    metadata.reflect(bind=engine)
-
-    table = Table(tname, metadata, autoload=True, autoload_with=engine)
-
-    results = session.query(table).all()
+    pgcursor.execute("SELECT * FROM " + tname)
+    results = pgcursor.fetchall()
 
     for row in results:
         conn.execute("UPDATE " + row[1] + " set PROF = '" + str(row[3]) + "' where ID = " + str(row[2]))
     conn.commit()
     conn.close()
+    pgconn.close()
 
 def log_in(username, password):
     with open('creds.json') as f:
         credentials = json.load(f)
 
-    conn_string = f"postgresql://{credentials['user']}:{credentials['password']}@{credentials['host']}/{credentials['dbname']}?sslmode={credentials['sslmode']}"
-    engine = create_engine(conn_string)
-    Session = sessionmaker(bind=engine)
-    session = Session()
+    conn = pg8000.connect(
+        user=credentials['user'],
+        password=credentials['password'],
+        host=credentials['host'],
+        database=credentials['dbname'],
+        ssl_context=True
+    )
 
-    Base = declarative_base()
+    cursor = conn.cursor()
 
     sample_pass = password
     obj = hashlib.sha256(sample_pass.encode())
     hashed = obj.hexdigest()
 
-    class User(Base):
-        __tablename__ = 'user_data'
-        key = Column(Integer, primary_key=True)
-        username = Column(String)
-        password = Column(String)
-        table_name = Column(String)
+    cursor.execute("SELECT table_name FROM user_data WHERE username=%s AND password=%s", (username, hashed))
+    result = cursor.fetchone()
 
-    result = session.query(User.table_name)\
-        .filter_by(username=username, password=hashed).scalar()
-    
-    return (str(result))
+    conn.close()
+
+    return str(result[0]) if result else None
 
 def signup(username, password):
 
     with open('creds.json') as f:
         credentials = json.load(f)
 
-    conn_string = f"postgresql://{credentials['user']}:{credentials['password']}@{credentials['host']}/{credentials['dbname']}?sslmode={credentials['sslmode']}"
-    engine = create_engine(conn_string)
+    conn = pg8000.connect(
+        user=credentials['user'], 
+        password=credentials['password'], 
+        host=credentials['host'], 
+        database=credentials['dbname'],
+        ssl_context=True
+        )
 
-    Base = declarative_base()
-
-    class User(Base):
-        __tablename__ = 'user_data'
-        key = Column(Integer, primary_key=True)
-        username = Column(String)
-        password = Column(String)
-        table_name = Column(String)
-
-    Base.metadata.create_all(engine)
-
-    Session = sessionmaker(bind=engine)
-    session = Session()
+    cursor = conn.cursor()
+    cursor.execute('CREATE TABLE IF NOT EXISTS user_data (key SERIAL PRIMARY KEY, username TEXT, password TEXT, table_name TEXT)')
 
     uname = username
     sample_pass = password
@@ -201,9 +186,8 @@ def signup(username, password):
     hashed = obj.hexdigest()
     tname = "t" + hashed[0:20] + "p"
 
-    user = User(username=uname, password=hashed, table_name=tname)
-    session.add(user)
-    session.commit()
+    cursor.execute('INSERT INTO user_data (username, password, table_name) VALUES (%s, %s, %s)', (uname, hashed, tname))
+    conn.commit()
 
     create_user(uname, tname)
 
@@ -314,8 +298,7 @@ def check_level_access(diff):
         return True
     else:
         return False
-
-
+0
 bg = '#fffbe6'
 current = 0 #counter for the array
 current_id = 0 #holder for the current ID value of a question/entry being processed
