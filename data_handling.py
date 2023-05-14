@@ -8,6 +8,7 @@ from threading import Thread
 from plyer import notification
 from pathlib import Path
 import pg8000
+import ssl
 
 def get_user():
     conn = sqlite3.connect("Quizzes.db")
@@ -37,6 +38,9 @@ def get_user():
 def update_progress():
     with open('creds.json') as f:
         credentials = json.load(f)
+    
+    context = ssl.create_default_context(cafile='resources/cert/DigiCertGlobalRootCA.crt.pem')
+    context.check_hostname = True
 
     pgconn = pg8000.connect(
     user=credentials['user'], 
@@ -44,7 +48,7 @@ def update_progress():
     host=credentials['host'], 
     port=5432, 
     database=credentials['dbname'], 
-    ssl_context=True
+    ssl_context=context
     )
     pgcursor = pgconn.cursor()
     
@@ -76,13 +80,16 @@ def new_table(tablename):
     with open('creds.json') as f:
         credentials = json.load(f)
 
+    context = ssl.create_default_context(cafile='resources/cert/DigiCertGlobalRootCA.crt.pem')
+    context.check_hostname = True
+
     pgconn = pg8000.connect(
     user=credentials['user'], 
     password=credentials['password'], 
     host=credentials['host'], 
     port=5432, 
     database=credentials['dbname'], 
-    ssl_context=True
+    ssl_context=context
     )
     pgcursor = pgconn.cursor()
     conn = sqlite3.connect("Quizzes.db")
@@ -120,13 +127,16 @@ def retrieve_progress(table_name):
     with open('creds.json') as f:
         credentials = json.load(f)
 
+    context = ssl.create_default_context(cafile='resources/cert/DigiCertGlobalRootCA.crt.pem')
+    context.check_hostname = True
+
     pgconn = pg8000.connect(
     user=credentials['user'], 
     password=credentials['password'], 
     host=credentials['host'], 
     port=5432, 
     database=credentials['dbname'], 
-    ssl_context=True
+    ssl_context=context
     )
     pgcursor = pgconn.cursor()
     conn = sqlite3.connect("Quizzes.db")
@@ -143,12 +153,16 @@ def log_in(username, password):
     with open('creds.json') as f:
         credentials = json.load(f)
 
-    conn = pg8000.connect(
-        user=credentials['user'],
-        password=credentials['password'],
-        host=credentials['host'],
-        database=credentials['dbname'],
-        ssl_context=True
+    context = ssl.create_default_context(cafile='resources/cert/DigiCertGlobalRootCA.crt.pem')
+    context.check_hostname = True
+
+    pgconn = pg8000.connect(
+    user=credentials['user'], 
+    password=credentials['password'], 
+    host=credentials['host'], 
+    port=5432, 
+    database=credentials['dbname'], 
+    ssl_context=context
     )
 
     cursor = conn.cursor()
@@ -169,13 +183,17 @@ def signup(username, password):
     with open('creds.json') as f:
         credentials = json.load(f)
 
+    context = ssl.create_default_context(cafile='resources/cert/DigiCertGlobalRootCA.crt.pem')
+    context.check_hostname = True
+
     conn = pg8000.connect(
-        user=credentials['user'], 
-        password=credentials['password'], 
-        host=credentials['host'], 
-        database=credentials['dbname'],
-        ssl_context=True
-        )
+    user=credentials['user'], 
+    password=credentials['password'], 
+    host=credentials['host'], 
+    port=5432, 
+    database=credentials['dbname'], 
+    ssl_context=context
+    )
 
     cursor = conn.cursor()
     cursor.execute('CREATE TABLE IF NOT EXISTS user_data (key SERIAL PRIMARY KEY, username TEXT, password TEXT, table_name TEXT)')
