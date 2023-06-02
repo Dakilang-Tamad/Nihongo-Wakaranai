@@ -10,6 +10,7 @@ from pathlib import Path
 import pg8000
 import ssl
 
+
 def get_user():
     conn = sqlite3.connect("Quizzes.db")
     data = []
@@ -18,10 +19,10 @@ def get_user():
 
     for i in cursor:
         data.append(i[0])
-    
+
     levels = ["N1", "N2", "N3", "N4", "N5"]
     categories = ["GRAMMAR", "VOCAB", "KANJI"]
-    
+
     for i in levels:
         progress = 0
         for j in categories:
@@ -32,26 +33,27 @@ def get_user():
                 progress = progress + k[0]
         data.append(str(progress))
 
-    
     return data
+
 
 def update_progress():
     with open('creds.json') as f:
         credentials = json.load(f)
-    
-    context = ssl.create_default_context(cafile='resources/cert/DigiCertGlobalRootCA.crt.pem')
+
+    context = ssl.create_default_context(
+        cafile='resources/cert/DigiCertGlobalRootCA.crt.pem')
     context.check_hostname = True
 
     pgconn = pg8000.connect(
-    user=credentials['user'], 
-    password=credentials['password'], 
-    host=credentials['host'], 
-    port=5432, 
-    database=credentials['dbname'], 
-    ssl_context=context
+        user=credentials['user'],
+        password=credentials['password'],
+        host=credentials['host'],
+        port=5432,
+        database=credentials['dbname'],
+        ssl_context=context
     )
     pgcursor = pgconn.cursor()
-    
+
     conn = sqlite3.connect("Quizzes.db")
     cursor = conn.execute("SELECT table_name FROM USER")
 
@@ -61,7 +63,8 @@ def update_progress():
     levels = ["N1", "N2", "N3", "N4", "N5"]
     categories = ["GRAMMAR", "VOCAB", "KANJI"]
 
-    command = "UPDATE" + tname + " SET proficiency = %s WHERE source_table = %s, number = %s"
+    command = "UPDATE " + tname + \
+        " SET proficiency = %s WHERE source_table = %s AND number = %s"
 
     for i in levels:
         for j in categories:
@@ -71,32 +74,45 @@ def update_progress():
             for k in cursor:
                 data = (k[1], source, k[0])
                 pgcursor.execute(command, data)
-    
+
     pgconn.commit()
     pgconn.close()
+
 
 def new_table(tablename):
     tname = tablename
     with open('creds.json') as f:
         credentials = json.load(f)
 
-    context = ssl.create_default_context(cafile='resources/cert/DigiCertGlobalRootCA.crt.pem')
+    context = ssl.create_default_context(
+        cafile='resources/cert/DigiCertGlobalRootCA.crt.pem')
     context.check_hostname = True
 
     pgconn = pg8000.connect(
-    user=credentials['user'], 
-    password=credentials['password'], 
-    host=credentials['host'], 
-    port=5432, 
-    database=credentials['dbname'], 
-    ssl_context=context
+        user=credentials['user'],
+        password=credentials['password'],
+        host=credentials['host'],
+        port=5432,
+        database=credentials['dbname'],
+        ssl_context=context
     )
     pgcursor = pgconn.cursor()
     conn = sqlite3.connect("Quizzes.db")
 
-    pgcursor.execute(" CREATE TABLE " + tname + " ( id SERIAL PRIMARY KEY, source_table TEXT, number INTEGER, proficiency INTEGER );")
+    notification.notify(
+        title="Initializing Progress Table",
+        message="Generating progress table...",
+        timeout=None,
+        app_icon=None, 
+    )
 
-    command = "INSERT INTO " + tname + " (source_table, number, proficiency) VALUES (%s, %s, %s)"
+    pgcursor.execute(" CREATE TABLE " + tname +
+                     " ( id SERIAL PRIMARY KEY, source_table TEXT, number INTEGER, proficiency INTEGER );")
+    
+    pgconn.commit()
+
+    command = "INSERT INTO " + tname + \
+        " (source_table, number, proficiency) VALUES (%s, %s, %s)"
 
     levels = ["N1", "N2", "N3", "N4", "N5"]
     categories = ["GRAMMAR", "VOCAB", "KANJI"]
@@ -107,96 +123,131 @@ def new_table(tablename):
             sqlite_command = "SELECT ID FROM " + source
             cursor = conn.execute(sqlite_command)
             for k in cursor:
+                notif_message = "Inserting " + source + "item number " + str(k[0])
+                notification.update(
+                    message=notif_message,
+                )
                 data = (source, k[0], 0)
                 pgcursor.execute(command, data)
-    
+
     pgconn.commit()
     pgconn.close()
 
+    notification.update(
+        message="Initialization done",
+    )
+
+
 def create_user(username, table_name):
     conn = sqlite3.connect("Quizzes.db")
-    conn.execute("create table USER (ID int primary key, username text, table_name text);")
+    conn.execute(
+        "create table USER (ID int primary key, username text, table_name text);")
     conn.execute("insert into USER(ID) values (0);")
     conn.execute("update USER set username = '" + username + "' where ID = 0")
-    conn.execute("update USER set table_name = '" + table_name + "' where ID = 0")
+    conn.execute("update USER set table_name = '" +
+                 table_name + "' where ID = 0")
     conn.commit()
     conn.close()
+
 
 def retrieve_progress(table_name):
     tname = table_name
     with open('creds.json') as f:
         credentials = json.load(f)
 
-    context = ssl.create_default_context(cafile='resources/cert/DigiCertGlobalRootCA.crt.pem')
+    context = ssl.create_default_context(
+        cafile='resources/cert/DigiCertGlobalRootCA.crt.pem')
     context.check_hostname = True
 
     pgconn = pg8000.connect(
-    user=credentials['user'], 
-    password=credentials['password'], 
-    host=credentials['host'], 
-    port=5432, 
-    database=credentials['dbname'], 
-    ssl_context=context
+        user=credentials['user'],
+        password=credentials['password'],
+        host=credentials['host'],
+        port=5432,
+        database=credentials['dbname'],
+        ssl_context=context
     )
     pgcursor = pgconn.cursor()
     conn = sqlite3.connect("Quizzes.db")
     pgcursor.execute("SELECT * FROM " + tname)
     results = pgcursor.fetchall()
 
+    notification.notify(
+        title="Retrieving Progress",
+        message="",
+        timeout=None,
+        app_icon=None, 
+    )
+
     for row in results:
-        conn.execute("UPDATE " + row[1] + " set PROF = '" + str(row[3]) + "' where ID = " + str(row[2]))
+        notif_message = "Retrieving " + row[1] + "item number " + str(row[2])
+        notification.update(
+            message=notif_message,
+        )
+        conn.execute("UPDATE " + row[1] + " set PROF = '" +
+                     str(row[3]) + "' where ID = " + str(row[2]))
     conn.commit()
     conn.close()
     pgconn.close()
+
+    notification.update(
+        message="Retrieval done",
+    )
+
 
 def log_in(username, password):
     with open('creds.json') as f:
         credentials = json.load(f)
 
-    context = ssl.create_default_context(cafile='resources/cert/DigiCertGlobalRootCA.crt.pem')
+    context = ssl.create_default_context(
+        cafile='resources/cert/DigiCertGlobalRootCA.crt.pem')
     context.check_hostname = True
 
     pgconn = pg8000.connect(
-    user=credentials['user'], 
-    password=credentials['password'], 
-    host=credentials['host'], 
-    port=5432, 
-    database=credentials['dbname'], 
-    ssl_context=context
+        user=credentials['user'],
+        password=credentials['password'],
+        host=credentials['host'],
+        port=5432,
+        database=credentials['dbname'],
+        ssl_context=context
     )
 
-    cursor = conn.cursor()
+    cursor = pgconn.cursor()
 
     sample_pass = password
     obj = hashlib.sha256(sample_pass.encode())
     hashed = obj.hexdigest()
 
-    cursor.execute("SELECT table_name FROM user_data WHERE username=%s AND password=%s", (username, hashed))
+    cursor.execute(
+        "SELECT table_name FROM user_data WHERE username=%s AND password=%s", (username, hashed))
     result = cursor.fetchone()
 
-    conn.close()
+    pgconn.close()
 
     return str(result[0]) if result else None
+
 
 def signup(username, password):
 
     with open('creds.json') as f:
         credentials = json.load(f)
 
-    context = ssl.create_default_context(cafile='resources/cert/DigiCertGlobalRootCA.crt.pem')
+    context = ssl.create_default_context(
+        cafile='resources/cert/DigiCertGlobalRootCA.crt.pem')
     context.check_hostname = True
 
     conn = pg8000.connect(
-    user=credentials['user'], 
-    password=credentials['password'], 
-    host=credentials['host'], 
-    port=5432, 
-    database=credentials['dbname'], 
-    ssl_context=context
+        user=credentials['user'],
+        password=credentials['password'],
+        host=credentials['host'],
+        port=5432,
+        database=credentials['dbname'],
+        ssl_context=context
     )
 
     cursor = conn.cursor()
-    cursor.execute('CREATE TABLE IF NOT EXISTS user_data (key SERIAL PRIMARY KEY, username TEXT, password TEXT, table_name TEXT)')
+    cursor.execute(
+        'CREATE TABLE IF NOT EXISTS user_data (key SERIAL PRIMARY KEY, username TEXT, password TEXT, table_name TEXT)')
 
     uname = username
     sample_pass = password
@@ -204,25 +255,25 @@ def signup(username, password):
     hashed = obj.hexdigest()
     tname = "t" + hashed[0:20] + "p"
 
-    cursor.execute('INSERT INTO user_data (username, password, table_name) VALUES (%s, %s, %s)', (uname, hashed, tname))
+    cursor.execute(
+        'INSERT INTO user_data (username, password, table_name) VALUES (%s, %s, %s)', (uname, hashed, tname))
     conn.commit()
 
     create_user(uname, tname)
 
-    new_table(tname)
 
 def validate(username, password):
-    match=string.ascii_letters + string.digits + '_' + '.' + '@'
+    match = string.ascii_letters + string.digits + '_' + '.' + '@'
     if not all([x in match for x in username]):
         return False
-    if not (len(username) >=4 and len(username) <=15):
+    if not (len(username) >= 4 and len(username) <= 15):
         return False
     if not username[0].isalpha():
         return False
     if username[-1:] == '_':
         return False
     while True:
-        if (len(password)<=8):
+        if (len(password) <= 8):
             return False
         elif not re.search("[a-z]", password):
             return False
@@ -230,18 +281,20 @@ def validate(username, password):
             return False
         elif not re.search("[0-9]", password):
             return False
-        elif not re.search("[_@$]" , password):
+        elif not re.search("[_@$]", password):
             return False
-        elif re.search("\s" , password):
+        elif re.search("\s", password):
             return False
         else:
             return True
+
 
 def new_quiz(diff):
     conn = sqlite3.connect("Quizzes.db")
     cursor1 = conn.execute("SELECT ID FROM " + diff + "_VOCAB WHERE PROF < 5;")
     cursor2 = conn.execute("SELECT ID FROM " + diff + "_KANJI WHERE PROF < 5;")
-    cursor3 = conn.execute("SELECT ID FROM " + diff + "_GRAMMAR WHERE PROF < 5;")
+    cursor3 = conn.execute("SELECT ID FROM " + diff +
+                           "_GRAMMAR WHERE PROF < 5;")
     v = []
     k = []
     g = []
@@ -263,6 +316,7 @@ def new_quiz(diff):
     conn.close()
     return quiz
 
+
 def add_bm(level, type, ID):
     conn = sqlite3.connect("Quizzes.db")
     table = level + "_BOOKMARKS"
@@ -270,26 +324,33 @@ def add_bm(level, type, ID):
     current_id = str(total + 1)
     command = "INSERT INTO " + table + "(ID) VALUES (" + current_id + ")"
     conn.execute(command)
-    command = "UPDATE " + table + " set TYPE = '" + type + "' where ID = " + current_id
+    command = "UPDATE " + table + " set TYPE = '" + \
+        type + "' where ID = " + current_id
     conn.execute(command)
-    command = "UPDATE " + table + " set POINTER = '" + str(ID) + "' where ID = " + current_id
+    command = "UPDATE " + table + " set POINTER = '" + \
+        str(ID) + "' where ID = " + current_id
     conn.execute(command)
     conn.commit()
+
 
 def check_user():
     conn = sqlite3.connect("Quizzes.db")
     cursor = conn.cursor()
     t_list = cursor.execute("""SELECT name FROM sqlite_master WHERE type='table'
                             AND name='USER'; """).fetchall()
-    if t_list == []: return False
-    else: return True
+    if t_list == []:
+        return False
+    else:
+        return True
+
 
 def add_open_level(level):
     conn = sqlite3.connect("Quizzes.db")
     table = "OPEN_LEVELS"
-    command = "INSERT INTO " + table + "(level) VALUES (" + level + ")"
+    command = "INSERT INTO " + table + "(level) VALUES ('" + level + "')"
     conn.execute(command)
     conn.commit()
+
 
 def check_level_access(diff):
     conn = sqlite3.connect("Quizzes.db")
@@ -311,23 +372,24 @@ def check_level_access(diff):
 
     for i in cursor4:
         levels.append(i[0])
-    
+
     if diff in levels or total >= 80:
         return True
     else:
         return False
-0
-bg = '#fffbe6'
-current = 0 #counter for the array
-current_id = 0 #holder for the current ID value of a question/entry being processed
-score = 0 #holder of the quiz score
-tally = [] #a tally of which items were answered correctly
-contents = [] #contains the contents (ID's) of the quiz
-level = "" #current difficulty level selected
-error = 0 #Error message control
 
-#for the primary assessment
+
+bg = '#fffbe6'
+current = 0  # counter for the array
+current_id = 0  # holder for the current ID value of a question/entry being processed
+score = 0  # holder of the quiz score
+tally = []  # a tally of which items were answered correctly
+contents = []  # contains the contents (ID's) of the quiz
+level = ""  # current difficulty level selected
+error = 0  # Error message control
+
+# for the primary assessment
 first_screen = ""
 difficulties = ["N5", "N4", "N3", "N2", "N1"]
-passing_scores = [5, 4, 5, 4, 3]
+passing_scores = [1, 4, 5, 4, 3]
 index = 0

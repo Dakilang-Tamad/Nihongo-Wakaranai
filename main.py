@@ -15,14 +15,15 @@ from threading import Thread
 import data_handling as dh
 import json
 import urllib.request
-#from jnius import autoclass
+# from jnius import autoclass
 import os
 
-##This part was commented for development; only works on android build
-#Locale = autoclass('java.util.Locale')
-#PythonActivity = autoclass('org.kivy.android.PythonActivity')
-#TextToSpeech = autoclass('android.speech.tts.TextToSpeech')
-#tts = TextToSpeech(PythonActivity.mActivity, None)
+# This part was commented for development; only works on android build
+# Locale = autoclass('java.util.Locale')
+# PythonActivity = autoclass('org.kivy.android.PythonActivity')
+# TextToSpeech = autoclass('android.speech.tts.TextToSpeech')
+# tts = TextToSpeech(PythonActivity.mActivity, None)
+
 
 def connected():
     try:
@@ -31,10 +32,12 @@ def connected():
     except:
         return False
 
+
 def to_audio():
-    #tts.setLanguage(Locale.JAPAN)
-    #tts.speak(dh.tts, TextToSpeech.QUEUE_FLUSH, None)
+    # tts.setLanguage(Locale.JAPAN)
+    # tts.speak(dh.tts, TextToSpeech.QUEUE_FLUSH, None)
     pass
+
 
 def new_contents():
     dh.contents = dh.new_quiz(dh.level)
@@ -42,10 +45,12 @@ def new_contents():
     dh.tally = []
     dh.score = 0
 
+
 def update_status(level):
     conn = sqlite3.connect("Quizzes.db")
     level = level
-    cursor = conn.execute("SELECT BOOKMARK FROM " + level + " WHERE ID=" + str(dh.current_id) + ";")
+    cursor = conn.execute("SELECT BOOKMARK FROM " +
+                          level + " WHERE ID=" + str(dh.current_id) + ";")
     for i in cursor:
         if i[0] == 1:
             return False
@@ -53,29 +58,36 @@ def update_status(level):
             return True
     conn.close()
 
+
 def add_prof(level):
     conn = sqlite3.connect("Quizzes.db")
     level = level
-    cursor = conn.execute("SELECT PROF FROM " + level + " WHERE ID = " + str(dh.contents[dh.current - 1]) + ";")
+    cursor = conn.execute("SELECT PROF FROM " + level +
+                          " WHERE ID = " + str(dh.contents[dh.current - 1]) + ";")
     prof = 0
     for i in cursor:
         prof = i[0] + 1
-    command = "UPDATE " + level + " set PROF = " + str(prof) + " where ID = " + str(dh.contents[dh.current - 1])
+    command = "UPDATE " + level + " set PROF = " + \
+        str(prof) + " where ID = " + str(dh.contents[dh.current - 1])
     conn.execute(command)
     conn.commit()
     conn.close()
 
+
 def update_bookmark(level):
     conn = sqlite3.connect("Quizzes.db")
     level = level
-    cursor = conn.execute("SELECT BOOKMARK FROM " + level + " WHERE ID=" + str(dh.current_id) + ";")
+    cursor = conn.execute("SELECT BOOKMARK FROM " +
+                          level + " WHERE ID=" + str(dh.current_id) + ";")
     for i in cursor:
         if i[0] == 1:
-            command = "UPDATE " + level + " set BOOKMARK = 0 where ID = " + str(dh.current_id)
+            command = "UPDATE " + level + \
+                " set BOOKMARK = 0 where ID = " + str(dh.current_id)
             conn.execute(command)
             conn.commit()
         else:
-            command = "UPDATE " + level + " set BOOKMARK = 1 where ID = " + str(dh.current_id)
+            command = "UPDATE " + level + \
+                " set BOOKMARK = 1 where ID = " + str(dh.current_id)
             conn.execute(command)
             conn.commit()
     conn.close()
@@ -88,6 +100,7 @@ class ProfilePop(Popup):
     n3_prog = StringProperty()
     n2_prog = StringProperty()
     n1_prog = StringProperty()
+
     def on_pre_open(self):
         data = dh.get_user()
         self.username = "Username: " + data[0]
@@ -100,10 +113,11 @@ class ProfilePop(Popup):
 
 class NoticePop(Popup):
     error_text = StringProperty()
+
     def on_pre_open(self):
         with open('errors.json') as x:
             error = json.load(x)
-        
+
         if dh.error == 1:
             self.error_text = error['empty_settings']
         elif dh.error == 2:
@@ -114,6 +128,10 @@ class NoticePop(Popup):
             self.error_text = error['invalid_password_2']
         elif dh.error == 5:
             self.error_text = error['invalid_creds']
+        elif dh.error == 6:
+            self.error_text = error['primary_upload']
+        elif dh.error == 7:
+            self.error_text = error['primary_upload']
         else:
             self.error_text = "Unknown Error"
 
@@ -126,6 +144,22 @@ class ExitPop(Popup):
 
     def app_close(self):
         App.get_running_app().stop()
+
+class UpdatePop(Popup):
+
+    def on_pre_open(self):
+        self.p1 = True
+        self.p2 = False
+        w, h = Window.size
+        self.width = (w/20)*19
+        self.height = (h/10)*6
+
+    def condition(self, param):
+        if param:
+            return True
+        else:
+            return False
+
 
 
 class GrammarPop(Popup):
@@ -145,7 +179,8 @@ class GrammarPop(Popup):
         self.update()
         conn = sqlite3.connect("Quizzes.db")
         level = dh.level + "_GRAMMAR"
-        cursor = conn.execute("SELECT WORD, MEANING, JP, EN, PROF FROM " + level +" WHERE ID=" + str(dh.current_id) + ";")
+        cursor = conn.execute("SELECT WORD, MEANING, JP, EN, PROF FROM " +
+                              level + " WHERE ID=" + str(dh.current_id) + ";")
         for i in cursor:
             self.item = i[0]
             self.meaning = i[1]
@@ -153,7 +188,6 @@ class GrammarPop(Popup):
             self.en = "Sample English sentence:\n    " + i[3]
             self.prog = "Progress: " + str(i[4]) + "/5"
         conn.close()
-
 
     def update(self):
         level = dh.level + "_GRAMMAR"
@@ -191,7 +225,8 @@ class VocabPop1(Popup):
         self.update()
         conn = sqlite3.connect("Quizzes.db")
         level = dh.level + "_VOCAB"
-        cursor = conn.execute("SELECT WORD, KANJI, READING, JP, EN, PROF FROM " + level + " WHERE ID=" + str(dh.current_id) + ";")
+        cursor = conn.execute("SELECT WORD, KANJI, READING, JP, EN, PROF FROM " +
+                              level + " WHERE ID=" + str(dh.current_id) + ";")
         for i in cursor:
             self.jp_word = i[1]
             self.en_word = i[0]
@@ -238,7 +273,8 @@ class VocabPop2(Popup):
         self.update()
         conn = sqlite3.connect("Quizzes.db")
         level = dh.level + "_VOCAB"
-        cursor = conn.execute("SELECT KANJI, FURIGANA, KIND, MEANING, JP, EN, PROF FROM " + level + " WHERE ID=" + str(dh.current_id) + ";")
+        cursor = conn.execute("SELECT KANJI, FURIGANA, KIND, MEANING, JP, EN, PROF FROM " +
+                              level + " WHERE ID=" + str(dh.current_id) + ";")
         for i in cursor:
             self.jp_word = i[0]
             self.furigana = i[1]
@@ -369,7 +405,6 @@ class Login(Screen):
             self.retrieve.start()
             self.manager.current = "home"
 
-    
     def signup(self):
         self.manager.current = "signup"
 
@@ -377,16 +412,35 @@ class Login(Screen):
 class HomeScreen(Screen):
     def on_pre_enter(self, *args):
         if connected():
-            #update = Thread(target = dh.update_progress)
-            #update.start()
-            pass
+            if dh.first_screen == "signup":
+                conn = sqlite3.connect("Quizzes.db")
+                cursor = conn.cursor()
+                t_list = cursor.execute("""SELECT table_name FROM USER;""").fetchall()
+                new_table = Thread(target = dh.new_table, args = t_list[0])
+                new_table.start()
+                dh.first_screen = "home"
+                dh.error = 6
+                NoticePop().open()
+            if dh.first_screen == "login":
+                conn = sqlite3.connect("Quizzes.db")
+                cursor = conn.cursor()
+                t_list = cursor.execute("""SELECT table_name FROM USER;""").fetchall()
+                new_table = Thread(target = dh.retrieve_progress, args = t_list[0])
+                new_table.start()
+                dh.first_screen = "home"
+                dh.error = 7
+                NoticePop().open()
+            if dh.first_screen == "home":
+                update = Thread(target = dh.update_progress)
+                update.start()
+                dh.first_screen = ""
         else:
-            print("no connection")
+            pass
 
     def raise_notice(self):
         dh.error = 1
         NoticePop().open()
-    
+
     def open_profile(self):
         ProfilePop().open()
 
@@ -402,7 +456,6 @@ class DifficultySelection(Screen):
         else:
             dh.error = 2
             NoticePop().open()
-
 
     def start4(self):
         dh.level = "N4"
@@ -511,11 +564,13 @@ class BookmarkedItems(Screen):
 
         conn = sqlite3.connect("Quizzes.db")
         cursor = conn.cursor()
-        retrieve_query = "select ID, " + query +" from " + table + " where BOOKMARK = 0;"
+        retrieve_query = "select ID, " + query + \
+            " from " + table + " where BOOKMARK = 0;"
         cursor.execute(retrieve_query)
         contents = cursor.fetchall()
         if not contents:
-            lbl = Label(text="No bookmarks added yet.", font_name="jp_font", color="black")
+            lbl = Label(text="No bookmarks added yet.",
+                        font_name="jp_font", color="black")
             if categ == "GRAMMAR":
                 self.ids.grammar_tab.add_widget(lbl)
             if categ == "VOCAB":
@@ -528,7 +583,8 @@ class BookmarkedItems(Screen):
                 button = Button(text=button_text, font_name="jp_font", color=(0, 0, 0, 1),
                                 background_normal=self.button_up, background_down=self.button_down,
                                 border=(0, 0, 0, 0))
-                button.bind(on_press=lambda x, id=i[0], type=categ: self.popup(type, id))
+                button.bind(on_press=lambda x,
+                            id=i[0], type=categ: self.popup(type, id))
                 if categ == "GRAMMAR":
                     self.ids.grammar_tab.add_widget(button)
                 if categ == "VOCAB":
@@ -632,7 +688,7 @@ class Contents(Screen):
             query = "KANJI"
         conn = sqlite3.connect("Quizzes.db")
         cursor = conn.cursor()
-        retrieve_query = "select ID, " + query +" from " + table
+        retrieve_query = "select ID, " + query + " from " + table
         cursor.execute(retrieve_query)
         contents = cursor.fetchall()
         if not contents:
@@ -649,7 +705,8 @@ class Contents(Screen):
                 button = Button(text=button_text, font_name="jp_font", color=(0, 0, 0, 1),
                                 background_normal=self.button_up, background_down=self.button_down,
                                 border=(0, 0, 0, 0))
-                button.bind(on_press=lambda x, id=i[0], type=categ: self.popup(type, id))
+                button.bind(on_press=lambda x,
+                            id=i[0], type=categ: self.popup(type, id))
                 if categ == "GRAMMAR":
                     self.ids.grammar_tab.add_widget(button)
                 if categ == "VOCAB":
@@ -692,11 +749,12 @@ class GrammarItem(Screen):
     button_down = 'resources/Buttons/rec_2_down.png'
     border = 'resources/Buttons/empty_box.png'
 
-    def on_pre_enter(self, *args):
+    def initialize(self):
         self.label = "Item #" + str(dh.current+1)
         conn = sqlite3.connect("Quizzes.db")
         cursor = conn.cursor()
-        retrieve_query = "select * from " + dh.level + "_GRAMMAR where ID = " + str(dh.contents[dh.current])
+        retrieve_query = "select * from " + dh.level + \
+            "_GRAMMAR where ID = " + str(dh.contents[dh.current])
         cursor.execute(retrieve_query)
         contents = cursor.fetchall()
         for i in contents:
@@ -708,6 +766,8 @@ class GrammarItem(Screen):
             self.ans = i[6]
         cursor.close()
 
+    def on_pre_enter(self, *args):
+        self.initialize()
 
     def ent_a(self):
         dh.current += 1
@@ -754,22 +814,27 @@ class GrammarItem(Screen):
         self.next_screen()
 
     def next_screen(self):
-        
+
         if dh.current == 10:
             if dh.first_screen == "signup":
-                print(dh.score)
                 if dh.score < dh.passing_scores[dh.index]:
+                    if dh.level == "N5":
+                        dh.add_open_level("N5")
+                    dh.current = 0
+                    dh.level = ""
                     self.manager.current = "home"
                 else:
                     if dh.level == "N5":
-                        pass
-                    else:
-                        dh.add_open_level(dh.level)
+                        dh.add_open_level("N5")
+                    if dh.level != "N1":
                         dh.index = dh.index + 1
                         dh.level = dh.difficulties[dh.index]
+                        dh.add_open_level(dh.level)
                         dh.current = 0
                         new_contents()
-                        self.manager.current = "vocabi"
+                        self.initialize()
+                    else:
+                        self.manager.current = "home"
             else:
                 self.manager.current = "end"
         else:
@@ -795,14 +860,14 @@ class VocabItem(Screen):
         conn = sqlite3.connect("Quizzes.db")
         cursor = conn.cursor()
         if dh.level == "N5":
-            retrieve_query =("select WORD, KANJI, C_A, C_B, C_C, C_D, ANSWER from " + dh.level +
-                            "_VOCAB where ID = " +
-                            str(dh.contents[dh.current]))
+            retrieve_query = ("select WORD, KANJI, C_A, C_B, C_C, C_D, ANSWER from " + dh.level +
+                              "_VOCAB where ID = " +
+                              str(dh.contents[dh.current]))
             cursor.execute(retrieve_query)
         else:
-            retrieve_query =("select SENTENCE, KANJI, C_A, C_B, C_C, C_D, ANSWER from " + dh.level +
-                            "_VOCAB where ID = " +
-                            str(dh.contents[dh.current]))
+            retrieve_query = ("select SENTENCE, KANJI, C_A, C_B, C_C, C_D, ANSWER from " + dh.level +
+                              "_VOCAB where ID = " +
+                              str(dh.contents[dh.current]))
             cursor.execute(retrieve_query)
         contents = cursor.fetchall()
         for i in contents:
@@ -881,7 +946,8 @@ class KanjiItem(Screen):
         self.label = "Item #" + str(dh.current + 1)
         conn = sqlite3.connect("Quizzes.db")
         cursor = conn.cursor()
-        retrieve_query = "select * from " + dh.level + "_KANJI where ID = " + str(dh.contents[dh.current])
+        retrieve_query = "select * from " + dh.level + \
+            "_KANJI where ID = " + str(dh.contents[dh.current])
         cursor.execute(retrieve_query)
         contents = cursor.fetchall()
         for i in contents:
@@ -954,37 +1020,43 @@ class EndQuizz(Screen):
 
         for i in range(10):
             if i in (0, 3, 6, 9):
-                retrieve_query = "select WORD from " + dh.level + "_GRAMMAR where ID = " + str(dh.contents[i])
+                retrieve_query = "select WORD from " + dh.level + \
+                    "_GRAMMAR where ID = " + str(dh.contents[i])
                 cursor.execute(retrieve_query)
                 contents = cursor.fetchall()
                 for j in contents:
                     button_text = j[0] + " - " + dh.tally[i]
-                    button = Button(text=button_text, font_name="jp_font", color=(0,0,0,1),
+                    button = Button(text=button_text, font_name="jp_font", color=(0, 0, 0, 1),
                                     background_normal=self.button_up, background_down=self.button_down,
-                                    border=(0,0,0,0))
-                    button.bind(on_release=lambda x, id=dh.contents[i], type="grammar": self.popup(type, id))
+                                    border=(0, 0, 0, 0))
+                    button.bind(
+                        on_release=lambda x, id=dh.contents[i], type="grammar": self.popup(type, id))
                     self.ids.review_buttons.add_widget(button)
             if i in (1, 4, 7):
-                retrieve_query = "select KANJI from " + dh.level + "_VOCAB where ID = " + str(dh.contents[i])
+                retrieve_query = "select KANJI from " + dh.level + \
+                    "_VOCAB where ID = " + str(dh.contents[i])
                 cursor.execute(retrieve_query)
                 contents = cursor.fetchall()
                 for j in contents:
                     button_text = j[0] + " - " + dh.tally[i]
-                    button = Button(text=button_text, font_name="jp_font", color=(0,0,0,1),
+                    button = Button(text=button_text, font_name="jp_font", color=(0, 0, 0, 1),
                                     background_normal=self.button_up, background_down=self.button_down,
-                                    border=(0,0,0,0))
-                    button.bind(on_release=lambda x, id=dh.contents[i], type="vocab": self.popup(type, id))
+                                    border=(0, 0, 0, 0))
+                    button.bind(
+                        on_release=lambda x, id=dh.contents[i], type="vocab": self.popup(type, id))
                     self.ids.review_buttons.add_widget(button)
             if i in (2, 5, 8):
-                retrieve_query = "select KANJI from " + dh.level + "_KANJI where ID = " + str(dh.contents[i])
+                retrieve_query = "select KANJI from " + dh.level + \
+                    "_KANJI where ID = " + str(dh.contents[i])
                 cursor.execute(retrieve_query)
                 contents = cursor.fetchall()
                 for j in contents:
                     button_text = j[0] + " - " + dh.tally[i]
-                    button = Button(text=button_text, font_name="jp_font", color=(0,0,0,1),
+                    button = Button(text=button_text, font_name="jp_font", color=(0, 0, 0, 1),
                                     background_normal=self.button_up, background_down=self.button_down,
-                                    border=(0,0,0,0))
-                    button.bind(on_release=lambda x, id=dh.contents[i], type="kanji": self.popup(type, id))
+                                    border=(0, 0, 0, 0))
+                    button.bind(
+                        on_release=lambda x, id=dh.contents[i], type="kanji": self.popup(type, id))
                     self.ids.review_buttons.add_widget(button)
         conn.close()
 
@@ -1008,10 +1080,8 @@ class EndQuizz(Screen):
             pop.open()
 
 
-
 class WindowManager(ScreenManager):
     pass
-
 
 
 tools_path = os.path.dirname("resources/")

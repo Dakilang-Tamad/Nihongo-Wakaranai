@@ -3,5 +3,7 @@
     "level_locked" : "This level is locked. \nPlease make enough progress on \nlower levels first.",
     "invalid_password_1" : "Your password is invalid",
     "invalid_password_2" : "Passwords do not match",
-    "invalid_creds" : "Incorrect username or password"
+    "invalid_creds" : "Incorrect username or password",
+    "primary_upload": "Since this is your fist time with the app,\nwe are uploading your primary progress.\nPlease do not turn off\nyour internet connection.",
+    "retrieve_progress":"Your progress is being retrieved.\nPlease do not turn off your internet\nuntil process is finished."
 }
