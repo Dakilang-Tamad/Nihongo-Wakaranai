@@ -57,6 +57,13 @@ def update_progress():
     conn = sqlite3.connect("Quizzes.db")
     cursor = conn.execute("SELECT table_name FROM USER")
 
+    notification.notify(
+        title="Updating Progress",
+        message="Connecting to remote database...",
+        timeout=None,
+        app_icon=None, 
+    )
+
     for i in cursor:
         tname = i[0]
 
@@ -72,6 +79,10 @@ def update_progress():
             sqlite_command = "SELECT ID, PROF FROM " + source
             cursor = conn.execute(sqlite_command)
             for k in cursor:
+                notif_message = "updating " + source + "item number " + str(k[0])
+                notification.update(
+                    message=notif_message,
+                )
                 data = (k[1], source, k[0])
                 pgcursor.execute(command, data)
 
