@@ -6,7 +6,7 @@ import re
 import json
 from threading import Thread
 from pathlib import Path
-import main as main
+from main import NoticePop
 import pg8000
 import ssl
 
@@ -77,6 +77,10 @@ def update_progress():
 
     pgconn.commit()
     pgconn.close()
+    
+    global error
+    error = 14
+    NoticePop().open()
 
 
 def new_table(tablename):
@@ -122,6 +126,10 @@ def new_table(tablename):
     pgconn.commit()
     pgconn.close()
 
+    global error
+    error = 14
+    NoticePop().open()
+
 
 def create_user(username, table_name):
     conn = sqlite3.connect("Quizzes.db")
@@ -163,6 +171,10 @@ def retrieve_progress(table_name):
     conn.commit()
     conn.close()
     pgconn.close()
+
+    global error
+    error = 14
+    NoticePop().open()
 
 
 def log_in(username, password):
