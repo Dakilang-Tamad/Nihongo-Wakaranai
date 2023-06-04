@@ -445,6 +445,9 @@ class HomeScreen(Screen):
                 dh.first_screen = ""
                 dh.error = 6
                 NoticePop().open()
+                new_table.join()
+                dh.error = 14
+                NoticePop().open()
             if dh.first_screen == "login":
                 conn = sqlite3.connect("Quizzes.db")
                 cursor = conn.cursor()
@@ -454,10 +457,16 @@ class HomeScreen(Screen):
                 dh.first_screen = ""
                 dh.error = 7
                 NoticePop().open()
+                new_table.join()
+                dh.error = 14
+                NoticePop().open()
             if dh.first_screen == "home":
                 update = Thread(target = dh.update_progress)
                 update.start()
                 dh.first_screen = ""
+                update.join()
+                dh.error = 14
+                NoticePop().open()
         except:
             dh.error = 13
             NoticePop().open()

@@ -77,10 +77,6 @@ def update_progress():
 
     pgconn.commit()
     pgconn.close()
-    
-    global error
-    error = 14
-    main.NoticePop().open()
 
 
 def new_table(tablename):
@@ -126,10 +122,6 @@ def new_table(tablename):
     pgconn.commit()
     pgconn.close()
 
-    global error
-    error = 14
-    main.NoticePop().open()
-
 
 def create_user(username, table_name):
     conn = sqlite3.connect("Quizzes.db")
@@ -171,10 +163,6 @@ def retrieve_progress(table_name):
     conn.commit()
     conn.close()
     pgconn.close()
-
-    global error
-    error = 14
-    main.NoticePop().open()
 
 
 def log_in(username, password):
