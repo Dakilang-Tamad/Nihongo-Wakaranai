@@ -17,6 +17,7 @@ import json
 import urllib.request
 # from jnius import autoclass
 import os
+import ssl
 
 # This part was commented for development; only works on android build
 # Locale = autoclass('java.util.Locale')
@@ -27,7 +28,8 @@ import os
 
 def connected():
     try:
-        urllib.request.urlopen('https://www.google.com/')
+        context = ssl._create_unverified_context()
+        urllib.request.urlopen('https://www.google.com/', cotext=context)
         return True
     except:
         return False
@@ -144,6 +146,10 @@ class NoticePop(Popup):
             self.error_text = error['to_n2']
         elif dh.error == 11:
             self.error_text = error['to_n1']
+        elif dh.error == 12:
+            self.error_text = error['n5_start']
+        elif dh.error == 13:
+            self.error_text = error['db_error']
         else:
             self.error_text = "Unknown Error"
 
@@ -430,15 +436,15 @@ class Login(Screen):
 
 
 class HomeScreen(Screen):
-    def on_pre_enter(self, *args):
-        if connected():
+    def on_enter(self, *args):
+        try:
             if dh.first_screen == "signup":
                 conn = sqlite3.connect("Quizzes.db")
                 cursor = conn.cursor()
                 t_list = cursor.execute("""SELECT table_name FROM USER;""").fetchall()
                 new_table = Thread(target = dh.new_table, args = t_list[0])
                 new_table.start()
-                dh.first_screen = "home"
+                dh.first_screen = ""
                 dh.error = 6
                 NoticePop().open()
             if dh.first_screen == "login":
@@ -447,15 +453,16 @@ class HomeScreen(Screen):
                 t_list = cursor.execute("""SELECT table_name FROM USER;""").fetchall()
                 new_table = Thread(target = dh.retrieve_progress, args = t_list[0])
                 new_table.start()
-                dh.first_screen = "home"
+                dh.first_screen = ""
                 dh.error = 7
                 NoticePop().open()
             if dh.first_screen == "home":
                 update = Thread(target = dh.update_progress)
                 update.start()
                 dh.first_screen = ""
-        else:
-            pass
+        except:
+            dh.error = 13
+            NoticePop().open()
 
     def raise_notice(self):
         dh.error = 1
@@ -786,6 +793,8 @@ class GrammarItem(Screen):
             self.ans = i[6]
         cursor.close()
         if dh.first_screen == "signup" and dh.current == 0:
+            if dh.level == "N5":
+                dh.error = 12
             NoticePop().open()
 
     def on_pre_enter(self, *args):

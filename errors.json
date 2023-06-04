@@ -9,5 +9,7 @@
     "to_n4": "You passed the N5 assessment",
     "to_n3": "You passed the N4 assessment",
     "to_n2": "You passed the N3 assessment",
-    "to_n1": "You passed the N2 assessment"
+    "to_n1": "You passed the N2 assessment",
+    "n5_start": "Starting N5 assessment",
+    "db_error": "There was an error conecting\nto remote database"
 }

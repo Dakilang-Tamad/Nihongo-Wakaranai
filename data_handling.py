@@ -404,5 +404,5 @@ tts_sentence = ""
 # for the primary assessment
 first_screen = ""
 difficulties = ["N5", "N4", "N3", "N2", "N1"]
-passing_scores = [1, 4, 5, 4, 3]
+passing_scores = [5, 4, 5, 4, 3]
 index = 0
