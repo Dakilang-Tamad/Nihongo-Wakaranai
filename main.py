@@ -36,6 +36,10 @@ def connected():
 def to_audio():
     # tts.setLanguage(Locale.JAPAN)
     # tts.speak(dh.tts, TextToSpeech.QUEUE_FLUSH, None)
+    # tts.setLanguage(Locale.US)
+    # tts.speak("Example", TextToSpeech.QUEUE_FLUSH, None)
+    # tts.setLanguage(Locale.JAPAN)
+    # tts.speak(dh.tts_sentence, TextToSpeech.QUEUE_FLUSH, None)
     pass
 
 
@@ -132,6 +136,14 @@ class NoticePop(Popup):
             self.error_text = error['primary_upload']
         elif dh.error == 7:
             self.error_text = error['primary_upload']
+        elif dh.error == 8:
+            self.error_text = error['to_n4']
+        elif dh.error == 9:
+            self.error_text = error['to_n3']
+        elif dh.error == 10:
+            self.error_text = error['to_n2']
+        elif dh.error == 11:
+            self.error_text = error['to_n1']
         else:
             self.error_text = "Unknown Error"
 
@@ -144,6 +156,7 @@ class ExitPop(Popup):
 
     def app_close(self):
         App.get_running_app().stop()
+
 
 class UpdatePop(Popup):
 
@@ -159,7 +172,6 @@ class UpdatePop(Popup):
             return True
         else:
             return False
-
 
 
 class GrammarPop(Popup):
@@ -185,7 +197,8 @@ class GrammarPop(Popup):
             self.item = i[0]
             self.meaning = i[1]
             self.jp = "Sample Japanese sentence:\n    " + i[2]
-            self.en = "Sample English sentence:\n    " + i[3]
+            self.sentence = i[2]
+            self.en = "English Translation:\n    " + i[3]
             self.prog = "Progress: " + str(i[4]) + "/5"
         conn.close()
 
@@ -205,6 +218,7 @@ class GrammarPop(Popup):
 
     def tts(self):
         dh.tts = self.item
+        dh.tts_sentence = self.sentence
         to_audio()
 
 
@@ -232,7 +246,8 @@ class VocabPop1(Popup):
             self.en_word = i[0]
             self.reading = i[2]
             self.jp_sent = "Sample Japanese sentence:\n    " + i[3]
-            self.en_sent = "Sample English sentence:\n    " + i[4]
+            self.sentence = i[3]
+            self.en_sent = "English Translation:\n    " + i[4]
             self.prog = "Progress: " + str(i[5]) + "/5"
         conn.close()
 
@@ -252,6 +267,7 @@ class VocabPop1(Popup):
 
     def tts(self):
         dh.tts = self.jp_word
+        dh.tts_sentence = self.sentence
         to_audio()
 
 
@@ -281,7 +297,8 @@ class VocabPop2(Popup):
             self.kind = i[2]
             self.meaning = i[3]
             self.jp_sent = "Sample Japanese sentence:\n    " + i[4]
-            self.en_sent = "Sample English sentence:\n    " + i[5]
+            self.sentence = i[4]
+            self.en_sent = "English Translation:\n    " + i[5]
             self.prog = "Progress: " + str(i[6]) + "/5"
         conn.close()
 
@@ -301,6 +318,7 @@ class VocabPop2(Popup):
 
     def tts(self):
         dh.tts = self.jp_word
+        dh.tts_sentence = self.sentence
         to_audio()
 
 
@@ -327,7 +345,8 @@ class KanjiPop(Popup):
             self.jp_word = i[0]
             self.translation = i[1] + ": " + i[2]
             self.jp_sent = "Sample Japanese sentence:\n    " + i[3]
-            self.en_sent = "Sample English Sentence:\n    "+i[4]
+            self.sentence = i[3]
+            self.en_sent = "English Translation:\n    "+i[4]
             self.reading = i[5]
             self.prog = "Progress: " + str(i[6]) + "/5"
         conn.close()
@@ -348,6 +367,7 @@ class KanjiPop(Popup):
 
     def tts(self):
         dh.tts = self.jp_word
+        dh.tts_sentence = self.sentence
         to_audio()
 
 
@@ -765,6 +785,8 @@ class GrammarItem(Screen):
             self.D = i[5]
             self.ans = i[6]
         cursor.close()
+        if dh.first_screen == "signup" and dh.current == 0:
+            NoticePop().open()
 
     def on_pre_enter(self, *args):
         self.initialize()
@@ -832,6 +854,14 @@ class GrammarItem(Screen):
                         dh.add_open_level(dh.level)
                         dh.current = 0
                         new_contents()
+                        if dh.level == "N4":
+                            dh.error = 8
+                        if dh.level == "N3":
+                            dh.error = 9
+                        if dh.level == "N2":
+                            dh.error = 10
+                        if dh.level == "N1":
+                            dh.error = 11
                         self.initialize()
                     else:
                         self.manager.current = "home"
