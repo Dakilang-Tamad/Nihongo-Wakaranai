@@ -6,7 +6,7 @@ import re
 import json
 from threading import Thread
 from pathlib import Path
-from main import NoticePop
+import bridge_file as bridge
 import pg8000
 import ssl
 
@@ -80,7 +80,7 @@ def update_progress():
     
     global error
     error = 14
-    NoticePop().open()
+    bridge.raise_notify()
 
 
 def new_table(tablename):
@@ -128,7 +128,7 @@ def new_table(tablename):
 
     global error
     error = 14
-    NoticePop().open()
+    bridge.raise_notify()
 
 
 def create_user(username, table_name):
@@ -174,7 +174,7 @@ def retrieve_progress(table_name):
 
     global error
     error = 14
-    NoticePop().open()
+    bridge.raise_notify()
 
 
 def log_in(username, password):
