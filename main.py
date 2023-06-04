@@ -37,11 +37,7 @@ def connected():
 
 def to_audio():
     # tts.setLanguage(Locale.JAPAN)
-    # tts.speak(dh.tts, TextToSpeech.QUEUE_FLUSH, None)
-    # tts.setLanguage(Locale.US)
-    # tts.speak("Example", TextToSpeech.QUEUE_FLUSH, None)
-    # tts.setLanguage(Locale.JAPAN)
-    # tts.speak(dh.tts_sentence, TextToSpeech.QUEUE_FLUSH, None)
+    # tts.speak(dh.tts + " Example, " + dh.tts_sentence, TextToSpeech.QUEUE_FLUSH, None)
     pass
 
 
@@ -150,6 +146,8 @@ class NoticePop(Popup):
             self.error_text = error['n5_start']
         elif dh.error == 13:
             self.error_text = error['db_error']
+        elif dh.error == 14:
+            self.error_text = error['safe_dc']
         else:
             self.error_text = "Unknown Error"
 

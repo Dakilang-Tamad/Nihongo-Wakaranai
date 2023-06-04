@@ -5,8 +5,8 @@ import string
 import re
 import json
 from threading import Thread
-from plyer import notification
 from pathlib import Path
+import main as main
 import pg8000
 import ssl
 
@@ -57,13 +57,6 @@ def update_progress():
     conn = sqlite3.connect("Quizzes.db")
     cursor = conn.execute("SELECT table_name FROM USER")
 
-    notification.notify(
-        title="Updating Progress",
-        message="Connecting to remote database...",
-        timeout=None,
-        app_icon=None, 
-    )
-
     for i in cursor:
         tname = i[0]
 
@@ -79,15 +72,15 @@ def update_progress():
             sqlite_command = "SELECT ID, PROF FROM " + source
             cursor = conn.execute(sqlite_command)
             for k in cursor:
-                notif_message = "updating " + source + "item number " + str(k[0])
-                notification.update(
-                    message=notif_message,
-                )
                 data = (k[1], source, k[0])
                 pgcursor.execute(command, data)
 
     pgconn.commit()
     pgconn.close()
+    
+    global error
+    error = 14
+    main.NoticePop().open()
 
 
 def new_table(tablename):
@@ -110,13 +103,6 @@ def new_table(tablename):
     pgcursor = pgconn.cursor()
     conn = sqlite3.connect("Quizzes.db")
 
-    notification.notify(
-        title="Initializing Progress Table",
-        message="Generating progress table...",
-        timeout=None,
-        app_icon=None, 
-    )
-
     pgcursor.execute(" CREATE TABLE " + tname +
                      " ( id SERIAL PRIMARY KEY, source_table TEXT, number INTEGER, proficiency INTEGER );")
     
@@ -134,19 +120,15 @@ def new_table(tablename):
             sqlite_command = "SELECT ID FROM " + source
             cursor = conn.execute(sqlite_command)
             for k in cursor:
-                notif_message = "Inserting " + source + "item number " + str(k[0])
-                notification.update(
-                    message=notif_message,
-                )
                 data = (source, k[0], 0)
                 pgcursor.execute(command, data)
 
     pgconn.commit()
     pgconn.close()
 
-    notification.update(
-        message="Initialization done",
-    )
+    global error
+    error = 14
+    main.NoticePop().open()
 
 
 def create_user(username, table_name):
@@ -183,27 +165,16 @@ def retrieve_progress(table_name):
     pgcursor.execute("SELECT * FROM " + tname)
     results = pgcursor.fetchall()
 
-    notification.notify(
-        title="Retrieving Progress",
-        message="",
-        timeout=None,
-        app_icon=None, 
-    )
-
     for row in results:
-        notif_message = "Retrieving " + row[1] + "item number " + str(row[2])
-        notification.update(
-            message=notif_message,
-        )
         conn.execute("UPDATE " + row[1] + " set PROF = '" +
                      str(row[3]) + "' where ID = " + str(row[2]))
     conn.commit()
     conn.close()
     pgconn.close()
 
-    notification.update(
-        message="Retrieval done",
-    )
+    global error
+    error = 14
+    main.NoticePop().open()
 
 
 def log_in(username, password):
