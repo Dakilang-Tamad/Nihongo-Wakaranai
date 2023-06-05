@@ -15,15 +15,15 @@ from threading import Thread
 import data_handling as dh
 import json
 import urllib.request
-from jnius import autoclass
+# from jnius import autoclass
 import os
 import ssl
 
 # This part was commented for development; only works on android build
-Locale = autoclass('java.util.Locale')
-PythonActivity = autoclass('org.kivy.android.PythonActivity')
-TextToSpeech = autoclass('android.speech.tts.TextToSpeech')
-tts = TextToSpeech(PythonActivity.mActivity, None)
+# Locale = autoclass('java.util.Locale')
+# PythonActivity = autoclass('org.kivy.android.PythonActivity')
+# TextToSpeech = autoclass('android.speech.tts.TextToSpeech')
+# tts = TextToSpeech(PythonActivity.mActivity, None)
 
 
 def connected():
@@ -36,8 +36,8 @@ def connected():
 
 
 def to_audio():
-    tts.setLanguage(Locale.JAPAN)
-    tts.speak(dh.tts + " Example, " + dh.tts_sentence, TextToSpeech.QUEUE_FLUSH, None)
+    # tts.setLanguage(Locale.JAPAN)
+    # tts.speak(dh.tts + " Example, " + dh.tts_sentence, TextToSpeech.QUEUE_FLUSH, None)
     pass
 
 
@@ -415,25 +415,29 @@ class Dummy(Screen):
 
 class Signup(Screen):
     def signup(self):
-        usrname = self.ids.s_name.text
-        pass1 = self.ids.s_pass.text
-        pass2 = self.ids.s_pass_2.text
+        try:
+            usrname = self.ids.s_name.text
+            pass1 = self.ids.s_pass.text
+            pass2 = self.ids.s_pass_2.text
 
-        if (pass1 == pass2):
-            if (dh.validate(usrname, pass1)):
-                if (dh.check_duplicate(usrname)):
-                    self.new_acc = Thread(target=dh.signup, args=(usrname, pass1,))
-                    self.new_acc.start()
-                    dh.level = dh.difficulties[dh.index]
-                    new_contents()
-                    self.manager.current = "grammari"
+            if (pass1 == pass2):
+                if (dh.validate(usrname, pass1)):
+                    if (dh.check_duplicate(usrname)):
+                        self.new_acc = Thread(target=dh.signup, args=(usrname, pass1,))
+                        self.new_acc.start()
+                        dh.level = dh.difficulties[dh.index]
+                        new_contents()
+                        self.manager.current = "grammari"
+                    else:
+                        dh.error = 15
+                        NoticePop().open()
                 else:
-                    dh.error = 15
-                    NoticePop().open()
+                    ValidationPop().open()
             else:
-                ValidationPop().open()
-        else:
-            dh.error = 4
+                dh.error = 4
+                NoticePop().open()
+        except:
+            dh.error = 13
             NoticePop().open()
 
     def login(self):
@@ -442,20 +446,24 @@ class Signup(Screen):
 
 class Login(Screen):
     def login(self):
-        dh.first_screen = "login"
-        username = self.ids.s_name.text
-        password = self.ids.s_pass.text
+        try:
+            dh.first_screen = "login"
+            username = self.ids.s_name.text
+            password = self.ids.s_pass.text
 
-        table = dh.log_in(username, password)
+            table = dh.log_in(username, password)
 
-        if table == None:
-            dh.error = 5
+            if table == None:
+                dh.error = 5
+                NoticePop().open()
+            else:
+                dh.create_user(username, table)
+                self.retrieve = Thread(target=dh.retrieve_progress, args=(table,))
+                self.retrieve.start()
+                self.manager.current = "home"
+        except:
+            dh.error = 13
             NoticePop().open()
-        else:
-            dh.create_user(username, table)
-            self.retrieve = Thread(target=dh.retrieve_progress, args=(table,))
-            self.retrieve.start()
-            self.manager.current = "home"
 
     def signup(self):
         self.manager.current = "signup"
