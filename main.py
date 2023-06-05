@@ -448,7 +448,7 @@ class Login(Screen):
 
         table = dh.log_in(username, password)
 
-        if table == "None":
+        if table == None:
             dh.error = 5
             NoticePop().open()
         else:
