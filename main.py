@@ -15,15 +15,15 @@ from threading import Thread
 import data_handling as dh
 import json
 import urllib.request
-# from jnius import autoclass
+from jnius import autoclass
 import os
 import ssl
 
 # This part was commented for development; only works on android build
-# Locale = autoclass('java.util.Locale')
-# PythonActivity = autoclass('org.kivy.android.PythonActivity')
-# TextToSpeech = autoclass('android.speech.tts.TextToSpeech')
-# tts = TextToSpeech(PythonActivity.mActivity, None)
+Locale = autoclass('java.util.Locale')
+PythonActivity = autoclass('org.kivy.android.PythonActivity')
+TextToSpeech = autoclass('android.speech.tts.TextToSpeech')
+tts = TextToSpeech(PythonActivity.mActivity, None)
 
 
 def connected():
@@ -36,8 +36,8 @@ def connected():
 
 
 def to_audio():
-    # tts.setLanguage(Locale.JAPAN)
-    # tts.speak(dh.tts + " Example, " + dh.tts_sentence, TextToSpeech.QUEUE_FLUSH, None)
+    tts.setLanguage(Locale.JAPAN)
+    tts.speak(dh.tts + " Example, " + dh.tts_sentence, TextToSpeech.QUEUE_FLUSH, None)
     pass
 
 

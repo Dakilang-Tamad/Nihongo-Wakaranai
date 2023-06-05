@@ -26,6 +26,15 @@ WindowManager:
 <Dummy>:
     name: "dummy"
 
+    GridLayout:
+        cols: 1
+
+        Label:
+            bold: "True"
+            text: "Loading....."
+            font_name: "en_font"
+            color: "black"
+
 <Signup>:
     name: "signup"
 
@@ -1864,7 +1873,7 @@ WindowManager:
         GridLayout:
             cols: 2
             size_hint_y: None
-            height: root.height/5
+            height: root.height/10
             spacing: root.width/20
 
             Button:
@@ -1933,7 +1942,7 @@ WindowManager:
     title: "Invalid Username or Password"
     title_font: "en_font"
     title_color: 0,0,0,1
-    size_hint: (.8, .8)
+    size_hint: (.95, .8)
     background: "./resources/Buttons/popup_bg.png"
     border: 0,0,0,0
 
@@ -2014,7 +2023,7 @@ WindowManager:
 
         AnchorLayout:
             size_hint_y: None
-            height: root.height/10
+            height: root.height/13
         
             Button:
                 text: "Close"
@@ -2024,6 +2033,6 @@ WindowManager:
                 background_down: './resources/Buttons/rec_4_down.png'
                 border: 0,0,0,0
                 size_hint: None, None
-                size: root.width/2, root.height/10
+                size: root.width/3, root.height/13
                 on_release:
                     root.dismiss()

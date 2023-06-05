@@ -4,7 +4,7 @@
     "invalid_password_1" : "Your password is invalid",
     "invalid_password_2" : "Passwords do not match",
     "invalid_creds" : "Incorrect username or password",
-    "primary_upload": "Since this is your fist time with the app,\nwe are uploading your primary progress.\nPlease do not turn off\nyour internet connection.",
+    "primary_upload": "Since this is your fist time with the app,\nwe are uploading your primary progress.\nPlease do not turn off\nyour internet connection or\nclose the app.",
     "retrieve_progress":"Your progress is being retrieved.",
     "to_n4": "You passed the N5 assessment",
     "to_n3": "You passed the N4 assessment",
