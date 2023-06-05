@@ -114,6 +114,10 @@ def retrieve_user_progress():
     retrieve_progress.start()
 
 
+class ValidationPop(Popup):
+    pass
+
+
 class ProfilePop(Popup):
     username = StringProperty()
     n5_prog = StringProperty()
@@ -427,8 +431,7 @@ class Signup(Screen):
                     dh.error = 15
                     NoticePop().open()
             else:
-                dh.error = 3
-                NoticePop().open()
+                ValidationPop().open()
         else:
             dh.error = 4
             NoticePop().open()

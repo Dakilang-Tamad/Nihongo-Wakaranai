@@ -1929,3 +1929,101 @@ WindowManager:
                     root.condition(root.p2)
 
 
+<ValidationPop>:
+    title: "Invalid Username or Password"
+    title_font: "en_font"
+    title_color: 0,0,0,1
+    size_hint: (.8, .8)
+    background: "./resources/Buttons/popup_bg.png"
+    border: 0,0,0,0
+
+    GridLayout:
+        cols: 1
+        
+        Label:
+            text: "Username Requirements:"
+            font_name: "en_font"
+            halign: "center"
+            color: 0,0,0,1
+
+        Label:
+            text: "- consist of only alphanumeric characters,\nunderscore (_), dot (.), and at symbol (@)."
+            font_name: "en_font"
+            halign: "left"
+            color: 0,0,0,1
+
+        Label:
+            text: "- be between 4 and 15 characters in length."
+            font_name: "en_font"
+            halign: "left"
+            color: 0,0,0,1
+
+        Label:
+            text: "- start with an alphabetic character."
+            font_name: "en_font"
+            halign: "left"
+            color: 0,0,0,10
+
+        Label:
+            text: "- not end with an underscore (_)."
+            font_name: "en_font"
+            halign: "left"
+            color: 0,0,0,1
+
+        Label:
+            text: "Password Requirements:"
+            font_name: "en_font"
+            halign: "center"
+            color: 0,0,0,1
+
+        Label:
+            text: "- be at least 8 characters long."
+            font_name: "en_font"
+            halign: "left"
+            color: 0,0,0,1
+
+        Label:
+            text: "- contain at least one lowercase letter."
+            font_name: "en_font"
+            halign: "left"
+            color: 0,0,0,1
+
+        Label:
+            text: "- contain at least one uppercase letter."
+            font_name: "en_font"
+            halign: "left"
+            color: 0,0,0,1
+
+        Label:
+            text: "- contain at least one digit."
+            font_name: "en_font"
+            halign: "left"
+            color: 0,0,0,1
+
+        Label:
+            text: "- contain at least one of the special characters:\nunderscore (_), at symbol (@), or dollar sign ($)."
+            font_name: "en_font"
+            halign: "left"
+            color: 0,0,0,1
+
+        Label:
+            text: "- not contain any whitespace characters."
+            font_name: "en_font"
+            halign: "left"
+            color: 0,0,0,1
+
+        AnchorLayout:
+            size_hint_y: None
+            height: root.height/10
+        
+            Button:
+                text: "Close"
+                font_name: "en_font"
+                color: 0,0,0,1
+                background_normal: './resources/Buttons/rec_4_up.png'
+                background_down: './resources/Buttons/rec_4_down.png'
+                border: 0,0,0,0
+                size_hint: None, None
+                size: root.width/2, root.height/10
+                on_release:
+                    root.dismiss()
