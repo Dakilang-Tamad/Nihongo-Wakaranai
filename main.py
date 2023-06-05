@@ -95,6 +95,25 @@ def update_bookmark(level):
     conn.close()
 
 
+def new_user_table():
+    conn = sqlite3.connect("Quizzes.db")
+    cursor = conn.cursor()
+    t_list = cursor.execute("""SELECT table_name FROM USER;""").fetchall()
+    new_table = Thread(target = dh.new_table, args = t_list[0])
+    new_table.start()
+    new_table.join()
+    dh.error = 14
+    Clock.schedule_once(lambda dt: NoticePop().open())
+
+
+def retrieve_user_progress():
+    conn = sqlite3.connect("Quizzes.db")
+    cursor = conn.cursor()
+    t_list = cursor.execute("""SELECT table_name FROM USER;""").fetchall()
+    retrieve_progress = Thread(target = dh.retrieve_progress, args = t_list[0])
+    retrieve_progress.start()
+
+
 class ProfilePop(Popup):
     username = StringProperty()
     n5_prog = StringProperty()
@@ -133,7 +152,7 @@ class NoticePop(Popup):
         elif dh.error == 6:
             self.error_text = error['primary_upload']
         elif dh.error == 7:
-            self.error_text = error['primary_upload']
+            self.error_text = error['retrieve_progress']
         elif dh.error == 8:
             self.error_text = error['to_n4']
         elif dh.error == 9:
@@ -148,6 +167,8 @@ class NoticePop(Popup):
             self.error_text = error['db_error']
         elif dh.error == 14:
             self.error_text = error['safe_dc']
+        elif dh.error == 15:
+            self.error_text = error['username_error']
         else:
             self.error_text = "Unknown Error"
 
@@ -396,11 +417,15 @@ class Signup(Screen):
 
         if (pass1 == pass2):
             if (dh.validate(usrname, pass1)):
-                self.new_acc = Thread(target=dh.signup, args=(usrname, pass1,))
-                self.new_acc.start()
-                dh.level = dh.difficulties[dh.index]
-                new_contents()
-                self.manager.current = "grammari"
+                if (dh.check_duplicate(usrname)):
+                    self.new_acc = Thread(target=dh.signup, args=(usrname, pass1,))
+                    self.new_acc.start()
+                    dh.level = dh.difficulties[dh.index]
+                    new_contents()
+                    self.manager.current = "grammari"
+                else:
+                    dh.error = 15
+                    NoticePop().open()
             else:
                 dh.error = 3
                 NoticePop().open()
@@ -437,20 +462,14 @@ class HomeScreen(Screen):
     def on_enter(self, *args):
         try:
             if dh.first_screen == "signup":
-                conn = sqlite3.connect("Quizzes.db")
-                cursor = conn.cursor()
-                t_list = cursor.execute("""SELECT table_name FROM USER;""").fetchall()
-                new_table = Thread(target = dh.new_table, args = t_list[0])
+                new_table = Thread(target = new_user_table)
                 new_table.start()
                 dh.first_screen = ""
                 dh.error = 6
                 NoticePop().open()
             if dh.first_screen == "login":
-                conn = sqlite3.connect("Quizzes.db")
-                cursor = conn.cursor()
-                t_list = cursor.execute("""SELECT table_name FROM USER;""").fetchall()
-                new_table = Thread(target = dh.retrieve_progress, args = t_list[0])
-                new_table.start()
+                retrieve_progress = Thread(target = retrieve_user_progress)
+                retrieve_progress.start()
                 dh.first_screen = ""
                 dh.error = 7
                 NoticePop().open()

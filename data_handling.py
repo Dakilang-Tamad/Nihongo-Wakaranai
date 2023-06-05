@@ -6,7 +6,6 @@ import re
 import json
 from threading import Thread
 from pathlib import Path
-import bridge_file as bridge
 import pg8000
 import ssl
 
@@ -34,6 +33,38 @@ def get_user():
         data.append(str(progress))
 
     return data
+
+
+def check_duplicate(username):
+    with open('creds.json') as f:
+        credentials = json.load(f)
+
+    context = ssl.create_default_context(
+        cafile='resources/cert/DigiCertGlobalRootCA.crt.pem')
+    context.check_hostname = True
+
+    pgconn = pg8000.connect(
+        user=credentials['user'],
+        password=credentials['password'],
+        host=credentials['host'],
+        port=5432,
+        database=credentials['dbname'],
+        ssl_context=context
+    )
+    pgcursor = pgconn.cursor()
+
+    pgcursor.execute("SELECT username FROM user_data")
+    results = pgcursor.fetchall()
+
+    usernames = []
+
+    for i in results:
+        usernames.append(i[0])
+
+    if username in usernames:
+        return False
+    else:
+        return True
 
 
 def update_progress():
@@ -80,7 +111,6 @@ def update_progress():
     
     global error
     error = 14
-    bridge.raise_notify()
 
 
 def new_table(tablename):
@@ -126,10 +156,6 @@ def new_table(tablename):
     pgconn.commit()
     pgconn.close()
 
-    global error
-    error = 14
-    bridge.raise_notify()
-
 
 def create_user(username, table_name):
     conn = sqlite3.connect("Quizzes.db")
@@ -171,10 +197,6 @@ def retrieve_progress(table_name):
     conn.commit()
     conn.close()
     pgconn.close()
-
-    global error
-    error = 14
-    bridge.raise_notify()
 
 
 def log_in(username, password):

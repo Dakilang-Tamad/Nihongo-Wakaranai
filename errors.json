@@ -5,12 +5,13 @@
     "invalid_password_2" : "Passwords do not match",
     "invalid_creds" : "Incorrect username or password",
     "primary_upload": "Since this is your fist time with the app,\nwe are uploading your primary progress.\nPlease do not turn off\nyour internet connection.",
-    "retrieve_progress":"Your progress is being retrieved.\nPlease do not turn off your internet\nuntil process is finished.",
+    "retrieve_progress":"Your progress is being retrieved.",
     "to_n4": "You passed the N5 assessment",
     "to_n3": "You passed the N4 assessment",
     "to_n2": "You passed the N3 assessment",
     "to_n1": "You passed the N2 assessment",
     "n5_start": "Starting N5 assessment",
     "db_error": "There was an error conecting\nto remote database",
-    "safe_dc": "It is now safe to turn off\nyour internet connection"
+    "safe_dc": "It is now safe to turn off\nyour internet connection",
+    "username_error": "Username already taken"
 }
