@@ -96,6 +96,8 @@ def update_progress():
 
     command = "UPDATE " + tname + \
         " SET proficiency = %s WHERE source_table = %s AND number = %s"
+    
+    progress = []
 
     for i in levels:
         for j in categories:
@@ -104,7 +106,9 @@ def update_progress():
             cursor = conn.execute(sqlite_command)
             for k in cursor:
                 data = (k[1], source, k[0])
-                pgcursor.execute(command, data)
+                progress.append(data)
+                
+    pgcursor.executemany(command, progress)
 
     pgconn.commit()
     pgconn.close()
@@ -144,6 +148,8 @@ def new_table(tablename):
     levels = ["N1", "N2", "N3", "N4", "N5"]
     categories = ["GRAMMAR", "VOCAB", "KANJI"]
 
+    progress = []
+
     for i in levels:
         for j in categories:
             source = i + "_" + j
@@ -151,7 +157,9 @@ def new_table(tablename):
             cursor = conn.execute(sqlite_command)
             for k in cursor:
                 data = (source, k[0], k[1])
-                pgcursor.execute(command, data)
+                progress.append(data)
+                
+    pgcursor.executemany(command, progress)
 
     pgconn.commit()
     pgconn.close()
