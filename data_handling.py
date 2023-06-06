@@ -147,10 +147,10 @@ def new_table(tablename):
     for i in levels:
         for j in categories:
             source = i + "_" + j
-            sqlite_command = "SELECT ID FROM " + source
+            sqlite_command = "SELECT ID, PROF FROM " + source
             cursor = conn.execute(sqlite_command)
             for k in cursor:
-                data = (source, k[0], 0)
+                data = (source, k[0], k[1])
                 pgcursor.execute(command, data)
 
     pgconn.commit()
