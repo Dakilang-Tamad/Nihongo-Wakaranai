@@ -67,6 +67,21 @@ def check_duplicate(username):
         return True
 
 
+def log_out():
+    conn = sqlite3.connect("Quizzes.db")
+    conn.execute("DROP TABLE USER")
+
+    levels = ["N1", "N2", "N3", "N4", "N5"]
+    categories = ["GRAMMAR", "VOCAB", "KANJI"]
+    
+    for i in levels:
+        for j in categories:
+            source = i + "_" + j
+            sqlite_command = "UPDATE " + source + \
+            " SET PROf = 0"
+            conn.execute(sqlite_command)
+
+
 def update_progress():
     with open('creds.json') as f:
         credentials = json.load(f)

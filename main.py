@@ -134,6 +134,12 @@ class ProfilePop(Popup):
         self.n3_prog = data[3]
         self.n4_prog = data[4]
         self.n5_prog = data[5]
+    
+    def logout(self):
+        Thread(target=dh.log_out).start()
+        dh.first_screen = "signup"
+        MDApp.get_running_app().root.current = "signup"
+        self.dismiss()
 
 
 class NoticePop(Popup):
@@ -593,13 +599,14 @@ class BookmarkDifficulty(Screen):
 
 
 class BookmarkedItems(Screen):
-    level = dh.level + " BOOKMARKS"
+    level = StringProperty()
     button_up = './resources/Buttons/rec_1_up.png'
     button_down = './resources/Buttons/rec_1_down.png'
     back_up = './resources/Buttons/back_button_up.png'
     back_down = './resources/Buttons/back_button_down.png'
 
     def on_pre_enter(self, *args):
+        self.level = dh.level + " BOOKMARKS"
         diffs = ["GRAMMAR", "VOCAB", "KANJI"]
         for i in diffs:
             self.display(i)

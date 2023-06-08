@@ -2,6 +2,7 @@
 #:import hex kivy.utils.get_color_from_hex
 
 WindowManager:
+    id: screen_manager
     canvas.before:
         Rectangle:
             pos: self.pos
@@ -107,7 +108,7 @@ WindowManager:
                         root.manager.transition.direction = "left"
 
 
-<Login>
+<Login>:
     name: "login"
 
     GridLayout:
@@ -537,12 +538,7 @@ WindowManager:
             height: root.height/12
             text: root.level
             font_name: "en_font"
-            canvas.before:
-                Color:
-                    rgba: hex('#80CFFF')
-                Rectangle:
-                    pos: self.pos
-                    size: self.size
+            color: "black"
 
         TabbedPanel:
             canvas.before:
@@ -555,7 +551,8 @@ WindowManager:
             tab_width: self.parent.width / 3
 
             TabbedPanelItem:
-                text: "grammar"
+                text: "Grammar"
+                font_name: "en_font"
                 color: 0,0,0,1
                 border: 0,0,0,0
                 background_normal: './resources/Buttons/rec_4_down.png'
@@ -581,7 +578,8 @@ WindowManager:
                         spacing: root.height/60
 
             TabbedPanelItem:
-                text: "vocab"
+                text: "Vocabulary"
+                font_name: "en_font"
                 color: 0,0,0,1
                 border: 0,0,0,0
                 background_normal: './resources/Buttons/rec_4_down.png'
@@ -607,7 +605,8 @@ WindowManager:
                         spacing: root.height/60
 
             TabbedPanelItem:
-                text: "kanji"
+                text: "Kanji"
+                font_name: "en_font"
                 color: 0,0,0,1
                 border: 0,0,0,0
                 background_normal: './resources/Buttons/rec_4_down.png'
@@ -815,7 +814,8 @@ WindowManager:
             tab_width: self.parent.width / 3
 
             TabbedPanelItem:
-                text: "grammar"
+                text: "Grammar"
+                font_name: "en_font"
                 color: 0,0,0,1
                 border: 0,0,0,0
                 background_normal: './resources/Buttons/rec_4_down.png'
@@ -841,7 +841,8 @@ WindowManager:
                         spacing: root.height/60
 
             TabbedPanelItem:
-                text: "vocab"
+                text: "Vocabulary"
+                font_name: "en_font"
                 color: 0,0,0,1
                 border: 0,0,0,0
                 background_normal: './resources/Buttons/rec_4_down.png'
@@ -867,7 +868,8 @@ WindowManager:
                         spacing: root.height/60
 
             TabbedPanelItem:
-                text: "kanji"
+                text: "Kanji"
+                font_name: "en_font"
                 color: 0,0,0,1
                 border: 0,0,0,0
                 background_normal: './resources/Buttons/rec_4_down.png'
@@ -1729,7 +1731,7 @@ WindowManager:
                 color: 0,0,0,1
         
         GridLayout:
-            cols:2
+            cols:3
         
             GridLayout:
                 cols: 1
@@ -1781,36 +1783,75 @@ WindowManager:
             
                 Label:
                     font_name: "en_font"
-                    text: root.n5_prog
+                    text: root.n5_prog + "/500"
                     halign: "left"
                     color: 0,0,0,1
 
                 Label:
                     font_name: "en_font"
-                    text: root.n4_prog
+                    text: root.n4_prog + "/500"
                     halign: "left"
                     color: 0,0,0,1
                 
                 Label:
                     font_name: "en_font"
-                    text: root.n3_prog
+                    text: root.n3_prog + "/500"
                     halign: "left"
                     color: 0,0,0,1
                 
                 Label:
                     font_name: "en_font"
-                    text: root.n2_prog
+                    text: root.n2_prog + "/500"
                     halign: "left"
                     color: 0,0,0,1
                 
                 Label:
                     font_name: "en_font"
-                    text: root.n1_prog
+                    text: root.n1_prog + "/500"
+                    halign: "left"
+                    color: 0,0,0,1
+            
+            GridLayout:
+                cols: 1
+
+                Label:
+                    font_name: "en_font"
+                    text: "Required"
+                    halign: "left"
+                    color: 0,0,0,1
+            
+                Label:
+                    font_name: "en_font"
+                    text: "220"
+                    halign: "left"
+                    color: 0,0,0,1
+
+                Label:
+                    font_name: "en_font"
+                    text: "250"
+                    halign: "left"
+                    color: 0,0,0,1
+                
+                Label:
+                    font_name: "en_font"
+                    text: "265"
+                    halign: "left"
+                    color: 0,0,0,1
+                
+                Label:
+                    font_name: "en_font"
+                    text: "250"
+                    halign: "left"
+                    color: 0,0,0,1
+                
+                Label:
+                    font_name: "en_font"
+                    text: "275"
                     halign: "left"
                     color: 0,0,0,1
         
         GridLayout:
-            cols:1
+            cols:2
             size_hint_y: .2
 
             AnchorLayout:
@@ -1820,6 +1861,14 @@ WindowManager:
                     halign: "center"
                     on_release:
                         root.dismiss()
+            
+            AnchorLayout:
+
+                MDFillRoundFlatButton:
+                    text: "Logout"
+                    halign: "center"
+                    on_release:
+                        root.logout()
 
 <NoticePop>:
     title: "Alert"
