@@ -71,6 +71,8 @@ def log_out():
     conn = sqlite3.connect("Quizzes.db")
     conn.execute("DROP TABLE USER")
 
+    conn.execute("DELETE FROM OPEN_LEVELS")
+
     levels = ["N1", "N2", "N3", "N4", "N5"]
     categories = ["GRAMMAR", "VOCAB", "KANJI"]
     
@@ -80,6 +82,9 @@ def log_out():
             sqlite_command = "UPDATE " + source + \
             " SET PROf = 0"
             conn.execute(sqlite_command)
+    
+    conn.commit()
+    conn.close()
 
 
 def update_progress():
@@ -101,10 +106,21 @@ def update_progress():
     pgcursor = pgconn.cursor()
 
     conn = sqlite3.connect("Quizzes.db")
-    cursor = conn.execute("SELECT table_name FROM USER")
+    cursor = conn.execute("SELECT username, table_name FROM USER")
 
     for i in cursor:
-        tname = i[0]
+        uname = i[0]
+        tname = i[1]
+
+    cursor = conn.execute("SELECT level FROM OPEN_LEVELS")
+
+    open_levels = []
+
+    for i in cursor:
+        open_levels.append(i[0])
+    
+    data = (open_levels, uname, tname)
+    pgcursor.execute("UPDATE user_data SET levels = %s WHERE username = %s AND table_name = %s", data)
 
     levels = ["N1", "N2", "N3", "N4", "N5"]
     categories = ["GRAMMAR", "VOCAB", "KANJI"]
@@ -151,6 +167,22 @@ def new_table(tablename):
     )
     pgcursor = pgconn.cursor()
     conn = sqlite3.connect("Quizzes.db")
+
+    cursor = conn.execute("SELECT username, table_name FROM USER")
+
+    for i in cursor:
+        uname = i[0]
+        tname = i[1]
+
+    cursor = conn.execute("SELECT level FROM OPEN_LEVELS")
+
+    open_levels = []
+
+    for i in cursor:
+        open_levels.append(i[0])
+    
+    data = (open_levels, uname, tname)
+    pgcursor.execute("UPDATE user_data SET levels = %s WHERE username = %s AND table_name = %s", data)
 
     pgcursor.execute(" CREATE TABLE " + tname +
                      " ( id SERIAL PRIMARY KEY, source_table TEXT, number INTEGER, proficiency INTEGER );")
@@ -211,6 +243,24 @@ def retrieve_progress(table_name):
     )
     pgcursor = pgconn.cursor()
     conn = sqlite3.connect("Quizzes.db")
+
+    conn.execute("DELETE FROM OPEN_LEVELS")
+
+    cursor = conn.execute("SELECT username, table_name FROM USER")
+
+    for i in cursor:
+        uname = i[0]
+        tname = i[1]
+
+    pgcursor.execute("SELECT levels FROM user_data WHERE username = %s AND table_name = %s", (uname, tname))
+    results = pgcursor.fetchall()
+
+    array = results[0]
+    array = array[0]
+
+    for i in array:
+        conn.execute("INSERT INTO OPEN_LEVELS (level) VALUES (?)", (i,))
+
     pgcursor.execute("SELECT * FROM " + tname)
     results = pgcursor.fetchall()
 
@@ -274,7 +324,7 @@ def signup(username, password):
 
     cursor = conn.cursor()
     cursor.execute(
-        'CREATE TABLE IF NOT EXISTS user_data (key SERIAL PRIMARY KEY, username TEXT, password TEXT, table_name TEXT)')
+        'CREATE TABLE IF NOT EXISTS user_data (key SERIAL PRIMARY KEY, username TEXT, password TEXT, table_name TEXT, levels TEXT[])')
 
     uname = username
     sample_pass = password
