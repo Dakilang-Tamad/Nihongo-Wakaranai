@@ -219,6 +219,7 @@ class GrammarPop(Popup):
     bm_down = StringProperty()
     prog = StringProperty()
 
+
     def on_pre_open(self):
         w, h = Window.size
         self.width = (w/20)*19
@@ -1160,7 +1161,7 @@ class WindowManager(ScreenManager):
 
 tools_path = os.path.dirname("resources/")
 icons_path1 = os.path.join(tools_path, 'komorebi-gothic-P.ttf')
-icons_path2 = os.path.join(tools_path, 'ComicSansMSBold.ttf')
+icons_path2 = os.path.join(tools_path, 'VisbyRoundCF-DemiBold.otf')
 
 LabelBase.register(name='jp_font',
                    fn_regular=icons_path1)
