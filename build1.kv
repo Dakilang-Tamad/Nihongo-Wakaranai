@@ -1,0 +1,1997 @@
+#:kivy 2.1.0
+#:import hex kivy.utils.get_color_from_hex
+
+WindowManager:
+    id: screen_manager
+    canvas.before:
+        Rectangle:
+            pos: self.pos
+            size: self.size
+            source: "resources/v3/background/Le_Tori_Gate.png"
+
+    Dummy:
+    Signup:
+    Login:
+    HomeScreen:
+    DifficultySelection:
+    BookmarkDifficulty:
+    BookmarkedItems:
+    SettingsScreen:
+    ContentsDiff:
+    Contents:
+    GrammarItem:
+    VocabItem:
+    KanjiItem:
+    EndQuizz:
+
+<Dummy>:
+    name: "dummy"
+
+    GridLayout:
+        cols: 1
+
+        Label:
+            bold: "True"
+            text: "Loading....."
+            font_name: "en_font"
+            color: "black"
+
+<Signup>:
+    name: "signup"
+
+    GridLayout:
+        cols: 1
+
+        Label:
+            bold: "True"
+            text: "Sign up to Continue"
+            font_name: "en_font"
+            color: "black"
+        
+        GridLayout:
+            cols: 1
+            
+            AnchorLayout:
+
+                MDTextField:
+                    mode: "round"
+                    id: s_name
+                    hint_text: "username"
+                    size_hint: None, None
+                    width: (root.width/10)*8
+            
+            AnchorLayout:
+            
+                MDTextField:
+                    mode:"round"
+                    id: s_pass
+                    password: "True"
+                    hint_text: "password"
+                    size_hint: None, None
+                    width: (root.width/10)*8
+            
+            AnchorLayout:
+            
+                MDTextField:
+                    mode:"round"
+                    id: s_pass_2
+                    password: "True"
+                    hint_text: "confirm password"
+                    size_hint: None, None
+                    width: (root.width/10)*8
+
+            AnchorLayout:
+            
+                MDFillRoundFlatButton:
+                    text: "Sign up"
+                    pos_hint_x: {"center"}
+                    on_release:
+                        root.signup()
+
+        GridLayout:
+            cols: 1
+
+            Label:
+                text: "Already have a account?"
+                font_name: "en_font"
+                color: "black"
+            
+            AnchorLayout:
+                anchor_y:'top'
+                anchor_x:'center'
+            
+                MDFillRoundFlatButton:
+                    text: "Login"
+                    pos_hint_x: {"center"}
+                    on_release:
+                        root.login()
+                        root.manager.transition.direction = "left"
+
+
+<Login>:
+    name: "login"
+
+    GridLayout:
+        cols: 1
+
+        Label:
+            bold: "True"
+            text: "Log in to your account"
+            font_name: "en_font"
+            color: "black"
+        
+        GridLayout:
+            cols: 1
+
+            AnchorLayout:
+
+                MDTextField:
+                    mode: "round"
+                    id: s_name
+                    hint_text: "username"
+                    size_hint: None, None
+                    width: (root.width/10)*8
+            
+            AnchorLayout:
+            
+                MDTextField:
+                    mode:"round"
+                    id: s_pass
+                    password: "True"
+                    hint_text: "password"
+                    size_hint: None, None
+                    width: (root.width/10)*8
+            
+            AnchorLayout:
+            
+                MDFillRoundFlatButton:
+                    text: "Log in"
+                    pos_hint_x: {"center"}
+                    on_release:
+                        root.login()
+
+        GridLayout:
+            cols: 1
+
+            Label:
+                text: "Don't have an account?"
+                font_name: "en_font"
+                color: "black"
+            
+            AnchorLayout:
+                anchor_y:'top'
+                anchor_x:'center'
+            
+                MDFillRoundFlatButton:
+                    text: "Signup"
+                    pos_hint_x: {"center"}
+                    on_release:
+                        root.signup()
+                        root.manager.transition.direction = "right"
+
+
+
+<HomeScreen>:
+    name: "home"
+
+    GridLayout:
+        cols: 1
+        
+        GridLayout:
+            size_hint_y: None
+            height: root.height / 12
+            cols: 4
+            canvas.before:
+                Color:
+                    rgba: hex('#80CFFF')
+                Rectangle:
+                    pos: self.pos
+                    size: self.size
+            
+            AnchorLayout:
+                anchor_x: "left"
+                anchor_y: "center"
+                Label:
+                    bold: "True"
+                    size_hint_y: None
+                    height: root.height/12
+                    text: "Nihongo Wakaranai"
+                    font_name: "en_font"
+                    font_size: 18
+                    color: 0,0,0,1
+
+        GridLayout:
+            cols: 1
+
+            AnchorLayout:
+                size_hint_y: None
+                height: root.height/7
+
+            AnchorLayout:
+                Button:
+                    size_hint: None, None
+                    size: (root.width/13)*4, (root.width/13)*4
+                    allow_stretch: "False"
+                    background_normal: './resources/Buttons/RevMat_up.png'
+                    background_down: './resources/Buttons/RevMat_down.png'
+                    border: 0,0,0,0
+                    on_release:
+                        root.manager.current = "contents_diff"
+                        root.manager.transition.direction = "left"
+
+            AnchorLayout:
+
+                Button:
+                    size_hint: None, None
+                    size: (root.width/10)*3, (root.width/10)*3
+                    allow_stretch: "False"
+                    background_normal: './resources/Buttons/bookmarks_up.png'
+                    background_down: './resources/Buttons/bookmarks_down.png'
+                    border: 0,0,0,0
+                    on_release:
+                        root.manager.current = "bookd"
+                        root.manager.transition.direction = "left"
+
+            AnchorLayout:
+
+                Button:
+                    size_hint: None, None
+                    size: (root.width/10)*3, (root.width/10)*3
+                    allow_stretch: "False"
+                    background_normal: './resources/Buttons/quiz_up.png'
+                    background_down: './resources/Buttons/quiz_down.png'
+                    border: 0,0,0,0
+                    on_release:
+                        root.manager.current = "diff"
+                        root.manager.transition.direction = "left"
+
+            GridLayout:
+                cols: 1
+                size_hint_y: None
+                height: root.height/5
+
+
+
+<DifficultySelection>:
+    name: "diff"
+
+    GridLayout:
+        cols: 1
+
+        Label:
+            bold: "True"
+            size_hint_y: None
+            height: root.height/12
+            text: "Quiz"
+            font_name: "en_font"
+            color: 0,0,0,1
+            canvas.before:
+                Color:
+                    rgba: hex('#80CFFF')
+                Rectangle:
+                    pos: self.pos
+                    size: self.size
+
+        GridLayout:
+            cols: 1
+
+            AnchorLayout:
+                size_hint_y: None
+                height: root.height/7
+
+                Label:
+                    bold: "True"
+                    text: "Select Level"
+                    font_name: "en_font"
+                    color: 0,0,0,1
+                    font_size: 18
+
+            AnchorLayout:
+
+                GridLayout:
+                    cols: 2
+                    anchor: "center"
+                    size: (root.width/30)*29, (root.width/30)*29
+
+                    AnchorLayout:
+
+                        Button:
+                            size_hint: None, None
+                            size: (root.width/10)*3, (root.width/10)*3
+                            allow_stretch: "False"
+                            background_normal: './resources/Buttons/n5_up.png'
+                            background_down: './resources/Buttons/n5_down.png'
+                            border: 0,0,0,0
+                            on_release:
+                                root.start5()
+                                root.manager.transition.direction = "left"
+
+                    AnchorLayout:
+
+                        Button:
+                            size_hint: None, None
+                            size: (root.width/10)*3, (root.width/10)*3
+                            allow_stretch: "False"
+                            background_normal: './resources/Buttons/n4_up.png'
+                            background_down: './resources/Buttons/n4_down.png'
+                            border: 0,0,0,0
+                            on_release:
+                                root.start4()
+                                root.manager.transition.direction = "left"
+
+                    AnchorLayout:
+
+                        Button:
+                            size_hint: None, None
+                            size: (root.width/10)*3, (root.width/10)*3
+                            allow_stretch: "False"
+                            background_normal: './resources/Buttons/n3_up.png'
+                            background_down: './resources/Buttons/n3_down.png'
+                            border: 0,0,0,0
+                            on_release:
+                                root.start3()
+                                root.manager.transition.direction = "left"
+
+                    AnchorLayout:
+
+                        Button:
+                            size_hint: None, None
+                            size: (root.width/10)*3, (root.width/10)*3
+                            allow_stretch: "False"
+                            background_normal: './resources/Buttons/n2_up.png'
+                            background_down: './resources/Buttons/n2_down.png'
+                            border: 0,0,0,0
+                            on_release:
+                                root.start2()
+                                root.manager.transition.direction = "left"
+
+            AnchorLayout:
+                size_hint_y: None
+                height: root.height/4
+
+                Button:
+                    anchor_y: "top"
+                    size_hint: None, None
+                    size: (root.width/10)*3, (root.width/10)*3
+                    allow_stretch: "False"
+                    background_normal: './resources/Buttons/n1_up.png'
+                    background_down: './resources/Buttons/n1_down.png'
+                    border: 0,0,0,0
+                    on_release:
+                        root.start1()
+                        root.manager.transition.direction = "left"
+
+            AnchorLayout:
+                size_hint_y: None
+                height: root.height/10
+
+                Button:
+                    size_hint: None, None
+                    size: root.width/10, root.width/10
+                    allow_stretch: "False"
+                    background_normal: './resources/Buttons/back_button_up.png'
+                    background_down: './resources/Buttons/back_button_down.png'
+                    border: 0,0,0,0
+                    on_release:
+                        root.manager.current = "home"
+                        root.manager.transition.direction = "right"
+
+
+
+<BookmarkDifficulty>:
+    name: "bookd"
+
+    GridLayout:
+        cols: 1
+
+        Label:
+            bold: "True"
+            size_hint_y: None
+            height: root.height/12
+            text: "Bookmarks"
+            font_name: "en_font"
+            color: 0,0,0,1
+            canvas.before:
+                Color:
+                    rgba: hex('#80CFFF')
+                Rectangle:
+                    pos: self.pos
+                    size: self.size
+
+        GridLayout:
+            cols: 1
+
+            AnchorLayout:
+                size_hint_y: None
+                height: root.height/7
+
+                Label:
+                    bold: "True"
+                    text: "Select Level"
+                    font_name: "en_font"
+                    color: 0,0,0,1
+                    font_size: 18
+
+            AnchorLayout:
+
+                GridLayout:
+                    cols: 2
+                    anchor: "center"
+                    size: (root.width/30)*29, (root.width/30)*29
+
+                    AnchorLayout:
+
+                        Button:
+                            size_hint: None, None
+                            size: (root.width/10)*3, (root.width/10)*3
+                            allow_stretch: "False"
+                            background_normal: './resources/Buttons/n5_up.png'
+                            background_down: './resources/Buttons/n5_down.png'
+                            border: 0,0,0,0
+                            on_release:
+                                root.book5()
+                                root.manager.transition.direction = "left"
+
+                    AnchorLayout:
+
+                        Button:
+                            size_hint: None, None
+                            size: (root.width/10)*3, (root.width/10)*3
+                            allow_stretch: "False"
+                            background_normal: './resources/Buttons/n4_up.png'
+                            background_down: './resources/Buttons/n4_down.png'
+                            border: 0,0,0,0
+                            on_release:
+                                root.book4()
+                                root.manager.transition.direction = "left"
+
+                    AnchorLayout:
+
+                        Button:
+                            size_hint: None, None
+                            size: (root.width/10)*3, (root.width/10)*3
+                            allow_stretch: "False"
+                            background_normal: './resources/Buttons/n3_up.png'
+                            background_down: './resources/Buttons/n3_down.png'
+                            border: 0,0,0,0
+                            on_release:
+                                root.book3()
+                                root.manager.transition.direction = "left"
+
+                    AnchorLayout:
+
+                        Button:
+                            size_hint: None, None
+                            size: (root.width/10)*3, (root.width/10)*3
+                            allow_stretch: "False"
+                            background_normal: './resources/Buttons/n2_up.png'
+                            background_down: './resources/Buttons/n2_down.png'
+                            border: 0,0,0,0
+                            on_release:
+                                root.book2()
+                                root.manager.transition.direction = "left"
+
+
+            AnchorLayout:
+                size_hint_y: None
+                height: root.height/4
+
+                Button:
+                    anchor_y: "top"
+                    size_hint: None, None
+                    size: (root.width/10)*3, (root.width/10)*3
+                    allow_stretch: "False"
+                    background_normal: './resources/Buttons/n1_up.png'
+                    background_down: './resources/Buttons/n1_down.png'
+                    border: 0,0,0,0
+                    on_release:
+                        root.book1()
+                        root.manager.transition.direction = "left"
+
+            AnchorLayout:
+                size_hint_y: None
+                height: root.height/10
+
+                Button:
+                    size_hint: None, None
+                    size: root.width/10, root.width/10
+                    allow_stretch: "False"
+                    background_normal: './resources/Buttons/back_button_up.png'
+                    background_down: './resources/Buttons/back_button_down.png'
+                    border: 0,0,0,0
+                    on_release:
+                        root.manager.current = "home"
+                        root.manager.transition.direction = "right"
+
+
+
+<BookmarkedItems>:
+    name: "booki"
+
+    GridLayout:
+        cols: 1
+        row_force_default: False
+
+        Label:
+            bold: "True"
+            size_hint_y: None
+            height: root.height/12
+            text: root.level
+            font_name: "en_font"
+            color: "black"
+
+        TabbedPanel:
+            canvas.before:
+                Color:
+                    rgba: hex('#ffffff00')
+                Rectangle:
+                    pos: self.pos
+                    size: self.size
+            do_default_tab: False
+            tab_width: self.parent.width / 3
+
+            TabbedPanelItem:
+                text: "Grammar"
+                font_name: "en_font"
+                color: 0,0,0,1
+                border: 0,0,0,0
+                background_normal: './resources/Buttons/rec_4_down.png'
+                background_down: './resources/Buttons/rec_4_up.png'
+
+                ScrollView:
+                    canvas.before:
+                        Color:
+                            rgba: hex('#ffffff')
+                        Rectangle:
+                            pos: self.pos
+                            size: self.size
+                    do_scroll_x: False
+                    do_scroll_y: True
+                    size: self.size
+
+                    GridLayout:
+                        id: grammar_tab
+                        cols: 1
+                        size_hint_y: None
+                        height: self.minimum_height
+                        row_default_height: root.height/10
+                        spacing: root.height/60
+
+            TabbedPanelItem:
+                text: "Vocabulary"
+                font_name: "en_font"
+                color: 0,0,0,1
+                border: 0,0,0,0
+                background_normal: './resources/Buttons/rec_4_down.png'
+                background_down: './resources/Buttons/rec_4_up.png'
+
+                ScrollView:
+                    canvas.before:
+                        Color:
+                            rgba: hex('#ffffff')
+                        Rectangle:
+                            pos: self.pos
+                            size: self.size
+                    do_scroll_x: False
+                    do_scroll_y: True
+                    size: self.size
+
+                    GridLayout:
+                        id: vocab_tab
+                        cols: 1
+                        size_hint_y: None
+                        height: self.minimum_height
+                        row_default_height: root.height/10
+                        spacing: root.height/60
+
+            TabbedPanelItem:
+                text: "Kanji"
+                font_name: "en_font"
+                color: 0,0,0,1
+                border: 0,0,0,0
+                background_normal: './resources/Buttons/rec_4_down.png'
+                background_down: './resources/Buttons/rec_4_up.png'
+
+                ScrollView:
+                    canvas.before:
+                        Color:
+                            rgba: hex('#ffffff')
+                        Rectangle:
+                            pos: self.pos
+                            size: self.size
+                    do_scroll_x: False
+                    do_scroll_y: True
+                    size: self.size
+
+                    GridLayout:
+                        id: kanji_tab
+                        cols: 1
+                        size_hint_y: None
+                        height: self.minimum_height
+                        row_default_height: root.height/10
+                        spacing: root.height/60
+
+        GridLayout:
+            cols: 1
+            size_hint_y: None
+            height: root.height/10
+
+            AnchorLayout:
+
+                Button:
+                    anchor: "center"
+                    size_hint: None, None
+                    size: root.width/8, root.width/8
+                    background_normal: root.back_up
+                    background_down: root.back_down
+                    allow_stretch: "False"
+                    border: 0,0,0,0
+                    on_release:
+                        app.root.current = "bookd"
+                        root.manager.transition.direction = "right"
+
+
+
+<SettingsScreen>:
+    name: "settings"
+
+    GridLayout:
+        cols: 1
+
+        Button:
+            text: "Currently Empty. Tap to go back."
+            on_release:
+                app.root.current = "home"
+                root.manager.transition.direction = "right"
+
+
+
+<ContentsDiff>:
+    name: "contents_diff"
+
+    GridLayout:
+        cols: 1
+
+        Label:
+            bold: "True"
+            size_hint_y: None
+            height: root.height/12
+            text: "Contents"
+            font_name: "en_font"
+            color: 0,0,0,1
+            canvas.before:
+                Color:
+                    rgba: hex('#80CFFF')
+                Rectangle:
+                    pos: self.pos
+                    size: self.size
+
+        GridLayout:
+            cols: 1
+
+            AnchorLayout:
+                size_hint_y: None
+                height: root.height/7
+
+                Label:
+                    bold: "True"
+                    text: "Select Level"
+                    font_name: "en_font"
+                    color: 0,0,0,1
+                    font_size: 18
+
+            AnchorLayout:
+
+                GridLayout:
+                    cols: 2
+                    anchor: "center"
+                    size: (root.width/30)*29, (root.width/30)*29
+
+                    AnchorLayout:
+
+                        Button:
+                            size_hint: None, None
+                            size: (root.width/10)*3, (root.width/10)*3
+                            allow_stretch: "False"
+                            background_normal: './resources/Buttons/n5_up.png'
+                            background_down: './resources/Buttons/n5_down.png'
+                            border: 0,0,0,0
+                            on_release:
+                                root.cont5()
+                                root.manager.transition.direction = "left"
+
+                    AnchorLayout:
+
+                        Button:
+                            size_hint: None, None
+                            size: (root.width/10)*3, (root.width/10)*3
+                            allow_stretch: "False"
+                            background_normal: './resources/Buttons/n4_up.png'
+                            background_down: './resources/Buttons/n4_down.png'
+                            border: 0,0,0,0
+                            on_release:
+                                root.cont4()
+                                root.manager.transition.direction = "left"
+
+                    AnchorLayout:
+
+                        Button:
+                            size_hint: None, None
+                            size: (root.width/10)*3, (root.width/10)*3
+                            allow_stretch: "False"
+                            background_normal: './resources/Buttons/n3_up.png'
+                            background_down: './resources/Buttons/n3_down.png'
+                            border: 0,0,0,0
+                            on_release:
+                                root.cont3()
+                                root.manager.transition.direction = "left"
+
+                    AnchorLayout:
+
+                        Button:
+                            size_hint: None, None
+                            size: (root.width/10)*3, (root.width/10)*3
+                            allow_stretch: "False"
+                            background_normal: './resources/Buttons/n2_up.png'
+                            background_down: './resources/Buttons/n2_down.png'
+                            border: 0,0,0,0
+                            on_release:
+                                root.cont2()
+                                root.manager.transition.direction = "left"
+
+
+            AnchorLayout:
+                size_hint_y: None
+                height: root.height/4
+
+                Button:
+                    anchor_y: "top"
+                    size_hint: None, None
+                    size: (root.width/10)*3, (root.width/10)*3
+                    allow_stretch: "False"
+                    background_normal: './resources/Buttons/n1_up.png'
+                    background_down: './resources/Buttons/n1_down.png'
+                    border: 0,0,0,0
+                    on_release:
+                        root.cont1()
+                        root.manager.transition.direction = "left"
+
+            AnchorLayout:
+                size_hint_y: None
+                height: root.height/10
+
+                Button:
+                    size_hint: None, None
+                    size: root.width/10, root.width/10
+                    allow_stretch: "False"
+                    background_normal: './resources/Buttons/back_button_up.png'
+                    background_down: './resources/Buttons/back_button_down.png'
+                    border: 0,0,0,0
+                    on_release:
+                        root.manager.current = "home"
+                        root.manager.transition.direction = "right"
+
+
+
+<Contents>:
+    name: "contents"
+
+    GridLayout:
+        cols: 1
+        row_force_default: False
+
+        Label:
+            bold: "True"
+            size_hint_y: None
+            height: root.height/12
+            text: root.level
+            font_name: "en_font"
+            color: "black"
+
+
+        TabbedPanel:
+            do_default_tab: False
+            tab_width: self.parent.width / 3
+
+            TabbedPanelItem:
+                text: "Grammar"
+                font_name: "en_font"
+                color: 0,0,0,1
+                border: 0,0,0,0
+                background_normal: './resources/Buttons/rec_4_down.png'
+                background_down: './resources/Buttons/rec_4_up.png'
+
+                ScrollView:
+                    canvas.before:
+                        Color:
+                            rgba: hex('#ffffff')
+                        Rectangle:
+                            pos: self.pos
+                            size: self.size
+                    do_scroll_x: False
+                    do_scroll_y: True
+                    size: self.size
+
+                    GridLayout:
+                        id: grammar_tab
+                        cols: 1
+                        size_hint_y: None
+                        height: self.minimum_height
+                        row_default_height: root.height/10
+                        spacing: root.height/60
+
+            TabbedPanelItem:
+                text: "Vocabulary"
+                font_name: "en_font"
+                color: 0,0,0,1
+                border: 0,0,0,0
+                background_normal: './resources/Buttons/rec_4_down.png'
+                background_down: './resources/Buttons/rec_4_up.png'
+
+                ScrollView:
+                    canvas.before:
+                        Color:
+                            rgba: hex('#ffffff')
+                        Rectangle:
+                            pos: self.pos
+                            size: self.size
+                    do_scroll_x: False
+                    do_scroll_y: True
+                    size: self.size
+
+                    GridLayout:
+                        id: vocab_tab
+                        cols: 1
+                        size_hint_y: None
+                        height: self.minimum_height
+                        row_default_height: root.height/10
+                        spacing: root.height/60
+
+            TabbedPanelItem:
+                text: "Kanji"
+                font_name: "en_font"
+                color: 0,0,0,1
+                border: 0,0,0,0
+                background_normal: './resources/Buttons/rec_4_down.png'
+                background_down: './resources/Buttons/rec_4_up.png'
+
+                ScrollView:
+                    canvas.before:
+                        Color:
+                            rgba: hex('#ffffff')
+                        Rectangle:
+                            pos: self.pos
+                            size: self.size
+                    do_scroll_x: False
+                    do_scroll_y: True
+                    size: self.size
+
+                    GridLayout:
+                        id: kanji_tab
+                        cols: 1
+                        size_hint_y: None
+                        height: self.minimum_height
+                        row_default_height: root.height/10
+                        spacing: root.height/60
+
+        GridLayout:
+            cols: 1
+            size_hint_y: None
+            height: root.height/10
+
+            AnchorLayout:
+
+                Button:
+                    anchor: "center"
+                    size_hint: None, None
+                    size: root.width/8, root.width/8
+                    background_normal: root.back_up
+                    background_down: root.back_down
+                    allow_stretch: "False"
+                    border: 0,0,0,0
+                    on_release:
+                        app.root.current = "contents_diff"
+                        root.manager.transition.direction = "right"
+
+
+<GrammarItem>:
+    name:"grammari"
+
+    GridLayout:
+        cols: 1
+
+        Label:
+            bold: "True"
+            size_hint_y: None
+            height: root.height/13
+            text: root.label
+            font_name: "en_font"
+            color: 0,0,0,1
+            canvas.before:
+                Color:
+                    rgba: hex('#80CFFF')
+                Rectangle:
+                    pos: self.pos
+                    size: self.size
+
+        AnchorLayout:
+            size_hint_y: None
+            height: (root.height/6)*2
+            Image:
+                anchor: "center"
+                size_hint_x: .6
+                allow_stretch: True
+                source: root.border
+
+            Label:
+                anchor_x: "center"
+                size_hint: .4, 1
+                text_size: (self.width/10)*9, None
+                font_name: "jp_font"
+                text: root.question
+                color: 0, 0, 0, 1
+
+        GridLayout:
+            cols: 1
+
+            AnchorLayout:
+                Button:
+                    anchor: "center"
+                    size_hint: .8, .6
+                    font_name: "jp_font"
+                    text: root.A
+                    color: 0, 0, 0, 1
+                    background_normal: root.button_up
+                    background_down: root.button_down
+                    allow_stretch: "False"
+                    border: 0,0,0,0
+                    on_release:
+                        root.ent_a()
+                        root.manager.transition.direction = "left"
+
+            AnchorLayout:
+                Button:
+                    anchor: "center"
+                    size_hint: .8, .6
+                    font_name: "jp_font"
+                    text: root.B
+                    color: 0, 0, 0, 1
+                    background_normal: root.button_up
+                    background_down: root.button_down
+                    allow_stretch: "False"
+                    border: 0,0,0,0
+                    on_release:
+                        root.ent_b()
+                        root.manager.transition.direction = "left"
+
+            AnchorLayout:
+                Button:
+                    anchor: "center"
+                    size_hint: .8, .6
+                    font_name: "jp_font"
+                    text: root.C
+                    color: 0, 0, 0, 1
+                    background_normal: root.button_up
+                    background_down: root.button_down
+                    allow_stretch: "False"
+                    border: 0,0,0,0
+                    on_release:
+                        root.ent_c()
+                        root.manager.transition.direction = "left"
+
+            AnchorLayout:
+                Button:
+                    anchor: "center"
+                    size_hint: .8, .6
+                    font_name: "jp_font"
+                    text: root.D
+                    color: 0, 0, 0, 1
+                    background_normal: root.button_up
+                    background_down: root.button_down
+                    allow_stretch: "False"
+                    border: 0,0,0,0
+                    on_release:
+                        root.ent_d()
+                        root.manager.transition.direction = "left"
+
+        GridLayout:
+            cols: 1
+            size_hint_y: None
+            height: root.height/15
+
+
+<VocabItem>:
+    name: "vocabi"
+
+    GridLayout:
+        cols: 1
+
+        Label:
+            bold: "True"
+            size_hint_y: None
+            height: root.height/13
+            text: root.label
+            font_name: "en_font"
+            color: 0,0,0,1
+            canvas.before:
+                Color:
+                    rgba: hex('#80CFFF')
+                Rectangle:
+                    pos: self.pos
+                    size: self.size
+
+        AnchorLayout:
+            size_hint_y: None
+            height: (root.height/6)
+            Image:
+                anchor: "center"
+                size_hint_x: .8
+                size_hint_y: .9
+                allow_stretch: True
+                source: root.border
+
+            Label:
+                size_hint: .6, 1
+                text_size: (self.width/10)*9, None
+                font_name: "jp_font"
+                text: root.item
+                color: 0, 0, 0, 1
+
+        AnchorLayout:
+            size_hint_y: None
+            height: (root.height/6)
+            Image:
+                anchor: "center"
+                size_hint_x: .4
+                size_hint_y: .4
+                allow_stretch: True
+                source: root.border
+
+            Label:
+                font_name: "jp_font"
+                text: root.kanji
+                color: 0, 0, 0, 1
+
+        GridLayout:
+            cols: 1
+
+            AnchorLayout:
+                Button:
+                    anchor: "center"
+                    size_hint: .8, .6
+                    font_name: "jp_font"
+                    text: root.A
+                    color: 0, 0, 0, 1
+                    background_normal: root.button_up
+                    background_down: root.button_down
+                    allow_stretch: "False"
+                    border: 0,0,0,0
+                    on_release:
+                        root.ent_a()
+                        root.manager.transition.direction = "left"
+
+            AnchorLayout:
+                Button:
+                    anchor: "center"
+                    size_hint: .8, .6
+                    font_name: "jp_font"
+                    text: root.B
+                    color: 0, 0, 0, 1
+                    background_normal: root.button_up
+                    background_down: root.button_down
+                    allow_stretch: "False"
+                    border: 0,0,0,0
+                    on_release:
+                        root.ent_b()
+                        root.manager.transition.direction = "left"
+
+            AnchorLayout:
+                Button:
+                    anchor: "center"
+                    size_hint: .8, .6
+                    font_name: "jp_font"
+                    text: root.C
+                    color: 0, 0, 0, 1
+                    background_normal: root.button_up
+                    background_down: root.button_down
+                    allow_stretch: "False"
+                    border: 0,0,0,0
+                    on_release:
+                        root.ent_c()
+                        root.manager.transition.direction = "left"
+
+            AnchorLayout:
+                Button:
+                    anchor: "center"
+                    size_hint: .8, .6
+                    font_name: "jp_font"
+                    text: root.D
+                    color: 0, 0, 0, 1
+                    background_normal: root.button_up
+                    background_down: root.button_down
+                    allow_stretch: "False"
+                    border: 0,0,0,0
+                    on_release:
+                        root.ent_d()
+                        root.manager.transition.direction = "left"
+
+        GridLayout:
+            cols: 1
+            size_hint_y: None
+            height: root.height/15
+
+
+
+<KanjiItem>:
+    name: "kanjii"
+
+    GridLayout:
+        cols: 1
+
+        Label:
+            bold: "True"
+            size_hint_y: None
+            height: root.height/13
+            text: root.label
+            font_name: "en_font"
+            color: 0,0,0,1
+            canvas.before:
+                Color:
+                    rgba: hex('#80CFFF')
+                Rectangle:
+                    pos: self.pos
+                    size: self.size
+
+        AnchorLayout:
+            size_hint_y: None
+            height: (root.height/6)
+            Image:
+                anchor: "center"
+                size_hint_x: .8
+                size_hint_y: .9
+                allow_stretch: True
+                source: root.border
+
+            Label:
+                size_hint: .6, 1
+                text_size: (self.width/10)*9, None
+                font_name: "jp_font"
+                text: root.sentence
+                color: 0, 0, 0, 1
+
+        AnchorLayout:
+            size_hint_y: None
+            height: (root.height/6)
+            Image:
+                anchor: "center"
+                size_hint_x: .4
+                size_hint_y: .4
+                allow_stretch: True
+                source: root.border
+
+            Label:
+                font_name: "jp_font"
+                text: root.kanji
+                color: 0, 0, 0, 1
+
+        GridLayout:
+            cols: 1
+
+            AnchorLayout:
+                Button:
+                    anchor: "center"
+                    size_hint: .8, .6
+                    font_name: "jp_font"
+                    text: root.A
+                    color: 0, 0, 0, 1
+                    background_normal: root.button_up
+                    background_down: root.button_down
+                    allow_stretch: "False"
+                    border: 0,0,0,0
+                    on_release:
+                        root.ent_a()
+                        root.manager.transition.direction = "left"
+
+            AnchorLayout:
+                Button:
+                    anchor: "center"
+                    size_hint: .8, .6
+                    font_name: "jp_font"
+                    text: root.B
+                    color: 0, 0, 0, 1
+                    background_normal: root.button_up
+                    background_down: root.button_down
+                    allow_stretch: "False"
+                    border: 0,0,0,0
+                    on_release:
+                        root.ent_b()
+                        root.manager.transition.direction = "left"
+
+            AnchorLayout:
+                Button:
+                    anchor: "center"
+                    size_hint: .8, .6
+                    font_name: "jp_font"
+                    text: root.C
+                    color: 0, 0, 0, 1
+                    background_normal: root.button_up
+                    background_down: root.button_down
+                    allow_stretch: "False"
+                    border: 0,0,0,0
+                    on_release:
+                        root.ent_c()
+                        root.manager.transition.direction = "left"
+
+            AnchorLayout:
+                Button:
+                    anchor: "center"
+                    size_hint: .8, .6
+                    font_name: "jp_font"
+                    text: root.D
+                    color: 0, 0, 0, 1
+                    background_normal: root.button_up
+                    background_down: root.button_down
+                    allow_stretch: "False"
+                    border: 0,0,0,0
+                    on_release:
+                        root.ent_d()
+                        root.manager.transition.direction = "left"
+
+        GridLayout:
+            cols: 1
+            size_hint_y: None
+            height: root.height/15
+
+
+<EndQuizz>:
+    name: "end"
+
+    GridLayout:
+        cols: 1
+
+        Label:
+            bold: "True"
+            size_hint_y: None
+            height: root.height/13
+            text: "Review"
+            font_name: "en_font"
+            color: 0,0,0,1
+            canvas.before:
+                Color:
+                    rgba: hex('#80CFFF')
+                Rectangle:
+                    pos: self.pos
+                    size: self.size
+
+        AnchorLayout:
+            size_hint_y: None
+            height: (root.height/6)
+            Image:
+                anchor: "center"
+                size_hint_x: .8
+                size_hint_y: .7
+                allow_stretch: True
+                source: root.border
+
+            Label:
+                anchor: "center"
+                font_name: "jp_font"
+                text: root.score
+                color: 0, 0, 0, 1
+
+        GridLayout:
+            cols: 3
+
+            GridLayout:
+                cols: 1
+                size_hint_x: None
+                width: root.width/30
+
+            ScrollView:
+                do_scroll_x: False
+                do_scroll_y: True
+                size: self.size
+
+                GridLayout:
+                    spacing: root.height/50
+                    id: review_buttons
+                    cols: 1
+                    size_hint_y: None
+                    height: self.minimum_height
+                    row_default_height: root.height/10
+
+            GridLayout:
+                cols: 1
+                size_hint_x: None
+                width: root.width/30
+
+
+        GridLayout:
+            cols: 1
+            size_hint_y: None
+            height: root.height/8
+
+            AnchorLayout:
+
+                Button:
+                    anchor: "center"
+                    size_hint: None, None
+                    size: root.width/8, root.width/8
+                    background_normal: root.back_up
+                    background_down: root.back_down
+                    allow_stretch: "False"
+                    border: 0,0,0,0
+                    on_release:
+                        app.root.current = "diff"
+                        root.manager.transition.direction = "right"
+
+
+
+<GrammarPop>:
+    title: 'Grammar'
+    title_color: 0,0,0,1
+    size_hint: (None, None)
+    background: "./resources/Buttons/popup_bg.png"
+    border: 0,0,0,0
+
+    GridLayout:
+        cols: 1
+
+        GridLayout:
+            cols: 1
+
+            Label:
+                font_name: "jp_font"
+                text: root.item
+                color: 0,0,0,1
+
+            Label:
+                font_name: "jp_font"
+                text: root.meaning
+                color: 0,0,0,1
+
+        Label:
+            size_hint: 1, 1
+            text_size: self.width, None
+            font_name: "jp_font"
+            text: root.jp
+            color: 0,0,0,1
+
+        Label:
+            size_hint: 1, 1
+            text_size: self.width, None
+            font_name: "jp_font"
+            text: root.en
+            color: 0,0,0,1
+
+        GridLayout:
+            cols: 3
+
+            AnchorLayout:
+
+                Button:
+                    background_normal: root.bm_up
+                    background_down: root.bm_down
+                    border: 0,0,0,0
+                    size_hint: None, None
+                    size: root.width/8, root.width/8
+                    on_release:
+                        root.bookmark()
+
+            AnchorLayout:
+
+                Button:
+                    background_normal: './resources/Buttons/back_button_up.png'
+                    background_down: './resources/Buttons/back_button_down.png'
+                    border: 0,0,0,0
+                    size_hint: None, None
+                    size: root.width/8, root.width/8
+                    on_release:
+                        root.dismiss()
+
+
+
+<VocabPop1>:
+    title: 'Vocabulary'
+    title_color: 0,0,0,1
+    size_hint: (None, None)
+    background: "./resources/Buttons/popup_bg.png"
+    border: 0,0,0,0
+    GridLayout:
+        cols: 1
+
+        GridLayout:
+            cols: 2
+
+            GridLayout:
+                cols: 1
+
+                Label:
+                    font_name: "jp_font"
+                    text: root.jp_word
+                    color: 0,0,0,1
+
+                Label:
+                    font_name: "jp_font"
+                    text: root.reading
+                    color: 0,0,0,1
+
+            Label:
+                font_name: "jp_font"
+                text: root.en_word
+                color: 0,0,0,1
+
+        Label:
+            size_hint: 1, 1
+            text_size: self.width, None
+            font_name: "jp_font"
+            text: root.jp_sent
+            color: 0,0,0,1
+
+        Label:
+            size_hint: 1, 1
+            text_size: self.width, None
+            font_name: "jp_font"
+            text: root.en_sent
+            color: 0,0,0,1
+
+        GridLayout:
+            cols: 3
+
+            AnchorLayout:
+
+                Button:
+                    background_normal: root.bm_up
+                    background_down: root.bm_down
+                    border: 0,0,0,0
+                    size_hint: None, None
+                    size: root.width/8, root.width/8
+                    on_release:
+                        root.bookmark()
+
+            AnchorLayout:
+
+                Button:
+                    background_normal: './resources/Buttons/back_button_up.png'
+                    background_down: './resources/Buttons/back_button_down.png'
+                    border: 0,0,0,0
+                    size_hint: None, None
+                    size: root.width/8, root.width/8
+                    on_release:
+                        root.dismiss()
+
+
+<VocabPop2>:
+    title: 'Vocabulary'
+    title_color: 0,0,0,1
+    size_hint: (None, None)
+    background: "./resources/Buttons/popup_bg.png"
+    border: 0,0,0,0
+    GridLayout:
+        cols: 1
+
+        GridLayout:
+            cols: 2
+
+            GridLayout:
+                size_hint_x: None
+                width: root.width/3
+                rows: 2
+
+                Label:
+                    font_name: "jp_font"
+                    text: root.jp_word
+                    color: 0,0,0,1
+
+                Label:
+                    font_name: "jp_font"
+                    text: root.furigana
+                    color: 0,0,0,1
+
+            GridLayout:
+                rows: 2
+
+                Label:
+                    size_hint: 1,1
+                    text_size: self.width, None
+                    font_name: "jp_font"
+                    text: root.kind
+                    color: 0,0,0,1
+
+                Label:
+                    size_hint: 1,1
+                    text_size: self.width, None
+                    font_name: "jp_font"
+                    text: root.meaning
+                    color: 0,0,0,1
+
+
+        Label:
+            size_hint: 1, 1
+            text_size: self.width, None
+            font_name: "jp_font"
+            text: root.jp_sent
+            color: 0,0,0,1
+
+        Label:
+            size_hint: 1, 1
+            text_size: self.width, None
+            font_name: "jp_font"
+            text: root.en_sent
+            color: 0,0,0,1
+
+
+        GridLayout:
+            cols: 3
+
+            AnchorLayout:
+
+                Button:
+                    background_normal: root.bm_up
+                    background_down: root.bm_down
+                    border: 0,0,0,0
+                    size_hint: None, None
+                    size: root.width/8, root.width/8
+                    on_release:
+                        root.bookmark()
+
+            AnchorLayout:
+
+                Button:
+                    background_normal: './resources/Buttons/back_button_up.png'
+                    background_down: './resources/Buttons/back_button_down.png'
+                    border: 0,0,0,0
+                    size_hint: None, None
+                    size: root.width/8, root.width/8
+                    on_release:
+                        root.dismiss()
+
+<KanjiPop>:
+    title: 'Kanji'
+    title_color: 0,0,0,1
+    size_hint: (None, None)
+    background: "./resources/Buttons/popup_bg.png"
+    border: 0,0,0,0
+    GridLayout:
+        cols: 1
+
+        GridLayout:
+            cols: 2
+
+            GridLayout:
+                rows: 2
+
+                Label:
+                    font_name: "jp_font"
+                    text: root.jp_word
+                    color: 0,0,0,1
+
+                Label:
+                    font_name: "jp_font"
+                    text: root.reading
+                    color: 0,0,0,1
+
+            Label:
+                size_hint: 1, 1
+                text_size: self.width, None
+                font_name: "jp_font"
+                text: root.translation
+                color: 0,0,0,1
+
+        Label:
+            size_hint: 1, 1
+            text_size: self.width, None
+            font_name: "jp_font"
+            text: root.jp_sent
+            color: 0,0,0,1
+
+        Label:
+            size_hint: 1, 1
+            text_size: self.width, None
+            font_name: "jp_font"
+            text: root.en_sent
+            color: 0,0,0,1
+
+
+        GridLayout:
+            cols: 3
+
+            AnchorLayout:
+
+                Button:
+                    background_normal: root.bm_up
+                    background_down: root.bm_down
+                    border: 0,0,0,0
+                    size_hint: None, None
+                    size: root.width/8, root.width/8
+                    on_release:
+                        root.bookmark()
+
+            AnchorLayout:
+
+                Button:
+                    background_normal: './resources/Buttons/back_button_up.png'
+                    background_down: './resources/Buttons/back_button_down.png'
+                    border: 0,0,0,0
+                    size_hint: None, None
+                    size: root.width/8, root.width/8
+                    on_release:
+                        root.dismiss()
+
+
+<ProfilePop>:
+    title: "Profile"
+    title_font: "en_font"
+    title_color: 0,0,0,1
+    size_hint: (.8, .5)
+    background: "./resources/Buttons/popup_bg.png"
+    border: 0,0,0,0
+
+    GridLayout:
+        cols: 1
+
+        GridLayout:
+            cols: 1
+            size_hint_y: .2
+
+            Label:
+                font_name: "en_font"
+                text: root.username
+                halign: "center"
+                color: 0,0,0,1
+        
+        GridLayout:
+            cols:3
+        
+            GridLayout:
+                cols: 1
+
+                Label:
+                    font_name: "en_font"
+                    text: "Level"
+                    halign: "left"
+                    color: 0,0,0,1
+
+                Label:
+                    font_name: "en_font"
+                    text: "N5"
+                    halign: "left"
+                    color: 0,0,0,1
+
+                Label:
+                    font_name: "en_font"
+                    text: "N4"
+                    halign: "left"
+                    color: 0,0,0,1
+                
+                Label:
+                    font_name: "en_font"
+                    text: "N3"
+                    halign: "left"
+                    color: 0,0,0,1
+                
+                Label:
+                    font_name: "en_font"
+                    text: "N2"
+                    halign: "left"
+                    color: 0,0,0,1
+                
+                Label:
+                    font_name: "en_font"
+                    text: "N1"
+                    halign: "left"
+                    color: 0,0,0,1
+            
+            GridLayout:
+                cols: 1
+
+                Label:
+                    font_name: "en_font"
+                    text: "Total Score"
+                    halign: "left"
+                    color: 0,0,0,1
+            
+                Label:
+                    font_name: "en_font"
+                    text: root.n5_prog + "/500"
+                    halign: "left"
+                    color: 0,0,0,1
+
+                Label:
+                    font_name: "en_font"
+                    text: root.n4_prog + "/500"
+                    halign: "left"
+                    color: 0,0,0,1
+                
+                Label:
+                    font_name: "en_font"
+                    text: root.n3_prog + "/500"
+                    halign: "left"
+                    color: 0,0,0,1
+                
+                Label:
+                    font_name: "en_font"
+                    text: root.n2_prog + "/500"
+                    halign: "left"
+                    color: 0,0,0,1
+                
+                Label:
+                    font_name: "en_font"
+                    text: root.n1_prog + "/500"
+                    halign: "left"
+                    color: 0,0,0,1
+            
+            GridLayout:
+                cols: 1
+
+                Label:
+                    font_name: "en_font"
+                    text: "Required"
+                    halign: "left"
+                    color: 0,0,0,1
+            
+                Label:
+                    font_name: "en_font"
+                    text: "220"
+                    halign: "left"
+                    color: 0,0,0,1
+
+                Label:
+                    font_name: "en_font"
+                    text: "250"
+                    halign: "left"
+                    color: 0,0,0,1
+                
+                Label:
+                    font_name: "en_font"
+                    text: "265"
+                    halign: "left"
+                    color: 0,0,0,1
+                
+                Label:
+                    font_name: "en_font"
+                    text: "250"
+                    halign: "left"
+                    color: 0,0,0,1
+                
+                Label:
+                    font_name: "en_font"
+                    text: "275"
+                    halign: "left"
+                    color: 0,0,0,1
+        
+        GridLayout:
+            cols:2
+            size_hint_y: .2
+
+            AnchorLayout:
+
+                MDFillRoundFlatButton:
+                    text: "Close"
+                    halign: "center"
+                    on_release:
+                        root.dismiss()
+            
+            AnchorLayout:
+
+                MDFillRoundFlatButton:
+                    text: "Logout"
+                    halign: "center"
+                    on_release:
+                        root.logout()
+
+<NoticePop>:
+    title: "Alert"
+    title_font: "en_font"
+    title_color: 0,0,0,1
+    size_hint: (.8, .5)
+    background: "./resources/Buttons/popup_bg.png"
+    border: 0,0,0,0
+
+    GridLayout:
+        cols: 1
+
+        Label:
+            font_name: "en_font"
+            text: root.error_text
+            halign: "center"
+            color: 0,0,0,1
+
+        AnchorLayout:
+            size_hint_y: None
+            height: root.height/6
+        
+            Button:
+                text: "Close"
+                font_name: "en_font"
+                color: 0,0,0,1
+                background_normal: './resources/Buttons/rec_4_up.png'
+                background_down: './resources/Buttons/rec_4_down.png'
+                border: 0,0,0,0
+                size_hint: None, None
+                size: root.width/2, root.height/7
+                on_release:
+                    root.dismiss()
+
+<ExitPop>:
+
+    title: "NOTICE"
+    title_color: 0,0,0,1
+    size_hint: (None, None)
+    background: "./resources/Buttons/popup_bg.png"
+    border: 0,0,0,0
+
+    GridLayout:
+        cols: 1
+
+        Label:
+            font_name: "jp_font"
+            text: "do you want to exit the app?"
+            color: 0,0,0,1
+
+        GridLayout:
+            cols: 2
+            size_hint_y: None
+            height: root.height/10
+            spacing: root.width/20
+
+            Button:
+                text: "Yes"
+                font_name: "en_font"
+                color: 0,0,0,1
+                background_normal: './resources/Buttons/rec_4_up.png'
+                background_down: './resources/Buttons/rec_4_down.png'
+                border: 0,0,0,0
+                on_release:
+                    root.app_close()
+
+            Button:
+                text: "No"
+                font_name: "en_font"
+                color: 0,0,0,1
+                background_normal: './resources/Buttons/rec_4_up.png'
+                background_down: './resources/Buttons/rec_4_down.png'
+                border: 0,0,0,0
+                on_release:
+                    root.dismiss()
+
+<UpdatePop>:
+    title: "NOTICE"
+    title_color: 0,0,0,1
+    size_hint: (None, None)
+    background: "./resources/Buttons/popup_bg.png"
+    border: 0,0,0,0
+
+    GridLayout:
+        cols: 1
+
+        Label:
+            font_name: "en_font"
+            text: "Detected you have iternet conection.\n Upload progress online?"
+            color: 0,0,0,1
+
+        GridLayout:
+            cols: 2
+            size_hint_y: None
+            height: root.height/7
+            spacing: root.width/20
+
+            Button:
+                text: "Yes"
+                font_name: "en_font"
+                color: 0,0,0,1
+                background_normal: './resources/Buttons/rec_4_up.png'
+                background_down: './resources/Buttons/rec_4_down.png'
+                border: 0,0,0,0
+                on_release:
+                    root.condition(root.p1)
+
+            Button:
+                text: "No"
+                font_name: "en_font"
+                color: 0,0,0,1
+                background_normal: './resources/Buttons/rec_4_up.png'
+                background_down: './resources/Buttons/rec_4_down.png'
+                border: 0,0,0,0
+                on_release:
+                    root.condition(root.p2)
+
+
+<ValidationPop>:
+    title: "Invalid Username or Password"
+    title_font: "en_font"
+    title_color: 0,0,0,1
+    size_hint: (.95, .8)
+    background: "./resources/Buttons/popup_bg.png"
+    border: 0,0,0,0
+
+    GridLayout:
+        cols: 1
+        
+        Label:
+            text: "Username Requirements:"
+            font_name: "en_font"
+            halign: "center"
+            color: 0,0,0,1
+
+        Label:
+            text: "- consist of only alphanumeric characters,\nunderscore (_), dot (.), and at symbol (@)."
+            font_name: "en_font"
+            halign: "left"
+            color: 0,0,0,1
+
+        Label:
+            text: "- be between 4 and 15 characters in length."
+            font_name: "en_font"
+            halign: "left"
+            color: 0,0,0,1
+
+        Label:
+            text: "- start with an alphabetic character."
+            font_name: "en_font"
+            halign: "left"
+            color: 0,0,0,10
+
+        Label:
+            text: "- not end with an underscore (_)."
+            font_name: "en_font"
+            halign: "left"
+            color: 0,0,0,1
+
+        Label:
+            text: "Password Requirements:"
+            font_name: "en_font"
+            halign: "center"
+            color: 0,0,0,1
+
+        Label:
+            text: "- be at least 8 characters long."
+            font_name: "en_font"
+            halign: "left"
+            color: 0,0,0,1
+
+        Label:
+            text: "- contain at least one lowercase letter."
+            font_name: "en_font"
+            halign: "left"
+            color: 0,0,0,1
+
+        Label:
+            text: "- contain at least one uppercase letter."
+            font_name: "en_font"
+            halign: "left"
+            color: 0,0,0,1
+
+        Label:
+            text: "- contain at least one digit."
+            font_name: "en_font"
+            halign: "left"
+            color: 0,0,0,1
+
+        Label:
+            text: "- contain at least one of the special characters:\nunderscore (_), at symbol (@), or dollar sign ($)."
+            font_name: "en_font"
+            halign: "left"
+            color: 0,0,0,1
+
+        Label:
+            text: "- not contain any whitespace characters."
+            font_name: "en_font"
+            halign: "left"
+            color: 0,0,0,1
+
+        AnchorLayout:
+            size_hint_y: None
+            height: root.height/13
+        
+            Button:
+                text: "Close"
+                font_name: "en_font"
+                color: 0,0,0,1
+                background_normal: './resources/Buttons/rec_4_up.png'
+                background_down: './resources/Buttons/rec_4_down.png'
+                border: 0,0,0,0
+                size_hint: None, None
+                size: root.width/3, root.height/13
+                on_release:
+                    root.dismiss()
