@@ -189,10 +189,6 @@ WindowManager:
                     size: self.size
             
             AnchorLayout:
-                size_hint_x: None
-                width: root.width/10
-            
-            AnchorLayout:
                 anchor_x: "left"
                 anchor_y: "center"
                 Label:
@@ -203,23 +199,7 @@ WindowManager:
                     font_name: "en_font"
                     font_size: 18
                     color: 0,0,0,1
-            
-            AnchorLayout:
-                size_hint_x: None
-                width: root.width/4
 
-            AnchorLayout:
-                size_hint_x: None
-                width: root.width/6
-                Button:
-                    size_hint: None, None
-                    size: (root.width/10), (root.width/10)
-                    allow_stretch: "False"
-                    background_normal: './resources/Buttons/user_up.png'
-                    background_down: './resources/Buttons/user_down.png'
-                    border: 0,0,0,0
-                    on_release:
-                        root.open_profile()
         GridLayout:
             cols: 1
 
@@ -1384,13 +1364,6 @@ WindowManager:
             text: root.en
             color: 0,0,0,1
 
-        Label:
-            size_hint: 1, 1
-            text_size: self.width, None
-            font_name: "jp_font"
-            text: root.prog
-            color: 0,0,0,1
-
         GridLayout:
             cols: 3
 
@@ -1404,17 +1377,6 @@ WindowManager:
                     size: root.width/8, root.width/8
                     on_release:
                         root.bookmark()
-
-            AnchorLayout:
-
-                Button:
-                    background_normal: './resources/Buttons/tts_up.png'
-                    background_down: './resources/Buttons/tts_down.png'
-                    border: 0,0,0,0
-                    size_hint: None, None
-                    size: root.width/8, root.width/8
-                    on_release:
-                        root.tts()
 
             AnchorLayout:
 
@@ -1473,13 +1435,6 @@ WindowManager:
             text: root.en_sent
             color: 0,0,0,1
 
-        Label:
-            size_hint: 1, 1
-            text_size: self.width, None
-            font_name: "jp_font"
-            text: root.prog
-            color: 0,0,0,1
-
         GridLayout:
             cols: 3
 
@@ -1493,17 +1448,6 @@ WindowManager:
                     size: root.width/8, root.width/8
                     on_release:
                         root.bookmark()
-
-            AnchorLayout:
-
-                Button:
-                    background_normal: './resources/Buttons/tts_up.png'
-                    background_down: './resources/Buttons/tts_down.png'
-                    border: 0,0,0,0
-                    size_hint: None, None
-                    size: root.width/8, root.width/8
-                    on_release:
-                        root.tts()
 
             AnchorLayout:
 
@@ -1576,12 +1520,6 @@ WindowManager:
             text: root.en_sent
             color: 0,0,0,1
 
-        Label:
-            size_hint: 1, 1
-            text_size: self.width, None
-            font_name: "jp_font"
-            text: root.prog
-            color: 0,0,0,1
 
         GridLayout:
             cols: 3
@@ -1596,17 +1534,6 @@ WindowManager:
                     size: root.width/8, root.width/8
                     on_release:
                         root.bookmark()
-
-            AnchorLayout:
-
-                Button:
-                    background_normal: './resources/Buttons/tts_up.png'
-                    background_down: './resources/Buttons/tts_down.png'
-                    border: 0,0,0,0
-                    size_hint: None, None
-                    size: root.width/8, root.width/8
-                    on_release:
-                        root.tts()
 
             AnchorLayout:
 
@@ -1665,12 +1592,6 @@ WindowManager:
             text: root.en_sent
             color: 0,0,0,1
 
-        Label:
-            size_hint: 1, 1
-            text_size: self.width, None
-            font_name: "jp_font"
-            text: root.prog
-            color: 0,0,0,1
 
         GridLayout:
             cols: 3
@@ -1685,17 +1606,6 @@ WindowManager:
                     size: root.width/8, root.width/8
                     on_release:
                         root.bookmark()
-
-            AnchorLayout:
-
-                Button:
-                    background_normal: './resources/Buttons/tts_up.png'
-                    background_down: './resources/Buttons/tts_down.png'
-                    border: 0,0,0,0
-                    size_hint: None, None
-                    size: root.width/8, root.width/8
-                    on_release:
-                        root.tts()
 
             AnchorLayout:
 

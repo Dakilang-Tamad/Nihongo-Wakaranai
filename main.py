@@ -485,12 +485,6 @@ class HomeScreen(Screen):
                 dh.first_screen = ""
                 dh.error = 6
                 NoticePop().open()
-            if dh.first_screen == "login":
-                retrieve_progress = Thread(target = retrieve_user_progress)
-                retrieve_progress.start()
-                dh.first_screen = ""
-                dh.error = 7
-                NoticePop().open()
             if dh.first_screen == "home":
                 update = Thread(target = dh.update_progress)
                 update.start()
