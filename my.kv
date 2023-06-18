@@ -16,7 +16,6 @@ WindowManager:
     DifficultySelection:
     BookmarkDifficulty:
     BookmarkedItems:
-    SettingsScreen:
     ContentsDiff:
     Contents:
     GrammarItem:
@@ -647,22 +646,9 @@ WindowManager:
                     allow_stretch: "False"
                     border: 0,0,0,0
                     on_release:
-                        app.root.current = "bookd"
+                        app.root.current = "contents"
                         root.manager.transition.direction = "right"
 
-
-
-<SettingsScreen>:
-    name: "settings"
-
-    GridLayout:
-        cols: 1
-
-        Button:
-            text: "Currently Empty. Tap to go back."
-            on_release:
-                app.root.current = "home"
-                root.manager.transition.direction = "right"
 
 
 
@@ -895,7 +881,7 @@ WindowManager:
                         spacing: root.height/60
 
         GridLayout:
-            cols: 1
+            cols: 2
             size_hint_y: None
             height: root.height/10
 
@@ -912,6 +898,19 @@ WindowManager:
                     on_release:
                         app.root.current = "contents_diff"
                         root.manager.transition.direction = "right"
+            
+            AnchorLayout:
+
+                Button:
+                    anchor: "center"
+                    size_hint: None, None
+                    size: root.width/8, root.width/8
+                    background_normal: "./resources/Buttons/add_bookmark_up.png"
+                    allow_stretch: "False"
+                    border: 0,0,0,0
+                    on_release:
+                        root.to_bookmarks()
+                        root.manager.transition.direction = "left"
 
 
 <GrammarItem>:
@@ -956,6 +955,7 @@ WindowManager:
 
             AnchorLayout:
                 Button:
+                    id: ga
                     anchor: "center"
                     size_hint: .8, .6
                     font_name: "jp_font"
@@ -971,6 +971,7 @@ WindowManager:
 
             AnchorLayout:
                 Button:
+                    id: gb
                     anchor: "center"
                     size_hint: .8, .6
                     font_name: "jp_font"
@@ -986,6 +987,7 @@ WindowManager:
 
             AnchorLayout:
                 Button:
+                    id: gc
                     anchor: "center"
                     size_hint: .8, .6
                     font_name: "jp_font"
@@ -1001,6 +1003,7 @@ WindowManager:
 
             AnchorLayout:
                 Button:
+                    id: gd
                     anchor: "center"
                     size_hint: .8, .6
                     font_name: "jp_font"
@@ -1014,6 +1017,38 @@ WindowManager:
                         root.ent_d()
                         root.manager.transition.direction = "left"
 
+        GridLayout:
+            cols: 2
+            size_hint_y: None
+            height: root.height/15
+
+            AnchorLayout:
+                Button:
+                    id: prev
+                    anchor: "center"
+                    size_hint: None, None
+                    size: root.width/7, root.width/7
+                    color: 0, 0, 0, 1
+                    background_normal: 'resources/Buttons_2/BackButtonNew.png'
+                    allow_stretch: "False"
+                    border: 0,0,0,0
+                    on_release:
+                        root.prev_screen()
+                        root.manager.transition.direction = "right"
+            
+            AnchorLayout:
+                Button:
+                    anchor: "center"
+                    size_hint: None, None
+                    size: root.width/7, root.width/7
+                    color: 0, 0, 0, 1
+                    background_normal: 'resources/Buttons_2/NextButtonNew.png'
+                    allow_stretch: "False"
+                    border: 0,0,0,0
+                    on_release:
+                        root.next_screen()
+                        root.manager.transition.direction = "left"
+        
         GridLayout:
             cols: 1
             size_hint_y: None
@@ -1077,6 +1112,7 @@ WindowManager:
 
             AnchorLayout:
                 Button:
+                    id: va
                     anchor: "center"
                     size_hint: .8, .6
                     font_name: "jp_font"
@@ -1092,6 +1128,7 @@ WindowManager:
 
             AnchorLayout:
                 Button:
+                    id: vb
                     anchor: "center"
                     size_hint: .8, .6
                     font_name: "jp_font"
@@ -1107,6 +1144,7 @@ WindowManager:
 
             AnchorLayout:
                 Button:
+                    id: vc
                     anchor: "center"
                     size_hint: .8, .6
                     font_name: "jp_font"
@@ -1122,6 +1160,7 @@ WindowManager:
 
             AnchorLayout:
                 Button:
+                    id: vd
                     anchor: "center"
                     size_hint: .8, .6
                     font_name: "jp_font"
@@ -1135,6 +1174,37 @@ WindowManager:
                         root.ent_d()
                         root.manager.transition.direction = "left"
 
+        GridLayout:
+            cols: 2
+            size_hint_y: None
+            height: root.height/15
+
+            AnchorLayout:
+                Button:
+                    anchor: "center"
+                    size_hint: None, None
+                    size: root.width/7, root.width/7
+                    color: 0, 0, 0, 1
+                    background_normal: 'resources/Buttons_2/BackButtonNew.png'
+                    allow_stretch: "False"
+                    border: 0,0,0,0
+                    on_release:
+                        root.prev_screen()
+                        root.manager.transition.direction = "right"
+            
+            AnchorLayout:
+                Button:
+                    anchor: "center"
+                    size_hint: None, None
+                    size: root.width/7, root.width/7
+                    color: 0, 0, 0, 1
+                    background_normal: 'resources/Buttons_2/NextButtonNew.png'
+                    allow_stretch: "False"
+                    border: 0,0,0,0
+                    on_release:
+                        root.next_screen()
+                        root.manager.transition.direction = "left"
+        
         GridLayout:
             cols: 1
             size_hint_y: None
@@ -1199,6 +1269,7 @@ WindowManager:
 
             AnchorLayout:
                 Button:
+                    id: ka
                     anchor: "center"
                     size_hint: .8, .6
                     font_name: "jp_font"
@@ -1214,6 +1285,7 @@ WindowManager:
 
             AnchorLayout:
                 Button:
+                    id: kb
                     anchor: "center"
                     size_hint: .8, .6
                     font_name: "jp_font"
@@ -1229,6 +1301,7 @@ WindowManager:
 
             AnchorLayout:
                 Button:
+                    id: kc
                     anchor: "center"
                     size_hint: .8, .6
                     font_name: "jp_font"
@@ -1244,6 +1317,7 @@ WindowManager:
 
             AnchorLayout:
                 Button:
+                    id: kd
                     anchor: "center"
                     size_hint: .8, .6
                     font_name: "jp_font"
@@ -1257,6 +1331,37 @@ WindowManager:
                         root.ent_d()
                         root.manager.transition.direction = "left"
 
+        GridLayout:
+            cols: 2
+            size_hint_y: None
+            height: root.height/15
+
+            AnchorLayout:
+                Button:
+                    anchor: "center"
+                    size_hint: None, None
+                    size: root.width/7, root.width/7
+                    color: 0, 0, 0, 1
+                    background_normal: 'resources/Buttons_2/BackButtonNew.png'
+                    allow_stretch: "False"
+                    border: 0,0,0,0
+                    on_release:
+                        root.prev_screen()
+                        root.manager.transition.direction = "right"
+            
+            AnchorLayout:
+                Button:
+                    anchor: "center"
+                    size_hint: None, None
+                    size: root.width/7, root.width/7
+                    color: 0, 0, 0, 1
+                    background_normal: 'resources/Buttons_2/NextButtonNew.png'
+                    allow_stretch: "False"
+                    border: 0,0,0,0
+                    on_release:
+                        root.next_screen()
+                        root.manager.transition.direction = "left"
+        
         GridLayout:
             cols: 1
             size_hint_y: None
@@ -1275,6 +1380,7 @@ WindowManager:
             height: root.height/13
             text: "Review"
             font_name: "en_font"
+            font_size: sp(20)
             color: 0,0,0,1
             canvas.before:
                 Color:
@@ -1286,16 +1392,11 @@ WindowManager:
         AnchorLayout:
             size_hint_y: None
             height: (root.height/6)
-            Image:
-                anchor: "center"
-                size_hint_x: .8
-                size_hint_y: .7
-                allow_stretch: True
-                source: root.border
 
             Label:
                 anchor: "center"
-                font_name: "jp_font"
+                font_name: "en_font"
+                font_size: sp(16)
                 text: root.score
                 color: 0, 0, 0, 1
 
@@ -1318,7 +1419,7 @@ WindowManager:
                     cols: 1
                     size_hint_y: None
                     height: self.minimum_height
-                    row_default_height: root.height/10
+                    row_default_height: root.height/15
 
             GridLayout:
                 cols: 1

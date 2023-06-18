@@ -460,12 +460,13 @@ bg = '#fffbe6'
 current = 0  # counter for the array
 current_id = 0  # holder for the current ID value of a question/entry being processed
 score = 0  # holder of the quiz score
-tally = []  # a tally of which items were answered correctly
 contents = []  # contains the contents (ID's) of the quiz
 level = ""  # current difficulty level selected
 error = 0  # Error message control
 tts = ""
 tts_sentence = ""
+answers = ["e","e","e","e","e","e","e","e","e","e"]
+keys = ["e","e","e","e","e","e","e","e","e","e"]
 
 # for the primary assessment
 first_screen = ""
