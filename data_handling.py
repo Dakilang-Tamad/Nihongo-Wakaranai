@@ -31,7 +31,24 @@ def get_user():
             for k in cursor:
                 progress = progress + k[0]
         data.append(str(progress))
+    
+    levels = conn.execute("select level from OPEN_LEVELS").fetchall()
+    unlocked = []
 
+    for i in levels:
+        unlocked.append(i[0])
+    
+    if "N1" in unlocked:
+        data.append("N1")
+    elif "N2" in unlocked:
+        data.append("N2")
+    elif "N3" in unlocked:
+        data.append("N3")
+    elif "N4" in unlocked:
+        data.append("N4")
+    elif "N5" in unlocked:
+        data.append("N5")
+    
     return data
 
 
@@ -460,12 +477,14 @@ bg = '#fffbe6'
 current = 0  # counter for the array
 current_id = 0  # holder for the current ID value of a question/entry being processed
 score = 0  # holder of the quiz score
-tally = []  # a tally of which items were answered correctly
 contents = []  # contains the contents (ID's) of the quiz
 level = ""  # current difficulty level selected
 error = 0  # Error message control
 tts = ""
 tts_sentence = ""
+answers = ["e","e","e","e","e","e","e","e","e","e"]
+keys = ["e","e","e","e","e","e","e","e","e","e"]
+pop_index = 0
 
 # for the primary assessment
 first_screen = ""

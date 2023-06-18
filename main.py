@@ -8,9 +8,15 @@ from kivy.uix.screenmanager import ScreenManager, Screen
 from kivy.core.text import LabelBase
 from kivy.uix.button import Button
 from kivy.uix.label import Label
+from kivy.uix.image import Image
+from kivy.graphics import Color, Rectangle
+from kivy.core.image import Image as CoreImage
 from kivy.uix.popup import Popup
+from kivy.uix.gridlayout import GridLayout
+from kivy.uix.anchorlayout import AnchorLayout
 from kivy.core.window import Window
 from kivy.clock import Clock
+from kivy.metrics import sp
 from threading import Thread
 import data_handling as dh
 import json
@@ -42,9 +48,10 @@ def to_audio():
 
 
 def new_contents():
+    dh.answers = ["e","e","e","e","e","e","e","e","e","e"]
+    dh.keys = ["e","e","e","e","e","e","e","e","e","e"]
     dh.contents = dh.new_quiz(dh.level)
     dh.current = 0
-    dh.tally = []
     dh.score = 0
 
 
@@ -114,6 +121,76 @@ def retrieve_user_progress():
     retrieve_progress.start()
 
 
+class GrammarQ(Popup):
+    question = StringProperty()
+    choice = StringProperty()
+    key = StringProperty()
+
+    def on_pre_open(self):
+        w, h = Window.size
+        self.width = (w/20)*19
+        self.height = (h/10)*6
+        conn = sqlite3.connect("Quizzes.db")
+        choice = "C_" + (dh.answers[dh.pop_index]).upper()
+        key = "C_" + (dh.keys[dh.pop_index]).upper()
+
+        cursor = conn.execute("SELECT QUESTION, " + choice + ", " + key + " FROM " + dh.level + "_GRAMMAR WHERE ID = " + str(dh.current_id))
+
+        for i in cursor:
+            self.question = i[0]
+            self.choice = i[1]
+            self.key = i[2]
+
+
+class VocabQ(Popup):
+    question = StringProperty()
+    item = StringProperty()
+    choice = StringProperty()
+    key = StringProperty()
+
+    def on_pre_open(self):
+        w, h = Window.size
+        self.width = (w/20)*19
+        self.height = (h/10)*6
+        conn = sqlite3.connect("Quizzes.db")
+        choice = "C_" + (dh.answers[dh.pop_index]).upper()
+        key = "C_" + (dh.keys[dh.pop_index]).upper()
+
+        if dh.level == "N5":
+            cursor = conn.execute("SELECT WORD, " + choice + ", " + key + ", ITEM FROM " + dh.level + "_VOCAB WHERE ID = " + str(dh.current_id))
+        else:
+            cursor = conn.execute("SELECT SENTENCE, " + choice + ", " + key + ", KANJI FROM " + dh.level + "_VOCAB WHERE ID = " + str(dh.current_id))
+
+        for i in cursor:
+            self.question = i[0]
+            self.choice = i[1]
+            self.key = i[2]
+            self.item = i[3]
+
+
+class KanjiQ(Popup):
+    question = StringProperty()
+    item = StringProperty()
+    choice = StringProperty()
+    key = StringProperty()
+
+    def on_pre_open(self):
+        w, h = Window.size
+        self.width = (w/20)*19
+        self.height = (h/10)*6
+        conn = sqlite3.connect("Quizzes.db")
+        choice = "C_" + (dh.answers[dh.pop_index]).upper()
+        key = "C_" + (dh.keys[dh.pop_index]).upper()
+
+        cursor = conn.execute("SELECT QUESTION, " + choice + ", " + key + ", ITEM FROM " + dh.level + "_KANJI WHERE ID = " + str(dh.current_id))
+
+        for i in cursor:
+            self.question = i[0]
+            self.choice = i[1]
+            self.key = i[2]
+            self.item = i[3]
+
+
 class ValidationPop(Popup):
     pass
 
@@ -125,6 +202,7 @@ class ProfilePop(Popup):
     n3_prog = StringProperty()
     n2_prog = StringProperty()
     n1_prog = StringProperty()
+    level = StringProperty()
 
     def on_pre_open(self):
         data = dh.get_user()
@@ -134,6 +212,7 @@ class ProfilePop(Popup):
         self.n3_prog = data[3]
         self.n4_prog = data[4]
         self.n5_prog = data[5]
+        self.level = "Current Level: " + data[6]
     
     def logout(self):
         Thread(target=dh.log_out).start()
@@ -504,6 +583,38 @@ class HomeScreen(Screen):
 class DifficultySelection(Screen):
     level = dh.level
 
+    def initialize(self):
+        conn = sqlite3.connect("Quizzes.db")
+        levels = conn.execute("select level from OPEN_LEVELS").fetchall()
+        unlocked = []
+
+        for i in levels:
+            unlocked.append(i[0])
+        
+        if "N5" not in unlocked:
+            self.ids.n5.background_normal= 'resources/Buttons_2/N5_Locked.png'
+        else:
+            self.ids.n5.background_normal= 'resources/Buttons_2/N5.png'
+        if "N4" not in unlocked:
+            self.ids.n4.background_normal= 'resources/Buttons_2/N4_Locked.png'
+        else:
+            self.ids.n4.background_normal= 'resources/Buttons_2/N4.png'
+        if "N3" not in unlocked:
+            self.ids.n3.background_normal= 'resources/Buttons_2/N3_Locked.png'
+        else:
+            self.ids.n3.background_normal= 'resources/Buttons_2/N3.png'
+        if "N2" not in unlocked:
+            self.ids.n2.background_normal= 'resources/Buttons_2/N2_Locked.png'
+        else:
+            self.ids.n2.background_normal= 'resources/Buttons_2/N2.png'
+        if "N1" not in unlocked:
+            self.ids.n1.background_normal= 'resources/Buttons_2/N1_Locked.png'
+        else:
+            self.ids.n1.background_normal= 'resources/Buttons_2/N1.png'
+
+    def on_pre_enter(self, *args):
+        self.initialize()
+
     def start5(self):
         dh.level = "N5"
         if dh.check_level_access(dh.level):
@@ -597,6 +708,8 @@ class BookmarkedItems(Screen):
     level = StringProperty()
     button_up = './resources/Buttons/rec_1_up.png'
     button_down = './resources/Buttons/rec_1_down.png'
+    bm_up = './resources/Buttons/bm_1_up.png'
+    bm_down = './resources/Buttons/bm_1_down.png'
     back_up = './resources/Buttons/back_button_up.png'
     back_down = './resources/Buttons/back_button_down.png'
 
@@ -637,8 +750,8 @@ class BookmarkedItems(Screen):
         else:
             for i in contents:
                 button_text = i[1]
-                button = Button(text=button_text, font_name="jp_font", color=(0, 0, 0, 1),
-                                background_normal=self.button_up, background_down=self.button_down,
+                button = Button(text=button_text, font_name="jp_font", color=(0, 0, 0, 1), font_size= sp(20),
+                                background_normal=self.bm_up, background_down=self.bm_down,
                                 border=(0, 0, 0, 0))
                 button.bind(on_press=lambda x,
                             id=i[0], type=categ: self.popup(type, id))
@@ -671,12 +784,40 @@ class BookmarkedItems(Screen):
             pop.open()
 
 
-class SettingsScreen(Screen):
-    pass
-
-
 class ContentsDiff(Screen):
 
+    def initialize(self):
+        conn = sqlite3.connect("Quizzes.db")
+        levels = conn.execute("select level from OPEN_LEVELS").fetchall()
+        unlocked = []
+
+        for i in levels:
+            unlocked.append(i[0])
+        
+        if "N5" not in unlocked:
+            self.ids.n5.background_normal= 'resources/Buttons_2/N5_Locked.png'
+        else:
+            self.ids.n5.background_normal= 'resources/Buttons_2/N5.png'
+        if "N4" not in unlocked:
+            self.ids.n4.background_normal= 'resources/Buttons_2/N4_Locked.png'
+        else:
+            self.ids.n4.background_normal= 'resources/Buttons_2/N4.png'
+        if "N3" not in unlocked:
+            self.ids.n3.background_normal= 'resources/Buttons_2/N3_Locked.png'
+        else:
+            self.ids.n3.background_normal= 'resources/Buttons_2/N3.png'
+        if "N2" not in unlocked:
+            self.ids.n2.background_normal= 'resources/Buttons_2/N2_Locked.png'
+        else:
+            self.ids.n2.background_normal= 'resources/Buttons_2/N2.png'
+        if "N1" not in unlocked:
+            self.ids.n1.background_normal= 'resources/Buttons_2/N1_Locked.png'
+        else:
+            self.ids.n1.background_normal= 'resources/Buttons_2/N1.png'
+
+    def on_pre_enter(self, *args):
+        self.initialize()
+        
     def cont5(self):
         dh.level = "N5"
         if dh.check_level_access(dh.level):
@@ -722,6 +863,8 @@ class Contents(Screen):
     level = StringProperty()
     button_up = './resources/Buttons/rec_1_up.png'
     button_down = './resources/Buttons/rec_1_down.png'
+    bm_up = './resources/Buttons/bm_1_up.png'
+    bm_down = './resources/Buttons/bm_1_down.png'
     back_up = './resources/Buttons/back_button_up.png'
     back_down = './resources/Buttons/back_button_down.png'
 
@@ -745,7 +888,7 @@ class Contents(Screen):
             query = "KANJI"
         conn = sqlite3.connect("Quizzes.db")
         cursor = conn.cursor()
-        retrieve_query = "select ID, " + query + " from " + table
+        retrieve_query = "select ID,  " + query + ", BOOKMARK from " + table
         cursor.execute(retrieve_query)
         contents = cursor.fetchall()
         if not contents:
@@ -759,8 +902,13 @@ class Contents(Screen):
         else:
             for i in contents:
                 button_text = i[1]
-                button = Button(text=button_text, font_name="jp_font", color=(0, 0, 0, 1),
+                if i[2] == 1:
+                    button = Button(text=button_text, font_name="jp_font", color=(0, 0, 0, 1), font_size= sp(20),
                                 background_normal=self.button_up, background_down=self.button_down,
+                                border=(0, 0, 0, 0))
+                else:
+                    button = Button(text=button_text, font_name="jp_font", color=(0, 0, 0, 1), font_size= sp(20),
+                                background_normal=self.bm_up, background_down=self.bm_down,
                                 border=(0, 0, 0, 0))
                 button.bind(on_press=lambda x,
                             id=i[0], type=categ: self.popup(type, id))
@@ -791,6 +939,9 @@ class Contents(Screen):
         if type == "KANJI":
             pop = KanjiPop()
             pop.open()
+    
+    def to_bookmarks(self):
+        self.manager.current = "booki"
 
 
 class GrammarItem(Screen):
@@ -807,7 +958,7 @@ class GrammarItem(Screen):
     border = 'resources/Buttons/empty_box.png'
 
     def initialize(self):
-        self.label = "Item #" + str(dh.current+1)
+        self.label = "Item #" + str(dh.current+1) + "/10"
         conn = sqlite3.connect("Quizzes.db")
         cursor = conn.cursor()
         retrieve_query = "select * from " + dh.level + \
@@ -822,6 +973,39 @@ class GrammarItem(Screen):
             self.D = i[5]
             self.ans = i[6]
         cursor.close()
+
+        dh.keys[dh.current] = self.ans
+
+        if dh.answers[dh.current] == "a":
+            self.ids.ga.background_normal = 'resources/Buttons/rec_3_up.png'
+            self.ids.gb.background_normal = 'resources/Buttons/rec_1_up.png'
+            self.ids.gc.background_normal = 'resources/Buttons/rec_1_up.png'
+            self.ids.gd.background_normal = 'resources/Buttons/rec_1_up.png'
+        elif dh.answers[dh.current] == "b":
+            self.ids.gb.background_normal = 'resources/Buttons/rec_3_up.png'
+            self.ids.ga.background_normal = 'resources/Buttons/rec_1_up.png'
+            self.ids.gc.background_normal = 'resources/Buttons/rec_1_up.png'
+            self.ids.gd.background_normal = 'resources/Buttons/rec_1_up.png'
+        elif dh.answers[dh.current] == "c":
+            self.ids.gc.background_normal = 'resources/Buttons/rec_3_up.png'
+            self.ids.ga.background_normal = 'resources/Buttons/rec_1_up.png'
+            self.ids.gb.background_normal = 'resources/Buttons/rec_1_up.png'
+            self.ids.gd.background_normal = 'resources/Buttons/rec_1_up.png'
+        elif dh.answers[dh.current] == "d":
+            self.ids.gd.background_normal = 'resources/Buttons/rec_3_up.png'
+            self.ids.ga.background_normal = 'resources/Buttons/rec_1_up.png'
+            self.ids.gb.background_normal = 'resources/Buttons/rec_1_up.png'
+            self.ids.gc.background_normal = 'resources/Buttons/rec_1_up.png'
+        else:
+            self.ids.ga.background_normal = 'resources/Buttons/rec_1_up.png'
+            self.ids.gb.background_normal = 'resources/Buttons/rec_1_up.png'
+            self.ids.gc.background_normal = 'resources/Buttons/rec_1_up.png'
+            self.ids.gd.background_normal = 'resources/Buttons/rec_1_up.png'
+        
+        if dh.current == 0:
+            self.ids.prev.disabled = True
+        else:
+            self.ids.prev.disabled = False
         if dh.first_screen == "signup" and dh.current == 0:
             if dh.level == "N5":
                 dh.error = 12
@@ -831,50 +1015,35 @@ class GrammarItem(Screen):
         self.initialize()
 
     def ent_a(self):
-        dh.current += 1
-        if self.ans == 'a':
-            level = dh.level + "_GRAMMAR"
-            add_prof(level)
-            dh.score += 1
-            dh.tally.append("Correct")
-        else:
-            dh.tally.append("Incorrect")
-        self.next_screen()
+        dh.answers[dh.current] = "a"
+        self.ids.ga.background_normal = 'resources/Buttons/rec_3_up.png'
+        self.ids.gb.background_normal = 'resources/Buttons/rec_1_up.png'
+        self.ids.gc.background_normal = 'resources/Buttons/rec_1_up.png'
+        self.ids.gd.background_normal = 'resources/Buttons/rec_1_up.png'
 
     def ent_b(self):
-        dh.current += 1
-        if self.ans == 'b':
-            level = dh.level + "_GRAMMAR"
-            add_prof(level)
-            dh.score += 1
-            dh.tally.append("Correct")
-        else:
-            dh.tally.append("Incorrect")
-        self.next_screen()
+        dh.answers[dh.current] = "b"
+        self.ids.ga.background_normal = 'resources/Buttons/rec_1_up.png'
+        self.ids.gb.background_normal = 'resources/Buttons/rec_3_up.png'
+        self.ids.gc.background_normal = 'resources/Buttons/rec_1_up.png'
+        self.ids.gd.background_normal = 'resources/Buttons/rec_1_up.png'
 
     def ent_c(self):
-        dh.current += 1
-        if self.ans == 'c':
-            level = dh.level + "_GRAMMAR"
-            add_prof(level)
-            dh.score += 1
-            dh.tally.append("Correct")
-        else:
-            dh.tally.append("Incorrect")
-        self.next_screen()
+        dh.answers[dh.current] = "c"
+        self.ids.ga.background_normal = 'resources/Buttons/rec_1_up.png'
+        self.ids.gb.background_normal = 'resources/Buttons/rec_1_up.png'
+        self.ids.gc.background_normal = 'resources/Buttons/rec_3_up.png'
+        self.ids.gd.background_normal = 'resources/Buttons/rec_1_up.png'
 
     def ent_d(self):
-        dh.current += 1
-        if self.ans == 'd':
-            level = dh.level + "_GRAMMAR"
-            add_prof(level)
-            dh.score += 1
-            dh.tally.append("Correct")
-        else:
-            dh.tally.append("Incorrect")
-        self.next_screen()
+        dh.answers[dh.current] = "d"
+        self.ids.ga.background_normal = 'resources/Buttons/rec_1_up.png'
+        self.ids.gb.background_normal = 'resources/Buttons/rec_1_up.png'
+        self.ids.gc.background_normal = 'resources/Buttons/rec_1_up.png'
+        self.ids.gd.background_normal = 'resources/Buttons/rec_3_up.png'
 
     def next_screen(self):
+        dh.current += 1
 
         if dh.current == 10:
             if dh.first_screen == "signup":
@@ -908,6 +1077,11 @@ class GrammarItem(Screen):
                 self.manager.current = "end"
         else:
             self.manager.current = "vocabi"
+    
+    def prev_screen(self):
+        dh.current -= 1
+
+        self.manager.current = "kanjii"
 
 
 class VocabItem(Screen):
@@ -924,8 +1098,8 @@ class VocabItem(Screen):
     button_down = 'resources/Buttons/rec_2_down.png'
     border = 'resources/Buttons/empty_box.png'
 
-    def on_pre_enter(self, *args):
-        self.label = "Item #" + str(dh.current + 1)
+    def initialize(self):
+        self.label = "Item #" + str(dh.current + 1) +"/10"
         conn = sqlite3.connect("Quizzes.db")
         cursor = conn.cursor()
         if dh.level == "N5":
@@ -952,49 +1126,72 @@ class VocabItem(Screen):
             self.ans = i[6]
         cursor.close()
 
-    def ent_a(self):
-        dh.current += 1
-        if self.ans == 'a':
-            level = dh.level + "_VOCAB"
-            add_prof(level)
-            dh.score += 1
-            dh.tally.append("Correct")
+        dh.keys[dh.current] = self.ans
+
+        if dh.answers[dh.current] == "a":
+            self.ids.va.background_normal = 'resources/Buttons/rec_3_up.png'
+            self.ids.vb.background_normal = 'resources/Buttons/rec_1_up.png'
+            self.ids.vc.background_normal = 'resources/Buttons/rec_1_up.png'
+            self.ids.vd.background_normal = 'resources/Buttons/rec_1_up.png'
+        elif dh.answers[dh.current] == "b":
+            self.ids.vb.background_normal = 'resources/Buttons/rec_3_up.png'
+            self.ids.va.background_normal = 'resources/Buttons/rec_1_up.png'
+            self.ids.vc.background_normal = 'resources/Buttons/rec_1_up.png'
+            self.ids.vd.background_normal = 'resources/Buttons/rec_1_up.png'
+        elif dh.answers[dh.current] == "c":
+            self.ids.vc.background_normal = 'resources/Buttons/rec_3_up.png'
+            self.ids.va.background_normal = 'resources/Buttons/rec_1_up.png'
+            self.ids.vb.background_normal = 'resources/Buttons/rec_1_up.png'
+            self.ids.vd.background_normal = 'resources/Buttons/rec_1_up.png'
+        elif dh.answers[dh.current] == "d":
+            self.ids.vd.background_normal = 'resources/Buttons/rec_3_up.png'
+            self.ids.va.background_normal = 'resources/Buttons/rec_1_up.png'
+            self.ids.vb.background_normal = 'resources/Buttons/rec_1_up.png'
+            self.ids.vc.background_normal = 'resources/Buttons/rec_1_up.png'
         else:
-            dh.tally.append("Incorrect")
-        self.manager.current = "kanjii"
+            self.ids.va.background_normal = 'resources/Buttons/rec_1_up.png'
+            self.ids.vb.background_normal = 'resources/Buttons/rec_1_up.png'
+            self.ids.vc.background_normal = 'resources/Buttons/rec_1_up.png'
+            self.ids.vd.background_normal = 'resources/Buttons/rec_1_up.png'
+
+    def on_pre_enter(self, *args):
+        self. initialize()
+    
+    def ent_a(self):
+        dh.answers[dh.current] = "a"
+        self.ids.va.background_normal = 'resources/Buttons/rec_3_up.png'
+        self.ids.vb.background_normal = 'resources/Buttons/rec_1_up.png'
+        self.ids.vc.background_normal = 'resources/Buttons/rec_1_up.png'
+        self.ids.vd.background_normal = 'resources/Buttons/rec_1_up.png'
 
     def ent_b(self):
-        dh.current += 1
-        if self.ans == 'b':
-            level = dh.level + "_VOCAB"
-            add_prof(level)
-            dh.score += 1
-            dh.tally.append("Correct")
-        else:
-            dh.tally.append("Incorrect")
-        self.manager.current = "kanjii"
+        dh.answers[dh.current] = "b"
+        self.ids.va.background_normal = 'resources/Buttons/rec_1_up.png'
+        self.ids.vb.background_normal = 'resources/Buttons/rec_3_up.png'
+        self.ids.vc.background_normal = 'resources/Buttons/rec_1_up.png'
+        self.ids.vd.background_normal = 'resources/Buttons/rec_1_up.png'
 
     def ent_c(self):
-        dh.current += 1
-        if self.ans == 'c':
-            level = dh.level + "_VOCAB"
-            add_prof(level)
-            dh.score += 1
-            dh.tally.append("Correct")
-        else:
-            dh.tally.append("Incorrect")
-        self.manager.current = "kanjii"
+        dh.answers[dh.current] = "c"
+        self.ids.va.background_normal = 'resources/Buttons/rec_1_up.png'
+        self.ids.vb.background_normal = 'resources/Buttons/rec_1_up.png'
+        self.ids.vc.background_normal = 'resources/Buttons/rec_3_up.png'
+        self.ids.vd.background_normal = 'resources/Buttons/rec_1_up.png'
 
     def ent_d(self):
+        dh.answers[dh.current] = "d"
+        self.ids.va.background_normal = 'resources/Buttons/rec_1_up.png'
+        self.ids.vb.background_normal = 'resources/Buttons/rec_1_up.png'
+        self.ids.vc.background_normal = 'resources/Buttons/rec_1_up.png'
+        self.ids.vd.background_normal = 'resources/Buttons/rec_3_up.png'
+
+    def next_screen(self):
         dh.current += 1
-        if self.ans == 'd':
-            level = dh.level + "_VOCAB"
-            add_prof(level)
-            dh.score += 1
-            dh.tally.append("Correct")
-        else:
-            dh.tally.append("Incorrect")
         self.manager.current = "kanjii"
+    
+    def prev_screen(self):
+        dh.current -= 1
+        self.manager.current = "grammari"
 
 
 class KanjiItem(Screen):
@@ -1011,8 +1208,8 @@ class KanjiItem(Screen):
     button_down = 'resources/Buttons/rec_2_down.png'
     border = 'resources/Buttons/empty_box.png'
 
-    def on_pre_enter(self, *args):
-        self.label = "Item #" + str(dh.current + 1)
+    def initialize(self):
+        self.label = "Item #" + str(dh.current + 1) + "/10"
         conn = sqlite3.connect("Quizzes.db")
         cursor = conn.cursor()
         retrieve_query = "select * from " + dh.level + \
@@ -1029,49 +1226,73 @@ class KanjiItem(Screen):
             self.ans = i[7]
         cursor.close()
 
-    def ent_a(self):
-        dh.current += 1
-        if self.ans == 'a':
-            level = dh.level + "_KANJI"
-            add_prof(level)
-            dh.score += 1
-            dh.tally.append("Correct")
+        dh.keys[dh.current] = self.ans
+
+        if dh.answers[dh.current] == "a":
+            self.ids.ka.background_normal = 'resources/Buttons/rec_3_up.png'
+            self.ids.kb.background_normal = 'resources/Buttons/rec_1_up.png'
+            self.ids.kc.background_normal = 'resources/Buttons/rec_1_up.png'
+            self.ids.kd.background_normal = 'resources/Buttons/rec_1_up.png'
+        elif dh.answers[dh.current] == "b":
+            self.ids.kb.background_normal = 'resources/Buttons/rec_3_up.png'
+            self.ids.ka.background_normal = 'resources/Buttons/rec_1_up.png'
+            self.ids.kc.background_normal = 'resources/Buttons/rec_1_up.png'
+            self.ids.kd.background_normal = 'resources/Buttons/rec_1_up.png'
+        elif dh.answers[dh.current] == "c":
+            self.ids.kc.background_normal = 'resources/Buttons/rec_3_up.png'
+            self.ids.ka.background_normal = 'resources/Buttons/rec_1_up.png'
+            self.ids.kb.background_normal = 'resources/Buttons/rec_1_up.png'
+            self.ids.kd.background_normal = 'resources/Buttons/rec_1_up.png'
+        elif dh.answers[dh.current] == "d":
+            self.ids.kd.background_normal = 'resources/Buttons/rec_3_up.png'
+            self.ids.ka.background_normal = 'resources/Buttons/rec_1_up.png'
+            self.ids.kb.background_normal = 'resources/Buttons/rec_1_up.png'
+            self.ids.kc.background_normal = 'resources/Buttons/rec_1_up.png'
         else:
-            dh.tally.append("Incorrect")
-        self.manager.current = "grammari"
+            self.ids.ka.background_normal = 'resources/Buttons/rec_1_up.png'
+            self.ids.kb.background_normal = 'resources/Buttons/rec_1_up.png'
+            self.ids.kc.background_normal = 'resources/Buttons/rec_1_up.png'
+            self.ids.kd.background_normal = 'resources/Buttons/rec_1_up.png'
+
+    def on_pre_enter(self, *args):
+        self.initialize()
+
+
+    def ent_a(self):
+        dh.answers[dh.current] = "a"
+        self.ids.ka.background_normal = 'resources/Buttons/rec_3_up.png'
+        self.ids.kb.background_normal = 'resources/Buttons/rec_1_up.png'
+        self.ids.kc.background_normal = 'resources/Buttons/rec_1_up.png'
+        self.ids.kd.background_normal = 'resources/Buttons/rec_1_up.png'
 
     def ent_b(self):
-        dh.current += 1
-        if self.ans == 'b':
-            level = dh.level + "_KANJI"
-            add_prof(level)
-            dh.score += 1
-            dh.tally.append("Correct")
-        else:
-            dh.tally.append("Incorrect")
-        self.manager.current = "grammari"
+        dh.answers[dh.current] = "b"
+        self.ids.ka.background_normal = 'resources/Buttons/rec_1_up.png'
+        self.ids.kb.background_normal = 'resources/Buttons/rec_3_up.png'
+        self.ids.kc.background_normal = 'resources/Buttons/rec_1_up.png'
+        self.ids.kd.background_normal = 'resources/Buttons/rec_1_up.png'
 
     def ent_c(self):
-        dh.current += 1
-        if self.ans == 'c':
-            level = dh.level + "_KANJI"
-            add_prof(level)
-            dh.score += 1
-            dh.tally.append("Correct")
-        else:
-            dh.tally.append("Incorrect")
-        self.manager.current = "grammari"
+        dh.answers[dh.current] = "c"
+        self.ids.ka.background_normal = 'resources/Buttons/rec_1_up.png'
+        self.ids.kb.background_normal = 'resources/Buttons/rec_1_up.png'
+        self.ids.kc.background_normal = 'resources/Buttons/rec_3_up.png'
+        self.ids.kd.background_normal = 'resources/Buttons/rec_1_up.png'
 
     def ent_d(self):
+        dh.answers[dh.current] = "d"
+        self.ids.ka.background_normal = 'resources/Buttons/rec_1_up.png'
+        self.ids.kb.background_normal = 'resources/Buttons/rec_1_up.png'
+        self.ids.kc.background_normal = 'resources/Buttons/rec_1_up.png'
+        self.ids.kd.background_normal = 'resources/Buttons/rec_3_up.png'
+
+    def next_screen(self):
         dh.current += 1
-        if self.ans == 'd':
-            level = dh.level + "_KANJI"
-            add_prof(level)
-            dh.score += 1
-            dh.tally.append("Correct")
-        else:
-            dh.tally.append("Incorrect")
         self.manager.current = "grammari"
+    
+    def prev_screen(self):
+        dh.current -= 1
+        self.manager.current = "vocabi"
 
 
 class EndQuizz(Screen):
@@ -1082,52 +1303,122 @@ class EndQuizz(Screen):
     back_up = './resources/Buttons/back_button_up.png'
     back_down = './resources/Buttons/back_button_down.png'
 
+    def __init__(self, **kwargs):
+        super(EndQuizz, self).__init__(**kwargs)
+        self.rect = Rectangle()
+
     def on_pre_enter(self, **kwargs):
-        self.score = "Your score is " + str(dh.score) + "/10"
         conn = sqlite3.connect("Quizzes.db")
         cursor = conn.cursor()
 
         for i in range(10):
+            grid_width = Window.width*0.9
+            grid_layout = GridLayout(cols=6, size_hint=(None, None), width=grid_width)
+            setattr(grid_layout, 'id', 'grid_layout_{}'.format(i))
+            grid_layout.cols_minimum = {0: grid_width * 0.05, 
+                                        1: grid_width * 0.2,
+                                        2: grid_width * 0.3,
+                                        3: grid_width * 0.2,
+                                        4: grid_width * 0.2,
+                                        5: grid_width * 0.05,}
+            self.ids.review_buttons.add_widget(grid_layout)
+
+            with grid_layout.canvas.before:
+                Rectangle(source=self.button_up, pos=grid_layout.pos, size=grid_layout.size)
+
+            grid_layout.bind(pos=self.update_background, size=self.update_background)
+
+            anchor0 = AnchorLayout(anchor_x='center', anchor_y='center')
+            grid_layout.add_widget(anchor0)
+
+            image_anchor = AnchorLayout(anchor_x='center', anchor_y='center')
+            grid_layout.add_widget(image_anchor)
+
+            if dh.keys[i] == dh.answers[i]:
+                dh.score += 1
+                image = Image(source='./resources/Buttons_2/CorrectButton.png', size_hint=(None, None),
+                              width=grid_layout.height * 0.6, height=grid_layout.height * 0.6)
+            else:
+                image = Image(source='./resources/Buttons_2/WrongButton.png', size_hint=(None, None),
+                              width=grid_layout.height * 0.6, height=grid_layout.height * 0.6)
+            
+            image_anchor.add_widget(image)
+
+            anchor1 = AnchorLayout(anchor_x='center', anchor_y='center')
+            item_anchor = AnchorLayout(anchor_x='center', anchor_y='center')
+            question_anchor = AnchorLayout(anchor_x='center', anchor_y='center')
+
+            grid_layout.add_widget(anchor1)
+            grid_layout.add_widget(item_anchor)
+            grid_layout.add_widget(question_anchor)
+
             if i in (0, 3, 6, 9):
                 retrieve_query = "select WORD from " + dh.level + \
                     "_GRAMMAR where ID = " + str(dh.contents[i])
                 cursor.execute(retrieve_query)
                 contents = cursor.fetchall()
                 for j in contents:
-                    button_text = j[0] + " - " + dh.tally[i]
-                    button = Button(text=button_text, font_name="jp_font", color=(0, 0, 0, 1),
-                                    background_normal=self.button_up, background_down=self.button_down,
-                                    border=(0, 0, 0, 0))
-                    button.bind(
+                    button_text = j[0]
+                    label = Label(text=button_text, font_name="jp_font", color=(0, 0, 0, 1), font_size=sp(20))
+                    anchor1.add_widget(label)
+                    item = Button(background_normal='./resources/Buttons_2/ViewItem.png',
+                                    border=(0, 0, 0, 0),
+                                    size_hint=(None, None), width=grid_width * 0.2, height=grid_layout.height * 0.8)
+                    item.bind(
                         on_release=lambda x, id=dh.contents[i], type="grammar": self.popup(type, id))
-                    self.ids.review_buttons.add_widget(button)
+                    question = Button(background_normal='./resources/Buttons_2/ViewQuestion.png',
+                                    border=(0, 0, 0, 0),
+                                    size_hint=(None, None), width=grid_width * 0.2, height=grid_layout.height * 0.8)
+                    question.bind(
+                        on_release=lambda x, id=dh.contents[i], index = i, type="grammar": self.question_pop(type, id, index))
+                    item_anchor.add_widget(item)
+                    question_anchor.add_widget(question)
             if i in (1, 4, 7):
                 retrieve_query = "select KANJI from " + dh.level + \
                     "_VOCAB where ID = " + str(dh.contents[i])
                 cursor.execute(retrieve_query)
                 contents = cursor.fetchall()
                 for j in contents:
-                    button_text = j[0] + " - " + dh.tally[i]
-                    button = Button(text=button_text, font_name="jp_font", color=(0, 0, 0, 1),
-                                    background_normal=self.button_up, background_down=self.button_down,
-                                    border=(0, 0, 0, 0))
-                    button.bind(
+                    button_text = j[0]
+                    label = Label(text=button_text, font_name="jp_font", color=(0, 0, 0, 1), font_size=sp(20))
+                    anchor1.add_widget(label)
+                    item = Button(background_normal='./resources/Buttons_2/ViewItem.png',
+                                    border=(0, 0, 0, 0),
+                                    size_hint=(None, None), width=grid_width * 0.2, height=grid_layout.height * 0.8)
+                    item.bind(
                         on_release=lambda x, id=dh.contents[i], type="vocab": self.popup(type, id))
-                    self.ids.review_buttons.add_widget(button)
+                    question = Button(background_normal='./resources/Buttons_2/ViewQuestion.png',
+                                    border=(0, 0, 0, 0),
+                                    size_hint=(None, None), width=grid_width * 0.2, height=grid_layout.height * 0.8)
+                    question.bind(
+                        on_release=lambda x, id=dh.contents[i], index = i,type="vocab": self.question_pop(type, id, index))
+                    item_anchor.add_widget(item)
+                    question_anchor.add_widget(question)
             if i in (2, 5, 8):
                 retrieve_query = "select KANJI from " + dh.level + \
                     "_KANJI where ID = " + str(dh.contents[i])
                 cursor.execute(retrieve_query)
                 contents = cursor.fetchall()
                 for j in contents:
-                    button_text = j[0] + " - " + dh.tally[i]
-                    button = Button(text=button_text, font_name="jp_font", color=(0, 0, 0, 1),
-                                    background_normal=self.button_up, background_down=self.button_down,
-                                    border=(0, 0, 0, 0))
-                    button.bind(
+                    button_text = j[0]
+                    label = Label(text=button_text, font_name="jp_font", color=(0, 0, 0, 1), font_size=sp(20))
+                    anchor1.add_widget(label)
+                    item = Button(background_normal='./resources/Buttons_2/ViewItem.png',
+                                    border=(0, 0, 0, 0),
+                                    size_hint=(None, None), width=grid_width * 0.2, height=grid_layout.height * 0.8)
+                    item.bind(
                         on_release=lambda x, id=dh.contents[i], type="kanji": self.popup(type, id))
-                    self.ids.review_buttons.add_widget(button)
+                    question = Button(background_normal='./resources/Buttons_2/ViewQuestion.png',
+                                    border=(0, 0, 0, 0),
+                                    size_hint=(None, None), width=grid_width * 0.2, height=grid_layout.height * 0.8)
+                    question.bind(
+                        on_release=lambda x, id=dh.contents[i], index = i, type="kanji": self.question_pop(type, id, index))
+                    item_anchor.add_widget(item)
+                    question_anchor.add_widget(question)
         conn.close()
+        anchor2 = AnchorLayout(anchor_x='center', anchor_y='center')
+        grid_layout.add_widget(anchor2)
+        self.score = "Your score is " + str(dh.score) + "/10"
 
     def on_leave(self, *args):
         self.ids.review_buttons.clear_widgets()
@@ -1147,6 +1438,25 @@ class EndQuizz(Screen):
         if type == "kanji":
             pop = KanjiPop()
             pop.open()
+    
+    def question_pop(self, type, id, index):
+        dh.current_id = id
+        dh.pop_index = index
+        print(dh.pop_index)
+        if type == "grammar":
+            pop = GrammarQ()
+            pop.open()
+        if type == "vocab":
+                pop = VocabQ()
+                pop.open()
+        if type == "kanji":
+            pop = KanjiQ()
+            pop.open()
+    
+    def update_background(self, instance, value):
+        instance.canvas.before.clear()
+        with instance.canvas.before:
+            Rectangle(source=self.button_up, pos=instance.pos, size=instance.size)
 
 
 class WindowManager(ScreenManager):
