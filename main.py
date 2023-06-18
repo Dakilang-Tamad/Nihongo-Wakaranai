@@ -1214,7 +1214,7 @@ class EndQuizz(Screen):
                 contents = cursor.fetchall()
                 for j in contents:
                     button_text = j[0]
-                    label = Label(text=button_text, font_name="jp_font", color=(0, 0, 0, 1), font_size=sp(14))
+                    label = Label(text=button_text, font_name="jp_font", color=(0, 0, 0, 1), font_size=sp(20))
                     anchor1.add_widget(label)
                     item = Button(background_normal='./resources/Buttons_2/ViewItem.png',
                                     border=(0, 0, 0, 0),
@@ -1235,7 +1235,7 @@ class EndQuizz(Screen):
                 contents = cursor.fetchall()
                 for j in contents:
                     button_text = j[0]
-                    label = Label(text=button_text, font_name="jp_font", color=(0, 0, 0, 1), font_size=sp(14))
+                    label = Label(text=button_text, font_name="jp_font", color=(0, 0, 0, 1), font_size=sp(20))
                     anchor1.add_widget(label)
                     item = Button(background_normal='./resources/Buttons_2/ViewItem.png',
                                     border=(0, 0, 0, 0),
@@ -1256,7 +1256,7 @@ class EndQuizz(Screen):
                 contents = cursor.fetchall()
                 for j in contents:
                     button_text = j[0]
-                    label = Label(text=button_text, font_name="jp_font", color=(0, 0, 0, 1), font_size=sp(14))
+                    label = Label(text=button_text, font_name="jp_font", color=(0, 0, 0, 1), font_size=sp(20))
                     anchor1.add_widget(label)
                     item = Button(background_normal='./resources/Buttons_2/ViewItem.png',
                                     border=(0, 0, 0, 0),
