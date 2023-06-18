@@ -242,18 +242,6 @@ WindowManager:
                         root.manager.current = "contents_diff"
                         root.manager.transition.direction = "left"
 
-            AnchorLayout:
-
-                Button:
-                    size_hint: None, None
-                    size: (root.width/10)*3, (root.width/10)*3
-                    allow_stretch: "False"
-                    background_normal: './resources/Buttons/bookmarks_up.png'
-                    background_down: './resources/Buttons/bookmarks_down.png'
-                    border: 0,0,0,0
-                    on_release:
-                        root.manager.current = "bookd"
-                        root.manager.transition.direction = "left"
 
             AnchorLayout:
 
@@ -309,23 +297,23 @@ WindowManager:
                     font_name: "en_font"
                     font_size: sp(20)
                     color: 0,0,0,1
-                    font_size: 18
 
             AnchorLayout:
 
                 GridLayout:
-                    cols: 2
+                    cols: 1
                     anchor: "center"
-                    size: (root.width/30)*29, (root.width/30)*29
+                    size: (root.width/30)*29, root.height * 0.8
 
                     AnchorLayout:
 
                         Button:
+                            id: n5
                             size_hint: None, None
-                            size: (root.width/10)*3, (root.width/10)*3
+                            size: (root.width/30)*29, root.height * 0.1
                             allow_stretch: "False"
-                            background_normal: './resources/Buttons/n5_up.png'
-                            background_down: './resources/Buttons/n5_down.png'
+                            background_normal: './resources/Buttons_2/N5.png'
+                            background_down: './resources/Buttons_2/N5_down.png'
                             border: 0,0,0,0
                             on_release:
                                 root.start5()
@@ -334,11 +322,12 @@ WindowManager:
                     AnchorLayout:
 
                         Button:
+                            id: n4
                             size_hint: None, None
-                            size: (root.width/10)*3, (root.width/10)*3
+                            size: (root.width/30)*29, root.height * 0.1
                             allow_stretch: "False"
-                            background_normal: './resources/Buttons/n4_up.png'
-                            background_down: './resources/Buttons/n4_down.png'
+                            background_normal: './resources/Buttons_2/N4.png'
+                            background_down: './resources/Buttons_2/N4_down.png'
                             border: 0,0,0,0
                             on_release:
                                 root.start4()
@@ -347,11 +336,12 @@ WindowManager:
                     AnchorLayout:
 
                         Button:
+                            id: n3
                             size_hint: None, None
-                            size: (root.width/10)*3, (root.width/10)*3
+                            size: (root.width/30)*29, root.height * 0.1
                             allow_stretch: "False"
-                            background_normal: './resources/Buttons/n3_up.png'
-                            background_down: './resources/Buttons/n3_down.png'
+                            background_normal: './resources/Buttons_2/N3.png'
+                            background_down: './resources/Buttons_2/N3_down.png'
                             border: 0,0,0,0
                             on_release:
                                 root.start3()
@@ -360,31 +350,30 @@ WindowManager:
                     AnchorLayout:
 
                         Button:
+                            id: n2
                             size_hint: None, None
-                            size: (root.width/10)*3, (root.width/10)*3
+                            size: (root.width/30)*29, root.height * 0.1
                             allow_stretch: "False"
-                            background_normal: './resources/Buttons/n2_up.png'
-                            background_down: './resources/Buttons/n2_down.png'
+                            background_normal: './resources/Buttons_2/N2.png'
+                            background_down: './resources/Buttons_2/N2_down.png'
                             border: 0,0,0,0
                             on_release:
                                 root.start2()
                                 root.manager.transition.direction = "left"
 
-            AnchorLayout:
-                size_hint_y: None
-                height: root.height/4
+                    AnchorLayout:
 
-                Button:
-                    anchor_y: "top"
-                    size_hint: None, None
-                    size: (root.width/10)*3, (root.width/10)*3
-                    allow_stretch: "False"
-                    background_normal: './resources/Buttons/n1_up.png'
-                    background_down: './resources/Buttons/n1_down.png'
-                    border: 0,0,0,0
-                    on_release:
-                        root.start1()
-                        root.manager.transition.direction = "left"
+                        Button:
+                            id: n1
+                            size_hint: None, None
+                            size: (root.width/30)*29, root.height * 0.1
+                            allow_stretch: "False"
+                            background_normal: './resources/Buttons_2/N1.png'
+                            background_down: './resources/Buttons_2/N1_down.png'
+                            border: 0,0,0,0
+                            on_release:
+                                root.start1()
+                                root.manager.transition.direction = "left"
 
             AnchorLayout:
                 size_hint_y: None
@@ -437,7 +426,6 @@ WindowManager:
                     font_size: sp(20)
                     font_name: "en_font"
                     color: 0,0,0,1
-                    font_size: 18
 
             AnchorLayout:
 
@@ -545,6 +533,7 @@ WindowManager:
             height: root.height/12
             text: root.level
             font_name: "en_font"
+            font_size: sp(20)
             color: "black"
 
         TabbedPanel:
@@ -639,7 +628,7 @@ WindowManager:
                         spacing: root.height/60
 
         GridLayout:
-            cols: 1
+            cols: 2
             size_hint_y: None
             height: root.height/10
 
@@ -651,6 +640,19 @@ WindowManager:
                     size: root.width/8, root.width/8
                     background_normal: root.back_up
                     background_down: root.back_down
+                    allow_stretch: "False"
+                    border: 0,0,0,0
+                    on_release:
+                        app.root.current = "contents_diff"
+                        root.manager.transition.direction = "right"
+            
+            AnchorLayout:
+
+                Button:
+                    anchor: "center"
+                    size_hint: None, None
+                    size: root.width/8, root.width/8
+                    background_normal: "./resources/Buttons/bookmarked_up.png"
                     allow_stretch: "False"
                     border: 0,0,0,0
                     on_release:
@@ -694,23 +696,23 @@ WindowManager:
                     font_name: "en_font"
                     font_size: sp(20)
                     color: 0,0,0,1
-                    font_size: 18
 
             AnchorLayout:
 
                 GridLayout:
-                    cols: 2
+                    cols: 1
                     anchor: "center"
-                    size: (root.width/30)*29, (root.width/30)*29
+                    size: (root.width/30)*29, root.height * 0.8
 
                     AnchorLayout:
 
                         Button:
+                            id: n5
                             size_hint: None, None
-                            size: (root.width/10)*3, (root.width/10)*3
+                            size: (root.width/30)*29, root.height * 0.1
                             allow_stretch: "False"
-                            background_normal: './resources/Buttons/n5_up.png'
-                            background_down: './resources/Buttons/n5_down.png'
+                            background_normal: './resources/Buttons_2/N5.png'
+                            background_down: './resources/Buttons_2/N5_down.png'
                             border: 0,0,0,0
                             on_release:
                                 root.cont5()
@@ -719,11 +721,12 @@ WindowManager:
                     AnchorLayout:
 
                         Button:
+                            id: n4
                             size_hint: None, None
-                            size: (root.width/10)*3, (root.width/10)*3
+                            size: (root.width/30)*29, root.height * 0.1
                             allow_stretch: "False"
-                            background_normal: './resources/Buttons/n4_up.png'
-                            background_down: './resources/Buttons/n4_down.png'
+                            background_normal: './resources/Buttons_2/N4.png'
+                            background_down: './resources/Buttons_2/N4_down.png'
                             border: 0,0,0,0
                             on_release:
                                 root.cont4()
@@ -732,11 +735,12 @@ WindowManager:
                     AnchorLayout:
 
                         Button:
+                            id: n3
                             size_hint: None, None
-                            size: (root.width/10)*3, (root.width/10)*3
+                            size: (root.width/30)*29, root.height * 0.1
                             allow_stretch: "False"
-                            background_normal: './resources/Buttons/n3_up.png'
-                            background_down: './resources/Buttons/n3_down.png'
+                            background_normal: './resources/Buttons_2/N3.png'
+                            background_down: './resources/Buttons_2/N3_down.png'
                             border: 0,0,0,0
                             on_release:
                                 root.cont3()
@@ -745,32 +749,30 @@ WindowManager:
                     AnchorLayout:
 
                         Button:
+                            id: n2
                             size_hint: None, None
-                            size: (root.width/10)*3, (root.width/10)*3
+                            size: (root.width/30)*29, root.height * 0.1
                             allow_stretch: "False"
-                            background_normal: './resources/Buttons/n2_up.png'
-                            background_down: './resources/Buttons/n2_down.png'
+                            background_normal: './resources/Buttons_2/N2.png'
+                            background_down: './resources/Buttons_2/N2_down.png'
                             border: 0,0,0,0
                             on_release:
                                 root.cont2()
                                 root.manager.transition.direction = "left"
 
+                    AnchorLayout:
 
-            AnchorLayout:
-                size_hint_y: None
-                height: root.height/4
-
-                Button:
-                    anchor_y: "top"
-                    size_hint: None, None
-                    size: (root.width/10)*3, (root.width/10)*3
-                    allow_stretch: "False"
-                    background_normal: './resources/Buttons/n1_up.png'
-                    background_down: './resources/Buttons/n1_down.png'
-                    border: 0,0,0,0
-                    on_release:
-                        root.cont1()
-                        root.manager.transition.direction = "left"
+                        Button:
+                            id: n1
+                            size_hint: None, None
+                            size: (root.width/30)*29, root.height * 0.1
+                            allow_stretch: "False"
+                            background_normal: './resources/Buttons_2/N1.png'
+                            background_down: './resources/Buttons_2/N1_down.png'
+                            border: 0,0,0,0
+                            on_release:
+                                root.cont1()
+                                root.manager.transition.direction = "left"
 
             AnchorLayout:
                 size_hint_y: None
@@ -961,6 +963,12 @@ WindowManager:
         GridLayout:
             cols: 1
 
+            Label:
+                font_name: "en_font"
+                font_size: sp(14)
+                text: "Select your answer: "
+                color: 0, 0, 0, 1
+
             AnchorLayout:
                 Button:
                     id: ga
@@ -1118,6 +1126,12 @@ WindowManager:
         GridLayout:
             cols: 1
 
+            Label:
+                font_name: "en_font"
+                font_size: sp(14)
+                text: "Select your answer: "
+                color: 0, 0, 0, 1
+
             AnchorLayout:
                 Button:
                     id: va
@@ -1272,6 +1286,12 @@ WindowManager:
 
         GridLayout:
             cols: 1
+
+            Label:
+                font_name: "en_font"
+                font_size: sp(14)
+                text: "Select your answer: "
+                color: 0, 0, 0, 1
 
             AnchorLayout:
                 Button:
@@ -1473,11 +1493,13 @@ WindowManager:
 
             Label:
                 font_name: "jp_font"
+                font_size: sp(16)
                 text: root.item
                 color: 0,0,0,1
 
             Label:
                 font_name: "jp_font"
+                font_size: sp(16)
                 text: root.meaning
                 color: 0,0,0,1
 
@@ -1485,6 +1507,7 @@ WindowManager:
             size_hint: 1, 1
             text_size: self.width, None
             font_name: "jp_font"
+            font_size: sp(16)
             text: root.jp
             color: 0,0,0,1
 
@@ -1492,6 +1515,7 @@ WindowManager:
             size_hint: 1, 1
             text_size: self.width, None
             font_name: "jp_font"
+            font_size: sp(16)
             text: root.en
             color: 0,0,0,1
 
@@ -1499,6 +1523,7 @@ WindowManager:
             size_hint: 1, 1
             text_size: self.width, None
             font_name: "jp_font"
+            font_size: sp(16)
             text: root.prog
             color: 0,0,0,1
 
@@ -1557,16 +1582,19 @@ WindowManager:
 
                 Label:
                     font_name: "jp_font"
+                    font_size: sp(16)
                     text: root.jp_word
                     color: 0,0,0,1
 
                 Label:
                     font_name: "jp_font"
+                    font_size: sp(16)
                     text: root.reading
                     color: 0,0,0,1
 
             Label:
                 font_name: "jp_font"
+                font_size: sp(16)
                 text: root.en_word
                 color: 0,0,0,1
 
@@ -1574,6 +1602,7 @@ WindowManager:
             size_hint: 1, 1
             text_size: self.width, None
             font_name: "jp_font"
+            font_size: sp(16)
             text: root.jp_sent
             color: 0,0,0,1
 
@@ -1581,6 +1610,7 @@ WindowManager:
             size_hint: 1, 1
             text_size: self.width, None
             font_name: "jp_font"
+            font_size: sp(16)
             text: root.en_sent
             color: 0,0,0,1
 
@@ -1588,6 +1618,7 @@ WindowManager:
             size_hint: 1, 1
             text_size: self.width, None
             font_name: "jp_font"
+            font_size: sp(16)
             text: root.prog
             color: 0,0,0,1
 
@@ -1647,11 +1678,13 @@ WindowManager:
 
                 Label:
                     font_name: "jp_font"
+                    font_size: sp(16)
                     text: root.jp_word
                     color: 0,0,0,1
 
                 Label:
                     font_name: "jp_font"
+                    font_size: sp(16)
                     text: root.furigana
                     color: 0,0,0,1
 
@@ -1662,6 +1695,7 @@ WindowManager:
                     size_hint: 1,1
                     text_size: self.width, None
                     font_name: "jp_font"
+                    font_size: sp(16)
                     text: root.kind
                     color: 0,0,0,1
 
@@ -1669,6 +1703,7 @@ WindowManager:
                     size_hint: 1,1
                     text_size: self.width, None
                     font_name: "jp_font"
+                    font_size: sp(16)
                     text: root.meaning
                     color: 0,0,0,1
 
@@ -1677,6 +1712,7 @@ WindowManager:
             size_hint: 1, 1
             text_size: self.width, None
             font_name: "jp_font"
+            font_size: sp(16)
             text: root.jp_sent
             color: 0,0,0,1
 
@@ -1684,6 +1720,7 @@ WindowManager:
             size_hint: 1, 1
             text_size: self.width, None
             font_name: "jp_font"
+            font_size: sp(16)
             text: root.en_sent
             color: 0,0,0,1
 
@@ -1691,6 +1728,7 @@ WindowManager:
             size_hint: 1, 1
             text_size: self.width, None
             font_name: "jp_font"
+            font_size: sp(16)
             text: root.prog
             color: 0,0,0,1
 
@@ -1747,11 +1785,13 @@ WindowManager:
 
                 Label:
                     font_name: "jp_font"
+                    font_size: sp(16)
                     text: root.jp_word
                     color: 0,0,0,1
 
                 Label:
                     font_name: "jp_font"
+                    font_size: sp(16)
                     text: root.reading
                     color: 0,0,0,1
 
@@ -1759,6 +1799,7 @@ WindowManager:
                 size_hint: 1, 1
                 text_size: self.width, None
                 font_name: "jp_font"
+                font_size: sp(16)
                 text: root.translation
                 color: 0,0,0,1
 
@@ -1766,6 +1807,7 @@ WindowManager:
             size_hint: 1, 1
             text_size: self.width, None
             font_name: "jp_font"
+            font_size: sp(16)
             text: root.jp_sent
             color: 0,0,0,1
 
@@ -1773,6 +1815,7 @@ WindowManager:
             size_hint: 1, 1
             text_size: self.width, None
             font_name: "jp_font"
+            font_size: sp(16)
             text: root.en_sent
             color: 0,0,0,1
 
@@ -1780,6 +1823,7 @@ WindowManager:
             size_hint: 1, 1
             text_size: self.width, None
             font_name: "jp_font"
+            font_size: sp(16)
             text: root.prog
             color: 0,0,0,1
 
@@ -1840,6 +1884,12 @@ WindowManager:
                 text: root.username
                 halign: "center"
                 color: 0,0,0,1
+            
+            Label:
+                font_name: "en_font"
+                text: root.level
+                halign: "center"
+                color: 0,0,0,1
         
         GridLayout:
             cols:3
@@ -1888,45 +1938,6 @@ WindowManager:
 
                 Label:
                     font_name: "en_font"
-                    text: "Total Score"
-                    halign: "left"
-                    color: 0,0,0,1
-            
-                Label:
-                    font_name: "en_font"
-                    text: root.n5_prog + "/500"
-                    halign: "left"
-                    color: 0,0,0,1
-
-                Label:
-                    font_name: "en_font"
-                    text: root.n4_prog + "/500"
-                    halign: "left"
-                    color: 0,0,0,1
-                
-                Label:
-                    font_name: "en_font"
-                    text: root.n3_prog + "/500"
-                    halign: "left"
-                    color: 0,0,0,1
-                
-                Label:
-                    font_name: "en_font"
-                    text: root.n2_prog + "/500"
-                    halign: "left"
-                    color: 0,0,0,1
-                
-                Label:
-                    font_name: "en_font"
-                    text: root.n1_prog + "/500"
-                    halign: "left"
-                    color: 0,0,0,1
-            
-            GridLayout:
-                cols: 1
-
-                Label:
-                    font_name: "en_font"
                     text: "Required"
                     halign: "left"
                     color: 0,0,0,1
@@ -1960,9 +1971,48 @@ WindowManager:
                     text: "275"
                     halign: "left"
                     color: 0,0,0,1
+            
+            GridLayout:
+                cols: 1
+
+                Label:
+                    font_name: "en_font"
+                    text: "Total Score"
+                    halign: "left"
+                    color: 0,0,0,1
+            
+                Label:
+                    font_name: "en_font"
+                    text: root.n5_prog + "/500"
+                    halign: "left"
+                    color: 0,0,0,1
+
+                Label:
+                    font_name: "en_font"
+                    text: root.n4_prog + "/500"
+                    halign: "left"
+                    color: 0,0,0,1
+                
+                Label:
+                    font_name: "en_font"
+                    text: root.n3_prog + "/500"
+                    halign: "left"
+                    color: 0,0,0,1
+                
+                Label:
+                    font_name: "en_font"
+                    text: root.n2_prog + "/500"
+                    halign: "left"
+                    color: 0,0,0,1
+                
+                Label:
+                    font_name: "en_font"
+                    text: root.n1_prog + "/500"
+                    halign: "left"
+                    color: 0,0,0,1
         
         GridLayout:
-            cols:2
+            cols:1
             size_hint_y: .2
 
             AnchorLayout:
@@ -1972,14 +2022,7 @@ WindowManager:
                     halign: "center"
                     on_release:
                         root.dismiss()
-            
-            AnchorLayout:
 
-                MDFillRoundFlatButton:
-                    text: "Logout"
-                    halign: "center"
-                    on_release:
-                        root.logout()
 
 <NoticePop>:
     title: "Alert"
@@ -2196,3 +2239,270 @@ WindowManager:
                 size: root.width/3, root.height/13
                 on_release:
                     root.dismiss()
+
+
+<GrammarQ>:
+    title: 'Grammar Question'
+    title_color: 0,0,0,1
+    size_hint: (None, None)
+    background: "./resources/Buttons/popup_bg.png"
+    border: 0,0,0,0
+
+    GridLayout:
+        cols: 1
+
+        GridLayout:
+            cols: 1
+
+            AnchorLayout:
+
+                Label:
+                    anchor: "center"
+                    size_hint: 1, 1
+                    text_size: self.width, None
+                    font_name: "jp_font"
+                    font_size: sp(16)
+                    text: root.question
+                    color: 0,0,0,1
+        
+        GridLayout:
+            cols: 2
+
+            Label:
+                size_hint: 1, 1
+                text_size: self.width, None
+                font_name: "en_font"
+                font_size: sp(16)
+                text: "Your choice:"
+                color: 0,0,0,1
+            
+            AnchorLayout:
+
+                Label:
+                    anchor: "center"
+                    size_hint: 1, 1
+                    text_size: self.width, None
+                    font_name: "jp_font"
+                    font_size: sp(16)
+                    text: root.choice
+                    color: 0,0,0,1
+            
+            Label:
+                size_hint: 1, 1
+                text_size: self.width, None
+                font_name: "en_font"
+                font_size: sp(16)
+                text: "Correct answer:"
+                color: 0,0,0,1
+            
+            AnchorLayout:
+
+                Label:
+                    anchor: "center"
+                    size_hint: 1, 1
+                    text_size: self.width, None
+                    font_name: "jp_font"
+                    font_size: sp(16)
+                    text: root.key
+                    color: 0,0,0,1
+
+        GridLayout:
+            cols: 1
+
+            AnchorLayout:
+
+                Button:
+                    background_normal: './resources/Buttons/back_button_up.png'
+                    background_down: './resources/Buttons/back_button_down.png'
+                    border: 0,0,0,0
+                    size_hint: None, None
+                    size: root.width/8, root.width/8
+                    on_release:
+                        root.dismiss()
+<VocabQ>:
+    title: 'Vocabulary Question'
+    title_color: 0,0,0,1
+    size_hint: (None, None)
+    background: "./resources/Buttons/popup_bg.png"
+    border: 0,0,0,0
+
+    GridLayout:
+        cols: 1
+
+        GridLayout:
+            cols: 1
+
+            AnchorLayout:
+
+                Label:
+                    anchor: "center"
+                    size_hint: 1, 1
+                    text_size: self.width, None
+                    font_name: "jp_font"
+                    font_size: sp(16)
+                    text: root.question
+                    color: 0,0,0,
+            
+            AnchorLayout:
+
+                Label:
+                    anchor: "center"
+                    size_hint: 1, 1
+                    text_size: self.width, None
+                    font_name: "jp_font"
+                    font_size: sp(16)
+                    text: root.item
+                    color: 0,0,0,1
+        
+        GridLayout:
+            cols: 2
+
+            Label:
+                size_hint: 1, 1
+                text_size: self.width, None
+                font_name: "en_font"
+                font_size: sp(16)
+                text: "Your choice:"
+                color: 0,0,0,1
+            
+            AnchorLayout:
+
+                Label:
+                    anchor: "center"
+                    size_hint: 1, 1
+                    text_size: self.width, None
+                    font_name: "jp_font"
+                    font_size: sp(16)
+                    text: root.choice
+                    color: 0,0,0,1
+            
+            Label:
+                size_hint: 1, 1
+                text_size: self.width, None
+                font_name: "en_font"
+                font_size: sp(16)
+                text: "Correct answer:"
+                color: 0,0,0,1
+            
+            AnchorLayout:
+
+                Label:
+                    anchor: "center"
+                    size_hint: 1, 1
+                    text_size: self.width, None
+                    font_name: "jp_font"
+                    font_size: sp(16)
+                    text: root.key
+                    color: 0,0,0,1
+
+        GridLayout:
+            cols: 1
+
+            AnchorLayout:
+
+                Button:
+                    background_normal: './resources/Buttons/back_button_up.png'
+                    background_down: './resources/Buttons/back_button_down.png'
+                    border: 0,0,0,0
+                    size_hint: None, None
+                    size: root.width/8, root.width/8
+                    on_release:
+                        root.dismiss()
+
+<KanjiQ>:
+    title: 'Kanji Question'
+    title_color: 0,0,0,1
+    size_hint: (None, None)
+    background: "./resources/Buttons/popup_bg.png"
+    border: 0,0,0,0
+
+    GridLayout:
+        cols: 1
+
+        GridLayout:
+            cols: 1
+
+            GridLayout:
+                rows: 1
+
+                AnchorLayout:
+
+                    Label:
+                        size_hint: 1, 1
+                        text_size: self.width, None
+                        font_name: "jp_font"
+                        font_size: sp(16)
+                        text: root.question
+                        color: 0,0,0,1
+            
+            GridLayout:
+                rows: 1
+
+                AnchorLayout:
+
+                    Label:
+                        size_hint: 1, 1
+                        text_size: self.width, None
+                        font_name: "jp_font"
+                        font_size: sp(16)
+                        text: root.item
+                        color: 0,0,0,1
+        
+        GridLayout:
+            cols: 2
+
+            Label:
+                size_hint: 1, 1
+                text_size: self.width, None
+                font_name: "en_font"
+                font_size: sp(16)
+                text: "Your choice:"
+                color: 0,0,0,1
+            
+            GridLayout:
+                cols: 1
+
+                AnchorLayout:
+
+                    Label:
+                        size_hint: 1, 1
+                        text_size: self.width, None
+                        font_name: "jp_font"
+                        font_size: sp(16)
+                        text: root.choice
+                        color: 0,0,0,1
+            
+            Label:
+                size_hint: 1, 1
+                text_size: self.width, None
+                font_name: "en_font"
+                font_size: sp(16)
+                text: "Correct answer:"
+                color: 0,0,0,1
+            
+            GridLayout:
+                cols: 1
+
+                AnchorLayout:
+
+                    Label:
+                        size_hint: 1, 1
+                        text_size: self.width, None
+                        font_name: "jp_font"
+                        font_size: sp(16)
+                        text: root.key
+                        color: 0,0,0,1
+
+        GridLayout:
+            cols: 1
+
+            AnchorLayout:
+
+                Button:
+                    background_normal: './resources/Buttons/back_button_up.png'
+                    background_down: './resources/Buttons/back_button_down.png'
+                    border: 0,0,0,0
+                    size_hint: None, None
+                    size: root.width/8, root.width/8
+                    on_release:
+                        root.dismiss()

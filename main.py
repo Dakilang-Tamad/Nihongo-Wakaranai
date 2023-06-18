@@ -121,6 +121,76 @@ def retrieve_user_progress():
     retrieve_progress.start()
 
 
+class GrammarQ(Popup):
+    question = StringProperty()
+    choice = StringProperty()
+    key = StringProperty()
+
+    def on_pre_open(self):
+        w, h = Window.size
+        self.width = (w/20)*19
+        self.height = (h/10)*6
+        conn = sqlite3.connect("Quizzes.db")
+        choice = "C_" + (dh.answers[dh.pop_index]).upper()
+        key = "C_" + (dh.keys[dh.pop_index]).upper()
+
+        cursor = conn.execute("SELECT QUESTION, " + choice + ", " + key + " FROM " + dh.level + "_GRAMMAR WHERE ID = " + str(dh.current_id))
+
+        for i in cursor:
+            self.question = i[0]
+            self.choice = i[1]
+            self.key = i[2]
+
+
+class VocabQ(Popup):
+    question = StringProperty()
+    item = StringProperty()
+    choice = StringProperty()
+    key = StringProperty()
+
+    def on_pre_open(self):
+        w, h = Window.size
+        self.width = (w/20)*19
+        self.height = (h/10)*6
+        conn = sqlite3.connect("Quizzes.db")
+        choice = "C_" + (dh.answers[dh.pop_index]).upper()
+        key = "C_" + (dh.keys[dh.pop_index]).upper()
+
+        if dh.level == "N5":
+            cursor = conn.execute("SELECT WORD, " + choice + ", " + key + ", ITEM FROM " + dh.level + "_VOCAB WHERE ID = " + str(dh.current_id))
+        else:
+            cursor = conn.execute("SELECT SENTENCE, " + choice + ", " + key + ", KANJI FROM " + dh.level + "_VOCAB WHERE ID = " + str(dh.current_id))
+
+        for i in cursor:
+            self.question = i[0]
+            self.choice = i[1]
+            self.key = i[2]
+            self.item = i[3]
+
+
+class KanjiQ(Popup):
+    question = StringProperty()
+    item = StringProperty()
+    choice = StringProperty()
+    key = StringProperty()
+
+    def on_pre_open(self):
+        w, h = Window.size
+        self.width = (w/20)*19
+        self.height = (h/10)*6
+        conn = sqlite3.connect("Quizzes.db")
+        choice = "C_" + (dh.answers[dh.pop_index]).upper()
+        key = "C_" + (dh.keys[dh.pop_index]).upper()
+
+        cursor = conn.execute("SELECT QUESTION, " + choice + ", " + key + ", ITEM FROM " + dh.level + "_KANJI WHERE ID = " + str(dh.current_id))
+
+        for i in cursor:
+            self.question = i[0]
+            self.choice = i[1]
+            self.key = i[2]
+            self.item = i[3]
+
+
 class ValidationPop(Popup):
     pass
 
@@ -132,6 +202,7 @@ class ProfilePop(Popup):
     n3_prog = StringProperty()
     n2_prog = StringProperty()
     n1_prog = StringProperty()
+    level = StringProperty()
 
     def on_pre_open(self):
         data = dh.get_user()
@@ -141,6 +212,7 @@ class ProfilePop(Popup):
         self.n3_prog = data[3]
         self.n4_prog = data[4]
         self.n5_prog = data[5]
+        self.level = "Current Level: " + data[6]
     
     def logout(self):
         Thread(target=dh.log_out).start()
@@ -511,6 +583,38 @@ class HomeScreen(Screen):
 class DifficultySelection(Screen):
     level = dh.level
 
+    def initialize(self):
+        conn = sqlite3.connect("Quizzes.db")
+        levels = conn.execute("select level from OPEN_LEVELS").fetchall()
+        unlocked = []
+
+        for i in levels:
+            unlocked.append(i[0])
+        
+        if "N5" not in unlocked:
+            self.ids.n5.background_normal= 'resources/Buttons_2/N5_Locked.png'
+        else:
+            self.ids.n5.background_normal= 'resources/Buttons_2/N5.png'
+        if "N4" not in unlocked:
+            self.ids.n4.background_normal= 'resources/Buttons_2/N4_Locked.png'
+        else:
+            self.ids.n4.background_normal= 'resources/Buttons_2/N4.png'
+        if "N3" not in unlocked:
+            self.ids.n3.background_normal= 'resources/Buttons_2/N3_Locked.png'
+        else:
+            self.ids.n3.background_normal= 'resources/Buttons_2/N3.png'
+        if "N2" not in unlocked:
+            self.ids.n2.background_normal= 'resources/Buttons_2/N2_Locked.png'
+        else:
+            self.ids.n2.background_normal= 'resources/Buttons_2/N2.png'
+        if "N1" not in unlocked:
+            self.ids.n1.background_normal= 'resources/Buttons_2/N1_Locked.png'
+        else:
+            self.ids.n1.background_normal= 'resources/Buttons_2/N1.png'
+
+    def on_pre_enter(self, *args):
+        self.initialize()
+
     def start5(self):
         dh.level = "N5"
         if dh.check_level_access(dh.level):
@@ -604,6 +708,8 @@ class BookmarkedItems(Screen):
     level = StringProperty()
     button_up = './resources/Buttons/rec_1_up.png'
     button_down = './resources/Buttons/rec_1_down.png'
+    bm_up = './resources/Buttons/bm_1_up.png'
+    bm_down = './resources/Buttons/bm_1_down.png'
     back_up = './resources/Buttons/back_button_up.png'
     back_down = './resources/Buttons/back_button_down.png'
 
@@ -644,8 +750,8 @@ class BookmarkedItems(Screen):
         else:
             for i in contents:
                 button_text = i[1]
-                button = Button(text=button_text, font_name="jp_font", color=(0, 0, 0, 1),
-                                background_normal=self.button_up, background_down=self.button_down,
+                button = Button(text=button_text, font_name="jp_font", color=(0, 0, 0, 1), font_size= sp(20),
+                                background_normal=self.bm_up, background_down=self.bm_down,
                                 border=(0, 0, 0, 0))
                 button.bind(on_press=lambda x,
                             id=i[0], type=categ: self.popup(type, id))
@@ -680,6 +786,38 @@ class BookmarkedItems(Screen):
 
 class ContentsDiff(Screen):
 
+    def initialize(self):
+        conn = sqlite3.connect("Quizzes.db")
+        levels = conn.execute("select level from OPEN_LEVELS").fetchall()
+        unlocked = []
+
+        for i in levels:
+            unlocked.append(i[0])
+        
+        if "N5" not in unlocked:
+            self.ids.n5.background_normal= 'resources/Buttons_2/N5_Locked.png'
+        else:
+            self.ids.n5.background_normal= 'resources/Buttons_2/N5.png'
+        if "N4" not in unlocked:
+            self.ids.n4.background_normal= 'resources/Buttons_2/N4_Locked.png'
+        else:
+            self.ids.n4.background_normal= 'resources/Buttons_2/N4.png'
+        if "N3" not in unlocked:
+            self.ids.n3.background_normal= 'resources/Buttons_2/N3_Locked.png'
+        else:
+            self.ids.n3.background_normal= 'resources/Buttons_2/N3.png'
+        if "N2" not in unlocked:
+            self.ids.n2.background_normal= 'resources/Buttons_2/N2_Locked.png'
+        else:
+            self.ids.n2.background_normal= 'resources/Buttons_2/N2.png'
+        if "N1" not in unlocked:
+            self.ids.n1.background_normal= 'resources/Buttons_2/N1_Locked.png'
+        else:
+            self.ids.n1.background_normal= 'resources/Buttons_2/N1.png'
+
+    def on_pre_enter(self, *args):
+        self.initialize()
+        
     def cont5(self):
         dh.level = "N5"
         if dh.check_level_access(dh.level):
@@ -725,6 +863,8 @@ class Contents(Screen):
     level = StringProperty()
     button_up = './resources/Buttons/rec_1_up.png'
     button_down = './resources/Buttons/rec_1_down.png'
+    bm_up = './resources/Buttons/bm_1_up.png'
+    bm_down = './resources/Buttons/bm_1_down.png'
     back_up = './resources/Buttons/back_button_up.png'
     back_down = './resources/Buttons/back_button_down.png'
 
@@ -748,7 +888,7 @@ class Contents(Screen):
             query = "KANJI"
         conn = sqlite3.connect("Quizzes.db")
         cursor = conn.cursor()
-        retrieve_query = "select ID, " + query + " from " + table
+        retrieve_query = "select ID,  " + query + ", BOOKMARK from " + table
         cursor.execute(retrieve_query)
         contents = cursor.fetchall()
         if not contents:
@@ -762,8 +902,13 @@ class Contents(Screen):
         else:
             for i in contents:
                 button_text = i[1]
-                button = Button(text=button_text, font_name="jp_font", color=(0, 0, 0, 1),
+                if i[2] == 1:
+                    button = Button(text=button_text, font_name="jp_font", color=(0, 0, 0, 1), font_size= sp(20),
                                 background_normal=self.button_up, background_down=self.button_down,
+                                border=(0, 0, 0, 0))
+                else:
+                    button = Button(text=button_text, font_name="jp_font", color=(0, 0, 0, 1), font_size= sp(20),
+                                background_normal=self.bm_up, background_down=self.bm_down,
                                 border=(0, 0, 0, 0))
                 button.bind(on_press=lambda x,
                             id=i[0], type=categ: self.popup(type, id))
@@ -1225,7 +1370,7 @@ class EndQuizz(Screen):
                                     border=(0, 0, 0, 0),
                                     size_hint=(None, None), width=grid_width * 0.2, height=grid_layout.height * 0.8)
                     question.bind(
-                        on_release=lambda x, id=dh.contents[i], type="grammar": self.popup(type, id))
+                        on_release=lambda x, id=dh.contents[i], index = i, type="grammar": self.question_pop(type, id, index))
                     item_anchor.add_widget(item)
                     question_anchor.add_widget(question)
             if i in (1, 4, 7):
@@ -1246,7 +1391,7 @@ class EndQuizz(Screen):
                                     border=(0, 0, 0, 0),
                                     size_hint=(None, None), width=grid_width * 0.2, height=grid_layout.height * 0.8)
                     question.bind(
-                        on_release=lambda x, id=dh.contents[i], type="vocab": self.popup(type, id))
+                        on_release=lambda x, id=dh.contents[i], index = i,type="vocab": self.question_pop(type, id, index))
                     item_anchor.add_widget(item)
                     question_anchor.add_widget(question)
             if i in (2, 5, 8):
@@ -1267,7 +1412,7 @@ class EndQuizz(Screen):
                                     border=(0, 0, 0, 0),
                                     size_hint=(None, None), width=grid_width * 0.2, height=grid_layout.height * 0.8)
                     question.bind(
-                        on_release=lambda x, id=dh.contents[i], type="kanji": self.popup(type, id))
+                        on_release=lambda x, id=dh.contents[i], index = i, type="kanji": self.question_pop(type, id, index))
                     item_anchor.add_widget(item)
                     question_anchor.add_widget(question)
         conn.close()
@@ -1292,6 +1437,20 @@ class EndQuizz(Screen):
                 pop.open()
         if type == "kanji":
             pop = KanjiPop()
+            pop.open()
+    
+    def question_pop(self, type, id, index):
+        dh.current_id = id
+        dh.pop_index = index
+        print(dh.pop_index)
+        if type == "grammar":
+            pop = GrammarQ()
+            pop.open()
+        if type == "vocab":
+                pop = VocabQ()
+                pop.open()
+        if type == "kanji":
+            pop = KanjiQ()
             pop.open()
     
     def update_background(self, instance, value):
