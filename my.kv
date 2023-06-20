@@ -22,6 +22,7 @@ WindowManager:
     VocabItem:
     KanjiItem:
     EndQuizz:
+    Entry:
 
 <Dummy>:
     name: "dummy"
@@ -183,7 +184,7 @@ WindowManager:
         GridLayout:
             size_hint_y: None
             height: root.height / 12
-            cols: 4
+            cols: 5
             canvas.before:
                 Color:
                     rgba: hex('#80CFFF')
@@ -209,7 +210,7 @@ WindowManager:
             
             AnchorLayout:
                 size_hint_x: None
-                width: root.width/4
+                width: root.width/10
 
             AnchorLayout:
                 size_hint_x: None
@@ -223,6 +224,19 @@ WindowManager:
                     border: 0,0,0,0
                     on_release:
                         root.open_profile()
+            
+            AnchorLayout:
+                size_hint_x: None
+                width: root.width/6
+                Button:
+                    size_hint: None, None
+                    size: (root.width/10), (root.width/10)
+                    allow_stretch: "False"
+                    background_normal: './resources/Buttons_2/logout.png'
+                    border: 0,0,0,0
+                    on_release:
+                        root.raise_logout()
+        
         GridLayout:
             cols: 1
 
@@ -241,6 +255,19 @@ WindowManager:
                     on_release:
                         root.manager.current = "contents_diff"
                         root.manager.transition.direction = "left"
+            
+            AnchorLayout:
+
+                Button:
+                    size_hint: None, None
+                    size: (root.width/10)*3, (root.width/10)*3
+                    allow_stretch: "False"
+                    background_normal: './resources/Buttons/bookmarks_up.png'
+                    background_down: './resources/Buttons/bookmarks_down.png'
+                    border: 0,0,0,0
+                    on_release:
+                        root.manager.current = "bookd"
+                        root.manager.transition.direction = "left"
 
 
             AnchorLayout:
@@ -255,6 +282,7 @@ WindowManager:
                     on_release:
                         root.manager.current = "diff"
                         root.manager.transition.direction = "left"
+
 
             GridLayout:
                 cols: 1
@@ -430,18 +458,19 @@ WindowManager:
             AnchorLayout:
 
                 GridLayout:
-                    cols: 2
+                    cols: 1
                     anchor: "center"
-                    size: (root.width/30)*29, (root.width/30)*29
+                    size: (root.width/30)*29, root.height * 0.8
 
                     AnchorLayout:
 
                         Button:
+                            id: n5
                             size_hint: None, None
-                            size: (root.width/10)*3, (root.width/10)*3
+                            size: (root.width/30)*29, root.height * 0.1
                             allow_stretch: "False"
-                            background_normal: './resources/Buttons/n5_up.png'
-                            background_down: './resources/Buttons/n5_down.png'
+                            background_normal: './resources/Buttons_2/N5.png'
+                            background_down: './resources/Buttons_2/N5_down.png'
                             border: 0,0,0,0
                             on_release:
                                 root.book5()
@@ -450,11 +479,12 @@ WindowManager:
                     AnchorLayout:
 
                         Button:
+                            id: n4
                             size_hint: None, None
-                            size: (root.width/10)*3, (root.width/10)*3
+                            size: (root.width/30)*29, root.height * 0.1
                             allow_stretch: "False"
-                            background_normal: './resources/Buttons/n4_up.png'
-                            background_down: './resources/Buttons/n4_down.png'
+                            background_normal: './resources/Buttons_2/N4.png'
+                            background_down: './resources/Buttons_2/N4_down.png'
                             border: 0,0,0,0
                             on_release:
                                 root.book4()
@@ -463,11 +493,12 @@ WindowManager:
                     AnchorLayout:
 
                         Button:
+                            id: n3
                             size_hint: None, None
-                            size: (root.width/10)*3, (root.width/10)*3
+                            size: (root.width/30)*29, root.height * 0.1
                             allow_stretch: "False"
-                            background_normal: './resources/Buttons/n3_up.png'
-                            background_down: './resources/Buttons/n3_down.png'
+                            background_normal: './resources/Buttons_2/N3.png'
+                            background_down: './resources/Buttons_2/N3_down.png'
                             border: 0,0,0,0
                             on_release:
                                 root.book3()
@@ -476,32 +507,30 @@ WindowManager:
                     AnchorLayout:
 
                         Button:
+                            id: n2
                             size_hint: None, None
-                            size: (root.width/10)*3, (root.width/10)*3
+                            size: (root.width/30)*29, root.height * 0.1
                             allow_stretch: "False"
-                            background_normal: './resources/Buttons/n2_up.png'
-                            background_down: './resources/Buttons/n2_down.png'
+                            background_normal: './resources/Buttons_2/N2.png'
+                            background_down: './resources/Buttons_2/N2_down.png'
                             border: 0,0,0,0
                             on_release:
                                 root.book2()
                                 root.manager.transition.direction = "left"
 
+                    AnchorLayout:
 
-            AnchorLayout:
-                size_hint_y: None
-                height: root.height/4
-
-                Button:
-                    anchor_y: "top"
-                    size_hint: None, None
-                    size: (root.width/10)*3, (root.width/10)*3
-                    allow_stretch: "False"
-                    background_normal: './resources/Buttons/n1_up.png'
-                    background_down: './resources/Buttons/n1_down.png'
-                    border: 0,0,0,0
-                    on_release:
-                        root.book1()
-                        root.manager.transition.direction = "left"
+                        Button:
+                            id: n1
+                            size_hint: None, None
+                            size: (root.width/30)*29, root.height * 0.1
+                            allow_stretch: "False"
+                            background_normal: './resources/Buttons_2/N1.png'
+                            background_down: './resources/Buttons_2/N1_down.png'
+                            border: 0,0,0,0
+                            on_release:
+                                root.book1()
+                                root.manager.transition.direction = "left"
 
             AnchorLayout:
                 size_hint_y: None
@@ -643,7 +672,7 @@ WindowManager:
                     allow_stretch: "False"
                     border: 0,0,0,0
                     on_release:
-                        app.root.current = "contents_diff"
+                        app.root.current = "bookd"
                         root.manager.transition.direction = "right"
             
             AnchorLayout:
@@ -1250,6 +1279,7 @@ WindowManager:
             height: root.height/13
             text: root.label
             font_name: "en_font"
+            font_size: sp(20)
             color: 0,0,0,1
             canvas.before:
                 Color:
@@ -1266,6 +1296,7 @@ WindowManager:
                 size_hint: .6, 1
                 text_size: (self.width/10)*9, None
                 font_name: "jp_font"
+                font_size: sp(20)
                 text: root.sentence
                 color: 0, 0, 0, 1
 
@@ -1281,6 +1312,7 @@ WindowManager:
 
             Label:
                 font_name: "jp_font"
+                font_size: sp(20)
                 text: root.kanji
                 color: 0, 0, 0, 1
 
@@ -1476,6 +1508,71 @@ WindowManager:
                         app.root.current = "diff"
                         root.manager.transition.direction = "right"
 
+<Entry>:
+    name: "entry"
+
+    GridLayout:
+        cols: 1
+
+        GridLayout:
+            cols: 1
+            size_hint: None, None
+            height: root.height/10
+
+        GridLayout:
+            cols: 3
+
+            GridLayout:
+                cols: 1
+                size_hint: None, None
+                width: root.width/8
+
+            GridLayout:
+                cols: 1
+
+                Label:
+                    text: root.message
+                    font_name: "en_font"
+                    font_size: sp(16)
+                    color: 0,0,0,1
+                    size_hint_y: None
+                    height: self.texture_size[1]
+                    text_size: self.width, None
+                    halign: 'center'
+
+            GridLayout:
+                cols: 1
+                size_hint: None, None
+                width: root.width/8
+        
+        GridLayout:
+            cols: 3
+            size_hint_y: None
+            height: root.height/8
+
+            GridLayout:
+                cols: 1
+
+            
+            GridLayout:
+                cols: 1
+
+                Button:
+                    size_hint: None, None
+                    height: root.height/10
+                    width: root.width/3
+                    text: "Start"
+                    font_name: "en_font"
+                    font_size: sp(18)
+                    color: 0,0,0,1
+                    background_normal: './resources/Buttons/rec_4_up.png'
+                    background_down: './resources/Buttons/rec_4_down.png'
+                    border: 0,0,0,0
+                    on_release:
+                        root.manager.current = "grammari"
+            
+            GridLayout:
+                cols: 1
 
 
 <GrammarPop>:
@@ -1526,6 +1623,12 @@ WindowManager:
             font_size: sp(16)
             text: root.prog
             color: 0,0,0,1
+        
+        GridLayout:
+            id: nav
+            cols: 2
+            size_hint_y: None
+            height: root.height/5
 
         GridLayout:
             cols: 3
@@ -1534,7 +1637,6 @@ WindowManager:
 
                 Button:
                     background_normal: root.bm_up
-                    background_down: root.bm_down
                     border: 0,0,0,0
                     size_hint: None, None
                     size: root.width/8, root.width/8
@@ -1544,8 +1646,8 @@ WindowManager:
             AnchorLayout:
 
                 Button:
-                    background_normal: './resources/Buttons/tts_up.png'
-                    background_down: './resources/Buttons/tts_down.png'
+                    background_normal: './resources/Buttons_2/TTS_Up.png'
+                    background_down: './resources/Buttons_2/TTS_Down.png'
                     border: 0,0,0,0
                     size_hint: None, None
                     size: root.width/8, root.width/8
@@ -1621,6 +1723,12 @@ WindowManager:
             font_size: sp(16)
             text: root.prog
             color: 0,0,0,1
+        
+        GridLayout:
+            id: nav
+            cols: 2
+            size_hint_y: None
+            height: root.height/5
 
         GridLayout:
             cols: 3
@@ -1629,7 +1737,6 @@ WindowManager:
 
                 Button:
                     background_normal: root.bm_up
-                    background_down: root.bm_down
                     border: 0,0,0,0
                     size_hint: None, None
                     size: root.width/8, root.width/8
@@ -1639,8 +1746,8 @@ WindowManager:
             AnchorLayout:
 
                 Button:
-                    background_normal: './resources/Buttons/tts_up.png'
-                    background_down: './resources/Buttons/tts_down.png'
+                    background_normal: './resources/Buttons_2/TTS_Up.png'
+                    background_down: './resources/Buttons_2/TTS_Down.png'
                     border: 0,0,0,0
                     size_hint: None, None
                     size: root.width/8, root.width/8
@@ -1731,6 +1838,12 @@ WindowManager:
             font_size: sp(16)
             text: root.prog
             color: 0,0,0,1
+        
+        GridLayout:
+            id: nav
+            cols: 2
+            size_hint_y: None
+            height: root.height/5
 
         GridLayout:
             cols: 3
@@ -1739,7 +1852,6 @@ WindowManager:
 
                 Button:
                     background_normal: root.bm_up
-                    background_down: root.bm_down
                     border: 0,0,0,0
                     size_hint: None, None
                     size: root.width/8, root.width/8
@@ -1749,8 +1861,8 @@ WindowManager:
             AnchorLayout:
 
                 Button:
-                    background_normal: './resources/Buttons/tts_up.png'
-                    background_down: './resources/Buttons/tts_down.png'
+                    background_normal: './resources/Buttons_2/TTS_Up.png'
+                    background_down: './resources/Buttons_2/TTS_Down.png'
                     border: 0,0,0,0
                     size_hint: None, None
                     size: root.width/8, root.width/8
@@ -1826,6 +1938,12 @@ WindowManager:
             font_size: sp(16)
             text: root.prog
             color: 0,0,0,1
+        
+        GridLayout:
+            id: nav
+            cols: 2
+            size_hint_y: None
+            height: root.height/5
 
         GridLayout:
             cols: 3
@@ -1834,7 +1952,6 @@ WindowManager:
 
                 Button:
                     background_normal: root.bm_up
-                    background_down: root.bm_down
                     border: 0,0,0,0
                     size_hint: None, None
                     size: root.width/8, root.width/8
@@ -1844,8 +1961,8 @@ WindowManager:
             AnchorLayout:
 
                 Button:
-                    background_normal: './resources/Buttons/tts_up.png'
-                    background_down: './resources/Buttons/tts_down.png'
+                    background_normal: './resources/Buttons_2/TTS_Up.png'
+                    background_down: './resources/Buttons_2/TTS_Down.png'
                     border: 0,0,0,0
                     size_hint: None, None
                     size: root.width/8, root.width/8
@@ -2092,6 +2209,50 @@ WindowManager:
             Button:
                 text: "No"
                 font_name: "en_font"
+                color: 0,0,0,1
+                background_normal: './resources/Buttons/rec_4_up.png'
+                background_down: './resources/Buttons/rec_4_down.png'
+                border: 0,0,0,0
+                on_release:
+                    root.dismiss()
+
+<LogoutPop>:
+
+    title: "Alert"
+    title_color: 0,0,0,1
+    size_hint: (None, None)
+    background: "./resources/Buttons/popup_bg.png"
+    border: 0,0,0,0
+
+    GridLayout:
+        cols: 1
+
+        Label:
+            font_name: "en_font"
+            text: "Are you sure you want\nto log out??"
+            color: 0,0,0,1
+
+        GridLayout:
+            cols: 2
+            size_hint_y: None
+            height: root.height/10
+            spacing: root.width/20
+
+            Button:
+                text: "Yes"
+                font_name: "en_font"
+                font_size: sp(16)
+                color: 0,0,0,1
+                background_normal: './resources/Buttons/rec_4_up.png'
+                background_down: './resources/Buttons/rec_4_down.png'
+                border: 0,0,0,0
+                on_release:
+                    root.logout()
+
+            Button:
+                text: "No"
+                font_name: "en_font"
+                font_size: sp(16)
                 color: 0,0,0,1
                 background_normal: './resources/Buttons/rec_4_up.png'
                 background_down: './resources/Buttons/rec_4_down.png'

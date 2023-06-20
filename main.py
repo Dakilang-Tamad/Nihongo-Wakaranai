@@ -14,6 +14,7 @@ from kivy.core.image import Image as CoreImage
 from kivy.uix.popup import Popup
 from kivy.uix.gridlayout import GridLayout
 from kivy.uix.anchorlayout import AnchorLayout
+from kivy.properties import BooleanProperty
 from kivy.core.window import Window
 from kivy.clock import Clock
 from kivy.metrics import sp
@@ -30,6 +31,9 @@ import ssl
 # PythonActivity = autoclass('org.kivy.android.PythonActivity')
 # TextToSpeech = autoclass('android.speech.tts.TextToSpeech')
 # tts = TextToSpeech(PythonActivity.mActivity, None)
+
+class CustomButton(Button):
+    bookmarked = BooleanProperty(False)
 
 
 def connected():
@@ -119,6 +123,19 @@ def retrieve_user_progress():
     t_list = cursor.execute("""SELECT table_name FROM USER;""").fetchall()
     retrieve_progress = Thread(target = dh.retrieve_progress, args = t_list[0])
     retrieve_progress.start()
+
+
+class LogoutPop(Popup):
+    def on_pre_open(self):
+        w, h = Window.size
+        self.width = w*0.8
+        self.height = h/3
+
+    def logout(self):
+        Thread(target=dh.log_out).start()
+        dh.first_screen = "signup"
+        MDApp.get_running_app().root.current = "signup"
+        self.dismiss()
 
 
 class GrammarQ(Popup):
@@ -298,8 +315,7 @@ class GrammarPop(Popup):
     bm_down = StringProperty()
     prog = StringProperty()
 
-
-    def on_pre_open(self):
+    def initialize(self):
         w, h = Window.size
         self.width = (w/20)*19
         self.height = (h/10)*6
@@ -317,14 +333,46 @@ class GrammarPop(Popup):
             self.prog = "Progress: " + str(i[4]) + "/5"
         conn.close()
 
+        back_anchor = AnchorLayout(anchor_x='center', anchor_y='center')
+        next_anchor = AnchorLayout(anchor_x='center', anchor_y='center')
+
+        self.ids.nav.add_widget(back_anchor)
+        self.ids.nav.add_widget(next_anchor)
+
+        if dh.pop_source != "review":
+            if dh.current_id != 1:
+                back = Button(background_normal='./resources/Buttons_2/BackButtonNew.png',
+                                        border=(0, 0, 0, 0),
+                                        size_hint=(None, None), width=self.width/7, height=self.width/7)
+                back.bind(on_release=self.prev)
+                back_anchor.add_widget(back)
+            if dh.current_id != 50:
+                next = Button(background_normal='./resources/Buttons_2/NextButtonNew.png',
+                                        border=(0, 0, 0, 0),
+                                        size_hint=(None, None), width=self.width/7, height=self.width/7)
+                next.bind(on_release=self.next)
+                next_anchor.add_widget(next)
+        else: pass
+
+    def on_pre_open(self):
+        self.initialize()
+    
+    def prev(self, *args):
+        dh.current_id -= 1
+        self.ids.nav.clear_widgets()
+        self.initialize()
+
+    def next(self, *args):
+        dh.current_id += 1
+        self.ids.nav.clear_widgets()
+        self.initialize()
+
     def update(self):
         level = dh.level + "_GRAMMAR"
         if update_status(level):
-            self.bm_up = "./resources/Buttons/bookmarked_up.png"
-            self.bm_down = "./resources/Buttons/bookmarked_down.png"
+            self.bm_up = "./resources/Buttons_2/Bookmark_Clicked.png"
         else:
-            self.bm_up = "./resources/Buttons/add_bookmark_up.png"
-            self.bm_down = "./resources/Buttons/add_bookmark_down.png"
+            self.bm_up = "./resources/Buttons_2/Bookmark_Def.png"
 
     def bookmark(self):
         level = dh.level + "_GRAMMAR"
@@ -347,7 +395,7 @@ class VocabPop1(Popup):
     bm_down = StringProperty()
     prog = StringProperty()
 
-    def on_pre_open(self):
+    def initialize(self):
         w, h = Window.size
         self.width = (w / 20) * 19
         self.height = (h / 10) * 6
@@ -366,14 +414,47 @@ class VocabPop1(Popup):
             self.prog = "Progress: " + str(i[5]) + "/5"
         conn.close()
 
+        back_anchor = AnchorLayout(anchor_x='center', anchor_y='center')
+        next_anchor = AnchorLayout(anchor_x='center', anchor_y='center')
+
+        self.ids.nav.add_widget(back_anchor)
+        self.ids.nav.add_widget(next_anchor)
+
+
+        if dh.pop_source != "review":
+            if dh.current_id != 1:
+                back = Button(background_normal='./resources/Buttons_2/BackButtonNew.png',
+                                        border=(0, 0, 0, 0),
+                                        size_hint=(None, None), width=self.width/7, height=self.width/7)
+                back.bind(on_release=self.prev)
+                back_anchor.add_widget(back)
+            if dh.current_id != 25:
+                next = Button(background_normal='./resources/Buttons_2/NextButtonNew.png',
+                                        border=(0, 0, 0, 0),
+                                        size_hint=(None, None), width=self.width/7, height=self.width/7)
+                next.bind(on_release=self.next)
+                next_anchor.add_widget(next)
+        else: pass
+    
+    def prev(self, *args):
+        dh.current_id -= 1
+        self.ids.nav.clear_widgets()
+        self.initialize()
+
+    def next(self, *args):
+        dh.current_id += 1
+        self.ids.nav.clear_widgets()
+        self.initialize()
+
+    def on_pre_open(self):
+        self.initialize()
+
     def update(self):
         level = dh.level + "_VOCAB"
         if update_status(level):
-            self.bm_up = "./resources/Buttons/bookmarked_up.png"
-            self.bm_down = "./resources/Buttons/bookmarked_down.png"
+            self.bm_up = "./resources/Buttons_2/Bookmark_Clicked.png"
         else:
-            self.bm_up = "./resources/Buttons/add_bookmark_up.png"
-            self.bm_down = "./resources/Buttons/add_bookmark_down.png"
+            self.bm_up = "./resources/Buttons_2/Bookmark_Def.png"
 
     def bookmark(self):
         level = dh.level + "_VOCAB"
@@ -397,7 +478,7 @@ class VocabPop2(Popup):
     bm_down = StringProperty()
     prog = StringProperty()
 
-    def on_pre_open(self):
+    def initialize(self):
         w, h = Window.size
         self.width = (w / 20) * 19
         self.height = (h / 10) * 6
@@ -417,14 +498,47 @@ class VocabPop2(Popup):
             self.prog = "Progress: " + str(i[6]) + "/5"
         conn.close()
 
+        back_anchor = AnchorLayout(anchor_x='center', anchor_y='center')
+        next_anchor = AnchorLayout(anchor_x='center', anchor_y='center')
+
+        self.ids.nav.add_widget(back_anchor)
+        self.ids.nav.add_widget(next_anchor)
+
+        if dh.pop_source != "review":
+            if dh.current_id != 1:
+                back = Button(background_normal='./resources/Buttons_2/BackButtonNew.png',
+                                        border=(0, 0, 0, 0),
+                                        size_hint=(None, None), width=self.width/7, height=self.width/7)
+                back.bind(on_release=self.prev)
+                back_anchor.add_widget(back)
+            if dh.current_id != 25:
+                next = Button(background_normal='./resources/Buttons_2/NextButtonNew.png',
+                                        border=(0, 0, 0, 0),
+                                        size_hint=(None, None), width=self.width/7, height=self.width/7)
+                next.bind(on_release=self.next)
+                next_anchor.add_widget(next)
+        else: pass
+
+    def on_pre_open(self):
+        self.initialize()
+    
+    def prev(self, *args):
+        dh.current_id -= 1
+        self.ids.nav.clear_widgets()
+        self.initialize()
+
+    def next(self, *args):
+        dh.current_id += 1
+        self.ids.nav.clear_widgets()
+        self.initialize()
+        
+
     def update(self):
         level = dh.level + "_VOCAB"
         if update_status(level):
-            self.bm_up = "./resources/Buttons/bookmarked_up.png"
-            self.bm_down = "./resources/Buttons/bookmarked_down.png"
+            self.bm_up = "./resources/Buttons_2/Bookmark_Clicked.png"
         else:
-            self.bm_up = "./resources/Buttons/add_bookmark_up.png"
-            self.bm_down = "./resources/Buttons/add_bookmark_down.png"
+            self.bm_up = "./resources/Buttons_2/Bookmark_Def.png"
 
     def bookmark(self):
         level = dh.level + "_VOCAB"
@@ -447,7 +561,7 @@ class KanjiPop(Popup):
     bm_down = StringProperty()
     prog = StringProperty()
 
-    def on_pre_open(self):
+    def initialize(self):
         w, h = Window.size
         self.width = (w / 20) * 19
         self.height = (h / 10) * 6
@@ -466,14 +580,47 @@ class KanjiPop(Popup):
             self.prog = "Progress: " + str(i[6]) + "/5"
         conn.close()
 
+        back_anchor = AnchorLayout(anchor_x='center', anchor_y='center')
+        next_anchor = AnchorLayout(anchor_x='center', anchor_y='center')
+
+        self.ids.nav.add_widget(back_anchor)
+        self.ids.nav.add_widget(next_anchor)
+
+        if dh.pop_source != "review":
+            if dh.current_id != 1:
+                back = Button(background_normal='./resources/Buttons_2/BackButtonNew.png',
+                                        border=(0, 0, 0, 0),
+                                        size_hint=(None, None), width=self.width/7, height=self.width/7)
+                back.bind(on_release=self.prev)
+                back_anchor.add_widget(back)
+            if dh.current_id != 25:
+                next = Button(background_normal='./resources/Buttons_2/NextButtonNew.png',
+                                        border=(0, 0, 0, 0),
+                                        size_hint=(None, None), width=self.width/7, height=self.width/7)
+                next.bind(on_release=self.next)
+                next_anchor.add_widget(next)
+        else: pass
+
+    def on_pre_open(self):
+        self.initialize()
+    
+    def prev(self, *args):
+        dh.current_id -= 1
+        self.ids.nav.clear_widgets()
+        self.initialize()
+
+    def next(self, *args):
+        dh.current_id += 1
+        self.ids.nav.clear_widgets()
+        self.initialize()
+        
+
     def update(self):
         level = dh.level + "_KANJI"
         if update_status(level):
-            self.bm_up = "./resources/Buttons/bookmarked_up.png"
-            self.bm_down = "./resources/Buttons/bookmarked_down.png"
+            self.bm_up = "./resources/Buttons_2/Bookmark_Clicked.png"
         else:
-            self.bm_up = "./resources/Buttons/add_bookmark_up.png"
-            self.bm_down = "./resources/Buttons/add_bookmark_down.png"
+            self.bm_up = "./resources/Buttons_2/Bookmark_Def.png"
 
     def bookmark(self):
         level = dh.level + "_KANJI"
@@ -513,7 +660,7 @@ class Signup(Screen):
                         self.new_acc.start()
                         dh.level = dh.difficulties[dh.index]
                         new_contents()
-                        self.manager.current = "grammari"
+                        self.manager.current = "entry"
                     else:
                         dh.error = 15
                         NoticePop().open()
@@ -578,6 +725,9 @@ class HomeScreen(Screen):
 
     def open_profile(self):
         ProfilePop().open()
+    
+    def raise_logout(self):
+        LogoutPop().open()
 
 
 class DifficultySelection(Screen):
@@ -593,24 +743,14 @@ class DifficultySelection(Screen):
         
         if "N5" not in unlocked:
             self.ids.n5.background_normal= 'resources/Buttons_2/N5_Locked.png'
-        else:
-            self.ids.n5.background_normal= 'resources/Buttons_2/N5.png'
         if "N4" not in unlocked:
             self.ids.n4.background_normal= 'resources/Buttons_2/N4_Locked.png'
-        else:
-            self.ids.n4.background_normal= 'resources/Buttons_2/N4.png'
         if "N3" not in unlocked:
             self.ids.n3.background_normal= 'resources/Buttons_2/N3_Locked.png'
-        else:
-            self.ids.n3.background_normal= 'resources/Buttons_2/N3.png'
         if "N2" not in unlocked:
             self.ids.n2.background_normal= 'resources/Buttons_2/N2_Locked.png'
-        else:
-            self.ids.n2.background_normal= 'resources/Buttons_2/N2.png'
         if "N1" not in unlocked:
             self.ids.n1.background_normal= 'resources/Buttons_2/N1_Locked.png'
-        else:
-            self.ids.n1.background_normal= 'resources/Buttons_2/N1.png'
 
     def on_pre_enter(self, *args):
         self.initialize()
@@ -663,6 +803,29 @@ class DifficultySelection(Screen):
 
 class BookmarkDifficulty(Screen):
 
+    def initialize(self):
+        conn = sqlite3.connect("Quizzes.db")
+        levels = conn.execute("select level from OPEN_LEVELS").fetchall()
+        unlocked = []
+
+        for i in levels:
+            unlocked.append(i[0])
+        
+        if "N5" not in unlocked:
+            self.ids.n5.background_normal= 'resources/Buttons_2/N5_Locked.png'
+        if "N4" not in unlocked:
+            self.ids.n4.background_normal= 'resources/Buttons_2/N4_Locked.png'
+        if "N3" not in unlocked:
+            self.ids.n3.background_normal= 'resources/Buttons_2/N3_Locked.png'
+        if "N2" not in unlocked:
+            self.ids.n2.background_normal= 'resources/Buttons_2/N2_Locked.png'
+        if "N1" not in unlocked:
+            self.ids.n1.background_normal= 'resources/Buttons_2/N1_Locked.png'
+
+
+    def on_pre_enter(self, *args):
+        self.initialize()
+
     def book5(self):
         dh.level = "N5"
         if dh.check_level_access(dh.level):
@@ -712,6 +875,7 @@ class BookmarkedItems(Screen):
     bm_down = './resources/Buttons/bm_1_down.png'
     back_up = './resources/Buttons/back_button_up.png'
     back_down = './resources/Buttons/back_button_down.png'
+    buttons = []
 
     def on_pre_enter(self, *args):
         self.level = dh.level + " BOOKMARKS"
@@ -796,24 +960,15 @@ class ContentsDiff(Screen):
         
         if "N5" not in unlocked:
             self.ids.n5.background_normal= 'resources/Buttons_2/N5_Locked.png'
-        else:
-            self.ids.n5.background_normal= 'resources/Buttons_2/N5.png'
         if "N4" not in unlocked:
             self.ids.n4.background_normal= 'resources/Buttons_2/N4_Locked.png'
-        else:
-            self.ids.n4.background_normal= 'resources/Buttons_2/N4.png'
         if "N3" not in unlocked:
             self.ids.n3.background_normal= 'resources/Buttons_2/N3_Locked.png'
-        else:
-            self.ids.n3.background_normal= 'resources/Buttons_2/N3.png'
         if "N2" not in unlocked:
             self.ids.n2.background_normal= 'resources/Buttons_2/N2_Locked.png'
-        else:
-            self.ids.n2.background_normal= 'resources/Buttons_2/N2.png'
         if "N1" not in unlocked:
             self.ids.n1.background_normal= 'resources/Buttons_2/N1_Locked.png'
-        else:
-            self.ids.n1.background_normal= 'resources/Buttons_2/N1.png'
+
 
     def on_pre_enter(self, *args):
         self.initialize()
@@ -867,6 +1022,7 @@ class Contents(Screen):
     bm_down = './resources/Buttons/bm_1_down.png'
     back_up = './resources/Buttons/back_button_up.png'
     back_down = './resources/Buttons/back_button_down.png'
+    buttons = []
 
     def on_pre_enter(self, *args):
         self.level = dh.level + " CONTENTS"
@@ -903,21 +1059,35 @@ class Contents(Screen):
             for i in contents:
                 button_text = i[1]
                 if i[2] == 1:
-                    button = Button(text=button_text, font_name="jp_font", color=(0, 0, 0, 1), font_size= sp(20),
-                                background_normal=self.button_up, background_down=self.button_down,
+                    button = CustomButton(text=button_text, font_name="jp_font", color=(0, 0, 0, 1), font_size= sp(20),
+                                background_normal=self.button_up, background_down=self.button_down, bookmarked = False,
                                 border=(0, 0, 0, 0))
                 else:
-                    button = Button(text=button_text, font_name="jp_font", color=(0, 0, 0, 1), font_size= sp(20),
-                                background_normal=self.bm_up, background_down=self.bm_down,
+                    button = CustomButton(text=button_text, font_name="jp_font", color=(0, 0, 0, 1), font_size= sp(20),
+                                background_normal=self.bm_up, background_down=self.bm_down, bookmarked = True,
                                 border=(0, 0, 0, 0))
                 button.bind(on_press=lambda x,
                             id=i[0], type=categ: self.popup(type, id))
+                button.bind(on_release=lambda x, button=button: self.change_color(button))
+                self.buttons.append(button)
                 if categ == "GRAMMAR":
                     self.ids.grammar_tab.add_widget(button)
                 if categ == "VOCAB":
                     self.ids.vocab_tab.add_widget(button)
                 if categ == "KANJI":
                     self.ids.kanji_tab.add_widget(button)
+    
+    def change_color(self, current_button):
+        if current_button.bookmarked:
+            current_button.background_normal = 'resources/Buttons/rec_3_up.png'
+        else:
+            current_button.background_normal = 'resources/Buttons/rec_3_up.png'
+        for button in self.buttons:
+            if button.text != current_button.text:
+                if button.bookmarked:
+                    button.background_normal = 'resources/Buttons/bm_1_up.png'
+                else:
+                    button.background_normal = 'resources/Buttons/rec_1_up.png'
 
     def on_leave(self, *args):
         self.ids.grammar_tab.clear_widgets()
@@ -1337,10 +1507,10 @@ class EndQuizz(Screen):
             if dh.keys[i] == dh.answers[i]:
                 dh.score += 1
                 image = Image(source='./resources/Buttons_2/CorrectButton.png', size_hint=(None, None),
-                              width=grid_layout.height * 0.6, height=grid_layout.height * 0.6)
+                              width=grid_layout.height * 0.7, height=grid_layout.height * 0.7)
             else:
                 image = Image(source='./resources/Buttons_2/WrongButton.png', size_hint=(None, None),
-                              width=grid_layout.height * 0.6, height=grid_layout.height * 0.6)
+                              width=grid_layout.height * 0.7, height=grid_layout.height * 0.7)
             
             image_anchor.add_widget(image)
 
@@ -1361,12 +1531,12 @@ class EndQuizz(Screen):
                     button_text = j[0]
                     label = Label(text=button_text, font_name="jp_font", color=(0, 0, 0, 1), font_size=sp(20))
                     anchor1.add_widget(label)
-                    item = Button(background_normal='./resources/Buttons_2/ViewItem.png',
+                    item = Button(background_normal='./resources/Buttons_2/New_ViewItem.png',
                                     border=(0, 0, 0, 0),
                                     size_hint=(None, None), width=grid_width * 0.2, height=grid_layout.height * 0.8)
                     item.bind(
                         on_release=lambda x, id=dh.contents[i], type="grammar": self.popup(type, id))
-                    question = Button(background_normal='./resources/Buttons_2/ViewQuestion.png',
+                    question = Button(background_normal='./resources/Buttons_2/New_ViewQuestion.png',
                                     border=(0, 0, 0, 0),
                                     size_hint=(None, None), width=grid_width * 0.2, height=grid_layout.height * 0.8)
                     question.bind(
@@ -1382,12 +1552,12 @@ class EndQuizz(Screen):
                     button_text = j[0]
                     label = Label(text=button_text, font_name="jp_font", color=(0, 0, 0, 1), font_size=sp(20))
                     anchor1.add_widget(label)
-                    item = Button(background_normal='./resources/Buttons_2/ViewItem.png',
+                    item = Button(background_normal='./resources/Buttons_2/New_ViewItem.png',
                                     border=(0, 0, 0, 0),
                                     size_hint=(None, None), width=grid_width * 0.2, height=grid_layout.height * 0.8)
                     item.bind(
                         on_release=lambda x, id=dh.contents[i], type="vocab": self.popup(type, id))
-                    question = Button(background_normal='./resources/Buttons_2/ViewQuestion.png',
+                    question = Button(background_normal='./resources/Buttons_2/New_ViewQuestion.png',
                                     border=(0, 0, 0, 0),
                                     size_hint=(None, None), width=grid_width * 0.2, height=grid_layout.height * 0.8)
                     question.bind(
@@ -1403,12 +1573,12 @@ class EndQuizz(Screen):
                     button_text = j[0]
                     label = Label(text=button_text, font_name="jp_font", color=(0, 0, 0, 1), font_size=sp(20))
                     anchor1.add_widget(label)
-                    item = Button(background_normal='./resources/Buttons_2/ViewItem.png',
+                    item = Button(background_normal='./resources/Buttons_2/New_ViewItem.png',
                                     border=(0, 0, 0, 0),
                                     size_hint=(None, None), width=grid_width * 0.2, height=grid_layout.height * 0.8)
                     item.bind(
                         on_release=lambda x, id=dh.contents[i], type="kanji": self.popup(type, id))
-                    question = Button(background_normal='./resources/Buttons_2/ViewQuestion.png',
+                    question = Button(background_normal='./resources/Buttons_2/New_ViewQuestion.png',
                                     border=(0, 0, 0, 0),
                                     size_hint=(None, None), width=grid_width * 0.2, height=grid_layout.height * 0.8)
                     question.bind(
@@ -1424,6 +1594,7 @@ class EndQuizz(Screen):
         self.ids.review_buttons.clear_widgets()
 
     def popup(self, type, ID):
+        dh.pop_source = "review"
         dh.current_id = ID
         if type == "grammar":
             pop = GrammarPop()
@@ -1457,6 +1628,10 @@ class EndQuizz(Screen):
         instance.canvas.before.clear()
         with instance.canvas.before:
             Rectangle(source=self.button_up, pos=instance.pos, size=instance.size)
+
+
+class Entry(Screen):
+    message = "Thank you for signing up for Nihongo Wakaranai! To ensure a personalized learning experience, we kindly request you to complete an entry assessment. This assessment will determine your current proficiency level in Japanese and help us tailor the content to your needs. Rest assured that your assessment results will remain confidential. Begin your learning journey by tapping the start button below."
 
 
 class WindowManager(ScreenManager):
