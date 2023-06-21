@@ -485,6 +485,7 @@ tts_sentence = ""
 answers = ["e","e","e","e","e","e","e","e","e","e"]
 keys = ["e","e","e","e","e","e","e","e","e","e"]
 pop_index = 0
+pop_source = ""
 
 # for the primary assessment
 first_screen = ""
