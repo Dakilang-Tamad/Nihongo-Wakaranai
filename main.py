@@ -919,12 +919,20 @@ class BookmarkedItems(Screen):
                                 border=(0, 0, 0, 0))
                 button.bind(on_press=lambda x,
                             id=i[0], type=categ: self.popup(type, id))
+                button.bind(on_release=lambda x, button=button: self.change_color(button))
                 if categ == "GRAMMAR":
                     self.ids.grammar_tab.add_widget(button)
                 if categ == "VOCAB":
                     self.ids.vocab_tab.add_widget(button)
                 if categ == "KANJI":
                     self.ids.kanji_tab.add_widget(button)
+    
+    def change_color(self, current_button):
+        current_button.background_normal = 'resources/Buttons/bm_picked.png'
+        for button in self.buttons:
+            if button.text != current_button.text:
+                button.background_normal = 'resources/Buttons/bm_1_up.png'
+
 
     def on_leave(self, *args):
         self.ids.grammar_tab.clear_widgets()
@@ -932,6 +940,7 @@ class BookmarkedItems(Screen):
         self.ids.kanji_tab.clear_widgets()
 
     def popup(self, type, ID):
+        dh.pop_source = "bookmarks"
         dh.current_id = ID
         if type == "GRAMMAR":
             pop = GrammarPop()
@@ -1079,7 +1088,7 @@ class Contents(Screen):
     
     def change_color(self, current_button):
         if current_button.bookmarked:
-            current_button.background_normal = 'resources/Buttons/rec_3_up.png'
+            current_button.background_normal = 'resources/Buttons/bm_picked.png'
         else:
             current_button.background_normal = 'resources/Buttons/rec_3_up.png'
         for button in self.buttons:
@@ -1095,6 +1104,7 @@ class Contents(Screen):
         self.ids.kanji_tab.clear_widgets()
 
     def popup(self, type, ID):
+        dh.pop_source = "contents"
         dh.current_id = ID
         if type == "GRAMMAR":
             pop = GrammarPop()
