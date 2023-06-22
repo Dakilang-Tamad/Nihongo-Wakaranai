@@ -1543,12 +1543,12 @@ class EndQuizz(Screen):
                     anchor1.add_widget(label)
                     item = Button(background_normal='./resources/Buttons_2/New_ViewItem.png',
                                     border=(0, 0, 0, 0),
-                                    size_hint=(None, None), width=grid_width * 0.2, height=grid_layout.height * 0.8)
+                                    size_hint=(None, None), width=grid_width * 0.12, height=grid_layout.height * 0.8)
                     item.bind(
                         on_release=lambda x, id=dh.contents[i], type="grammar": self.popup(type, id))
                     question = Button(background_normal='./resources/Buttons_2/New_ViewQuestion.png',
                                     border=(0, 0, 0, 0),
-                                    size_hint=(None, None), width=grid_width * 0.2, height=grid_layout.height * 0.8)
+                                    size_hint=(None, None), width=grid_width * 0.12, height=grid_layout.height * 0.8)
                     question.bind(
                         on_release=lambda x, id=dh.contents[i], index = i, type="grammar": self.question_pop(type, id, index))
                     item_anchor.add_widget(item)
@@ -1564,12 +1564,12 @@ class EndQuizz(Screen):
                     anchor1.add_widget(label)
                     item = Button(background_normal='./resources/Buttons_2/New_ViewItem.png',
                                     border=(0, 0, 0, 0),
-                                    size_hint=(None, None), width=grid_width * 0.2, height=grid_layout.height * 0.8)
+                                    size_hint=(None, None), width=grid_width * 0.12, height=grid_layout.height * 0.8)
                     item.bind(
                         on_release=lambda x, id=dh.contents[i], type="vocab": self.popup(type, id))
                     question = Button(background_normal='./resources/Buttons_2/New_ViewQuestion.png',
                                     border=(0, 0, 0, 0),
-                                    size_hint=(None, None), width=grid_width * 0.2, height=grid_layout.height * 0.8)
+                                    size_hint=(None, None), width=grid_width * 0.12, height=grid_layout.height * 0.8)
                     question.bind(
                         on_release=lambda x, id=dh.contents[i], index = i,type="vocab": self.question_pop(type, id, index))
                     item_anchor.add_widget(item)
@@ -1585,12 +1585,12 @@ class EndQuizz(Screen):
                     anchor1.add_widget(label)
                     item = Button(background_normal='./resources/Buttons_2/New_ViewItem.png',
                                     border=(0, 0, 0, 0),
-                                    size_hint=(None, None), width=grid_width * 0.2, height=grid_layout.height * 0.8)
+                                    size_hint=(None, None), width=grid_width * 0.12, height=grid_layout.height * 0.8)
                     item.bind(
                         on_release=lambda x, id=dh.contents[i], type="kanji": self.popup(type, id))
                     question = Button(background_normal='./resources/Buttons_2/New_ViewQuestion.png',
                                     border=(0, 0, 0, 0),
-                                    size_hint=(None, None), width=grid_width * 0.2, height=grid_layout.height * 0.8)
+                                    size_hint=(None, None), width=grid_width * 0.12, height=grid_layout.height * 0.8)
                     question.bind(
                         on_release=lambda x, id=dh.contents[i], index = i, type="kanji": self.question_pop(type, id, index))
                     item_anchor.add_widget(item)
